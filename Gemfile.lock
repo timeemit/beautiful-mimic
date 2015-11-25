@@ -1,0 +1,25 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    chef-zero (4.3.2)
+      ffi-yajl (~> 2.2)
+      hashie (>= 2.0, < 4.0)
+      mixlib-log (~> 1.3)
+      rack
+      uuidtools (~> 2.1)
+    ffi-yajl (2.2.2)
+      libyajl2 (~> 1.2)
+    hashie (3.4.3)
+    libyajl2 (1.2.0)
+    mixlib-log (1.6.0)
+    rack (1.6.4)
+    uuidtools (2.1.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  chef-zero
+
+BUNDLED WITH
+   1.10.6
