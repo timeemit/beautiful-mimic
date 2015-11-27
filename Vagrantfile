@@ -57,8 +57,8 @@ Vagrant.configure(2) do |config|
 
 
   config.vm.define 'compute', primary: true do |compute|
-    compute.vm.provision 'chef_apply' do |chef|
-      chef.recipe = File.read("recipes/compute.rb")
+    compute.vm.provision 'chef_zero' do |chef|
+      chef.run_list = 'compute'
     end
   end
 
