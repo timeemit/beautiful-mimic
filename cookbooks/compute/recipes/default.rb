@@ -60,6 +60,6 @@ remote_file '/opt/compute/lib/cuda' do
   source 'http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers/rpmdeb/cuda-repo-ubuntu1404-7-0-local_7.0-28_amd64.deb'
 end
 
-package 'cuda' do
-  source '/opt/compute/lib/cuda/cuda-repo-ubuntu1404-7-0-local_7.0-28_amd64.deb'
+dpkg_package 'cuda' do
+  source '/opt/compute/lib/cuda'
 end
