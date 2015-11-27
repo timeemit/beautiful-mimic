@@ -40,4 +40,26 @@ execute 'install loadcaffe' do
 end
 
 # STEP 3
-#
+# Install neural-style
+
+git '/opt/compute/lib/neural-style' do
+  repository 'https://github.com/jcjohnson/neural-style.git'
+end
+
+execute 'install neural-style' do
+  command 'sh models/download_models.sh'
+  user 'root'
+  cwd '/opt/compute/lib/neural-style'
+  not_if '[ -f moedles/VGG_ILSVRC_19_layers.caffemodel ]'
+end
+
+# STEP 4
+# Install CUDA
+
+remote_file '/opt/compute/lib/cuda' do 
+  source 'http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers/rpmdeb/cuda-repo-ubuntu1404-7-0-local_7.0-28_amd64.deb'
+end
+
+dpkg_package 'cuda' do
+  source '/opt/compute/lib/cuda'
+end
