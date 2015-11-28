@@ -56,7 +56,7 @@ Vagrant.configure(2) do |config|
   # information on available options.
 
 
-  config.vm.define 'compute', primary: true do |compute|
+  config.vm.define 'compute' do |compute|
     compute.vm.provision 'chef_zero' do |chef|
       chef.run_list = 'compute'
     end
