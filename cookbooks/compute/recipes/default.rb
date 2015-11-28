@@ -63,3 +63,22 @@ end
 dpkg_package 'cuda' do
   source '/opt/compute/lib/cuda'
 end
+
+package 'cuda' do
+  action 'update' # ?  May need to just run an execute module to run `apt-get update`
+end
+
+# STEP 5
+# Install CUDA backend for Lua
+
+execute 'install cutorch' do
+  command '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks install cutorch'
+  user 'root'
+  not_if '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks show cutorch'
+end
+
+execute 'install cunn' do
+  command '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks install cunn'
+  user 'root'
+  not_if '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks show cunn'
+end
