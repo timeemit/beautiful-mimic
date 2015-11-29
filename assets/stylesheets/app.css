@@ -8,18 +8,12 @@ body {
   text-align: center;
 }
 
-.blue-background {
-  background-color: #B3E5FC;
-}
+.blue-background { background-color: #B3E5FC; } 
+.yellow-background { background-color: #FFF176; } 
+.green-background { background-color: #009688; }
 
-.yellow-background {
-  background-color: #FFF176;
-}
+.height-60 { height: 60px; }
+.height-70 { height: 70px; }
 
-.green-background {
-  background-color: #009688;
-}
+.page-break { margin-top: 120px; }
 
-.taller {
-  height: 70px;
-}
