@@ -7,3 +7,19 @@ body {
 .center-text {
   text-align: center;
 }
+
+.blue-background {
+  background-color: #B3E5FC;
+}
+
+.yellow-background {
+  background-color: #FFF176;
+}
+
+.green-background {
+  background-color: #009688;
+}
+
+.taller {
+  height: 70px;
+}
