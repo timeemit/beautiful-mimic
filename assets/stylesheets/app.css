@@ -47,13 +47,6 @@ img.logo {
   margin-top: 20px;
 }
 
-.drawer {
-  width: 280px;
-  position: relative;
-  left: -70px;
-  padding: 10px;
-}
-
 .pointer-up {
   width: 40px;
   height: 20px;
@@ -79,6 +72,13 @@ img.logo {
   transform: skewY(45deg);
   position: relative;
   top: 10px;
+}
+
+.drawer {
+  width: 280px;
+  position: relative;
+  left: -70px;
+  padding: 10px;
 }
 
 .drawer img {
