@@ -2,7 +2,7 @@
 
 ## Color Palette
 
-+ Yellow:       #FFF176
-+ Light Blue:   #B3E5FC
-+ Teal:         #009688
-+ Cyan (accent) #84FFFF
++ Yellow:         #CE93D8
++ Light Blue:     #B3E5FC
++ Teal:           #009688
++ Purple (Accent) #EA80FC
