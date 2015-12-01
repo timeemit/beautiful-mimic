@@ -75,10 +75,15 @@ img.logo {
 }
 
 .drawer {
-  width: 280px;
   position: relative;
-  left: -70px;
-  padding: 10px;
+}
+
+@media screen and (min-width: 64em) {
+  .drawer {
+    width: 280px;
+    left: -70px;
+    padding: 10px;
+  }
 }
 
 .drawer img {
