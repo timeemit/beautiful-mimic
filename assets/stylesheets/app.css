@@ -77,27 +77,52 @@ img.logo {
 
 .drawer {
   position: relative;
+  padding: 10px;
+}
+
+.drawer .img-ctrl.active img {
+  border: 4px solid #FFF176;
+}
+
+.drawer .img-ctrl:not(.active) img {
+  border: 4px solid #D6D6D6;  /* Grey border */
+}
+
+.drawer .img-ctrl img:hover {
+  border: 4px solid #EA80FC;
 }
 
 @media screen and (min-width: 64em) {
   .drawer {
     width: 280px;
     left: -70px;
-    padding: 10px;
   }
-}
+  
+  /* Disable the border specified for smaller screens */
+  .drawer .img-ctrl img:hover {
+    border: none;
+  }
 
-.drawer img {
-  position: relative;
-  left: -4px;
-}
+  .drawer .img-ctrl.active img {
+    border: none;
+  }
 
-.drawer img.active {
-  border: 4px solid #FFF176;
-}
+  .drawer .img-ctrl:not(.active) img {
+    border: none;
+  }
+  /* End disablers */
 
-.drawer img:hover {
-  border: 4px solid #EA80FC;
+  .drawer .img-ctrl.active {
+    border: 4px solid #FFF176;
+  }
+
+  .drawer .img-ctrl:not(.active) {
+    border: 4px solid #D6D6D6; /* Grey border */
+  }
+
+  .drawer .img-ctrl:hover {
+    border: 4px solid #EA80FC;
+  }
 }
 
 @keyframes shinyborder {
