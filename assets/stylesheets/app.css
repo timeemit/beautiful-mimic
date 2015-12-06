@@ -14,6 +14,10 @@ body {
   text-align: center;
 }
 
+.hidden {
+  display: none;
+}
+
 .blue-background { background-color: #B3E5FC; } 
 .yellow-background { background-color: #FFF176; } 
 .green-background { background-color: #009688; }
