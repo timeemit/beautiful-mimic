@@ -26,6 +26,8 @@
   <link rel='stylesheet' href='../assets/stylesheets/pure.min.css'>
   <link rel='stylesheet' href='../assets/stylesheets/grids-responseive.min.css'>
   <link rel='stylesheet' href='../assets/stylesheets/app.css'>
+
+  <script src='../assets/javascripts/jquery.min.js'></script>
 </head>
 <body>
 
@@ -50,8 +52,8 @@
 
     <div class='pure-u-1 pure-u-lg-1-5'>
       <h1 class='center-text'>Choose a Photo</h1>
-      <img class='pure-img center shiny-border grey-border' src='../assets/images/marilyn-monroe.jpg'>
-      <div class='image-drawer'>
+      <img class='pure-img center shiny-border grey-border js-chosen' src='../assets/images/marilyn-monroe.jpg'>
+      <div class='image-drawer hidden js-image-drawer'>
         <div class='center pointer-up'>
           <div class='green-background pointer-up-left'></div>
           <div class='green-background pointer-up-right'></div>
@@ -80,37 +82,39 @@
     </div>
     <div class='pure-u-1 pure-u-lg-1-5'>
       <h1 class='center-text'>Choose a Style</h1>
-      <img class='pure-img center shiny-border grey-border' src='../assets/images/creation-of-adam.jpg'>
-      <div class='center pointer-up'>
-        <div class='green-background pointer-up-left'></div>
-        <div class='green-background pointer-up-right'></div>
-      </div>
-      <div class='drawer green-background center'>
-        <div class='pure-g'>
-          <div class='pure-u-1-2'>
-            <div class='center img-ctrl active'>
-              <img class='pure-img center' src='../assets/images/creation-of-adam.jpg'>
+      <img class='pure-img center shiny-border grey-border js-chosen' src='../assets/images/creation-of-adam.jpg'>
+      <div class='image-drawer hidden js-image-drawer'>
+        <div class='center pointer-up'>
+          <div class='green-background pointer-up-left'></div>
+          <div class='green-background pointer-up-right'></div>
+        </div>
+        <div class='drawer green-background center'>
+          <div class='pure-g'>
+            <div class='pure-u-1-2'>
+              <div class='center img-ctrl active'>
+                <img class='pure-img center' src='../assets/images/creation-of-adam.jpg'>
+              </div>
             </div>
-          </div>
-          <div class='pure-u-1-2'>
-            <div class='center img-ctrl'>
-              <img class='pure-img center' src='../assets/images/starry-night.jpg'>
+            <div class='pure-u-1-2'>
+              <div class='center img-ctrl'>
+                <img class='pure-img center' src='../assets/images/starry-night.jpg'>
+              </div>
             </div>
-          </div>
-          <div class='pure-u-1-2'>
-            <div class='center img-ctrl'>
-              <img class='pure-img center' src='../assets/images/bottle-of-anis.jpg'>
+            <div class='pure-u-1-2'>
+              <div class='center img-ctrl'>
+                <img class='pure-img center' src='../assets/images/bottle-of-anis.jpg'>
+              </div>
             </div>
-          </div>
-          <div class='pure-u-1-2'>
-            <div class='center img-ctrl'>
-              <img class='pure-img center' src='../assets/images/great-wave.jpg'>
+            <div class='pure-u-1-2'>
+              <div class='center img-ctrl'>
+                <img class='pure-img center' src='../assets/images/great-wave.jpg'>
+              </div>
             </div>
-          </div>
-          <div class='pure-u-1'>
-            <h3 class='center-text'>
-              <a class='pure-button pure-button-active'><i class='fa fa-upload'> Upload your own!</i></a>
-            </h3>
+            <div class='pure-u-1'>
+              <h3 class='center-text'>
+                <a class='pure-button pure-button-active'><i class='fa fa-upload'> Upload your own!</i></a>
+              </h3>
+            </div>
           </div>
         </div>
       </div>
@@ -124,6 +128,22 @@
     </div>
 
   </div>
+
+  <script>
+    $('.js-chosen').click(function(){
+      var $this = $(this);
+      $this.siblings('.js-image-drawer').toggleClass('hidden');
+    });
+
+    $('.js-image-drawer .img-ctrl').click(function(){
+      var $this = $(this);
+      var src = $this.find('img').prop('src');
+      $this.closest('.pure-g').find('.img-ctrl').removeClass('active');
+      $this.addClass('active');
+      $this.closest('.js-image-drawer').siblings('.js-chosen').prop('src', src);
+      $this.find('.js-image-drawer').toggleClass('hidden');
+    });
+  </script>
 
 </body>
 </html>
