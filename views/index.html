@@ -132,7 +132,14 @@
   <script>
     $('.js-chosen').click(function(){
       var $this = $(this);
-      $this.siblings('.js-image-drawer').toggleClass('hidden');
+      var $img = $this.siblings('.js-image-drawer');
+      if ( $img.hasClass('hidden') ) {
+        $img.removeClass('hidden').hide().fadeIn();
+      } else {
+        $img.fadeOut(400, function() {
+          $(this).addClass('hidden');
+        });
+      }
     });
 
     $('.js-image-drawer .img-ctrl').click(function(){
