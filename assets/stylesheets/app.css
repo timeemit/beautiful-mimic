@@ -125,12 +125,6 @@ img.logo {
   }
 }
 
-@keyframes shinyborder {
-  100% {
-    border-color: white;
-  }
-}
-
-.shiny-border {
-  animation: shinyborder 2s infinite alternate;
+.hover-yellow-border:hover {
+  border-color: #FFF176;
 }
