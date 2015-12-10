@@ -127,4 +127,5 @@ img.logo {
 
 .hover-yellow-border:hover {
   border-color: #FFF176;
+  cursor: pointer;
 }
