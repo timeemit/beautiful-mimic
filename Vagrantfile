@@ -51,10 +51,10 @@ Vagrant.configure(2) do |config|
 
   config.vm.define 'behemoth' do |compute|
     compute.vm.provision 'chef_zero' do |chef|
-      chef.add_role 'web'
-      chef.add_role 'app'
-      chef.add_role 'redis'
-      chef.add_role 'mongo'
+      chef.add_recipe 'web'
+      # chef.add_recipe 'app'
+      # chef.add_recipe 'redis'
+      # chef.add_recipe 'mongo'
     end
   end
 
