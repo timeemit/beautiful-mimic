@@ -48,7 +48,7 @@ Vagrant.configure(2) do |config|
   config.vm.define 'behemoth' do |compute|
     compute.vm.provision 'chef_zero' do |chef|
       chef.add_recipe 'web'
-      # chef.add_recipe 'app'
+      chef.add_recipe 'app'
       # chef.add_recipe 'redis'
       # chef.add_recipe 'mongo'
     end
