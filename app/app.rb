@@ -54,13 +54,33 @@ get '/confirmations' do
   'Get Confirmation Number'
 end
 
+# Buesiness Logic
+
 get '/' do
   'First Time: Form for new mimic'
   'Return User: Index of mimics'
+  session['user_hash']
 end
 
 get '/uploads' do
   'Retrieve uploaded photos'
+end
+
+get '/uploads/:filename' do
+  'Retrieve an uploaded photo'
+
+  bucket = settings.env['S3']['bucket']
+  key = "#{session['user_hash']}/#{params['filename']}"
+  signer = Aws::S3::Presigner.new
+
+  begin
+    url = signer.presigned_url(:get_object, {bucket: bucket, key: key, expires_in: 30})
+  rescue Exception => error
+    p error
+    p error.response
+  end
+
+  redirect to(url)
 end
 
 post '/uploads' do
