@@ -1,10 +1,30 @@
+require 'yaml'
+require 'securerandom'
 require 'sinatra'
-# require 'carrierwave'
+require 'aws-sdk'
+
+enable :sessions
+enable :logging
+set :env, YAML::load_file(File.join(__dir__, 'environments', "#{settings.environment}.yml") )
+set :session_secret, 'qyAi9Y/mkwZo7Z0CFqtBqJr5ZE4oX0J3VVxU1PzGZV8='
+
+# Initiialize
+
+aws_key = Aws::Credentials.new(
+  settings.env['AWS']['access_key_id'],
+  settings.env['AWS']['secret_access_key']
+)
+
+Aws.config.update({
+  region: 'us-west-1',
+  credentials: aws_key
+})
 
 # User Management
 
 before do
   # Set a cookie with key `user_hash` to be a random hash 
+  session['user_hash'] ||= SecureRandom.hex(30)
 end
 
 post '/users' do
@@ -57,6 +77,38 @@ post '/uploads' do
   #
   # Use `carrierwave` ?
   # Or just `AWS::S3` and 'minimagick' ? 
+
+  bucket = settings.env['S3']['bucket']
+
+  # Validations
+  unless params[:file].is_a? Hash
+    return 'Must specify a file', 400
+  end
+
+  file = params[:file][:tempfile]
+  filename = params[:file][:filename]
+
+  if file.size > 2 ** 22 # ~ 4 megabytes
+    return 'File size must be less than 4MB', 400
+  elsif not %w(.jpg .jpeg .png .tiff).include? File.extname(filename)
+    return 'File must be an image', 400
+  end
+
+  s3 = Aws::S3::Client.new
+  key = "#{session['user_hash']}/#{filename}"
+
+  begin
+    s3.put_object(bucket: bucket, key: key, body: file)
+  rescue Exception => error
+    p error
+    p error.response
+
+    return 'An error occurred while storing the image', 511
+  end
+
+  url = "https://#{bucket}.s3.amazonaws.com/#{filename}"
+
+  return url
 end
 
 get '/mimics/new' do
