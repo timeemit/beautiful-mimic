@@ -30,11 +30,14 @@ execute 'install gems' do
   command 'su ubuntu -l -c "cd /opt/code/ && bundle install"'
 end
 
+
+# Start Unicorn if it isn't already running
 execute 'start unicorn' do
   command 'su ubuntu -l -c "cd /opt/code/app/ && bundle exec unicorn -c /opt/code/app/unicorn.conf.rb"'
   not_if '[ -f /tmp/app.pid ]'
 end
 
+# Restart Unicorn if it _is_ running
 execute 'restart unicorn' do
   command 'su ubuntu -l -c "kill -s 1 `cat /tmp/app.pid`"' # Signal 1 is SIGHUP
   only_if '[ -f /tmp/app.pid ]'
