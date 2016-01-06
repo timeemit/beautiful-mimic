@@ -1,4 +1,5 @@
 require 'aws-sdk'
+require 'mini_magick'
 require_relative '../lib/model'
 
 class S3Upload < Model
@@ -11,22 +12,38 @@ class S3Upload < Model
     super()
   end
 
-  def file_url
-    "https://#{@bucket}.s3.amazonaws.com/#{filename}"
+  def signed_url(style='thumb')
+    signer = Aws::S3::Presigner.new
+    key = "#{@user_hash}/#{style}s/#{filename}"
+
+    begin
+      url = signer.presigned_url(:get_object, {bucket: @bucket, key: key, expires_in: 30})
+    rescue Exception => error
+      p error
+      p error.response
+    end
+
+    url
+  end
+
+  def resize!
+    image = MiniMagick::Image.open(file.path)
+    image.resize('100x100')
+    image.write("#{file.path}.thumb")
   end
 
   def save!
     return false unless valid?
 
-    key = "#{@user_hash}/original/#{filename}"
+    resize!
 
-    begin
-      s3.put_object(bucket: @bucket, key: key, body: file)
-    rescue Exception => error
-      p error
-      p error.response
+    keys_to_paths = {
+      "#{@user_hash}/originals/#{filename}" => file,
+      "#{@user_hash}/thumbs/#{filename}" => File.open("#{file.path}.thumb")
+    }
 
-      return 'An error occurred while storing the image', 511
+    keys_to_paths.each do |key, path|
+      to_s3 key, path
     end
 
     return true
@@ -62,4 +79,15 @@ class S3Upload < Model
     end
   end
 
+  def to_s3(key, file_path)
+    begin
+      s3.put_object(bucket: @bucket, key: key, body: file_path)
+    rescue Exception => error
+      p error
+      p error.response
+
+      return 'An error occurred while storing the image', 511
+    end
+
+  end
 end

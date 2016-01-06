@@ -71,17 +71,22 @@ get '/uploads/:filename' do
   'Retrieve an uploaded photo'
 
   bucket = settings.env['S3']['bucket']
-  key = "#{session['user_hash']}/#{params['filename']}"
-  signer = Aws::S3::Presigner.new
+  upload = S3Upload.new(bucket)
+  upload.user_hash = session['user_hash']
+  upload.filename = params['filename']
 
-  begin
-    url = signer.presigned_url(:get_object, {bucket: bucket, key: key, expires_in: 30})
-  rescue Exception => error
-    p error
-    p error.response
-  end
+  redirect to(upload.signed_url)
+end
 
-  redirect to(url)
+get '/uploads/:filename/original' do
+  'Retrieve the original copy of an uploaded photo'
+
+  bucket = settings.env['S3']['bucket']
+  upload = S3Upload.new(bucket)
+  upload.user_hash = session['user_hash']
+  upload.filename = params['filename']
+
+  redirect to(upload.signed_url 'original')
 end
 
 post '/uploads' do
@@ -113,7 +118,7 @@ post '/uploads' do
     return 400, upload.errors.to_json
   end
 
-  return upload.file_url
+  return upload.signed_url
 end
 
 get '/mimics/new' do
