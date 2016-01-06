@@ -37,6 +37,7 @@ GEM
     json (1.8.3)
     kgio (2.10.0)
     libyajl2 (1.2.0)
+    mini_magick (4.3.6)
     minitest (5.8.3)
     mixlib-log (1.6.0)
     mongo (2.2.1)
@@ -80,6 +81,7 @@ DEPENDENCIES
   aws-sdk (~> 2.2.8)
   capistrano (~> 3.4.0)
   chef-zero (~> 4.3.2)
+  mini_magick
   mongoid (~> 5.0.0)
   sinatra (~> 1.4.6)
   unicorn (~> 5.0.1)
