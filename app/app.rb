@@ -95,8 +95,6 @@ post '/uploads' do
   # `user_hash`: string
   # `file_handle`: string
   #
-  # Use `carrierwave` ?
-  # Or just `AWS::S3` and 'minimagick' ? 
 
   bucket = settings.env['S3']['bucket']
 
