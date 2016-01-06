@@ -1,7 +1,8 @@
 require 'yaml'
 require 'securerandom'
 require 'sinatra'
-require 'aws-sdk'
+
+require_relative 'models/s3_upload'
 
 enable :sessions
 enable :logging
@@ -100,33 +101,19 @@ post '/uploads' do
 
   # Validations
   unless params[:file].is_a? Hash
-    return 'Must specify a file', 400
+    return 400, 'Must specify a file'
   end
 
-  file = params[:file][:tempfile]
-  filename = params[:file][:filename]
+  upload = S3Upload.new bucket
+  upload.file = params[:file][:tempfile]
+  upload.filename = params[:file][:filename]
+  upload.user_hash = session['user_hash']
 
-  if file.size > 2 ** 22 # ~ 4 megabytes
-    return 'File size must be less than 4MB', 400
-  elsif not %w(.jpg .jpeg .png .tiff).include? File.extname(filename)
-    return 'File must be an image', 400
+  unless upload.save!
+    return 400, upload.errors.to_json
   end
 
-  s3 = Aws::S3::Client.new
-  key = "#{session['user_hash']}/#{filename}"
-
-  begin
-    s3.put_object(bucket: bucket, key: key, body: file)
-  rescue Exception => error
-    p error
-    p error.response
-
-    return 'An error occurred while storing the image', 511
-  end
-
-  url = "https://#{bucket}.s3.amazonaws.com/#{filename}"
-
-  return url
+  return upload.file_url
 end
 
 get '/mimics/new' do
