@@ -4,6 +4,7 @@ require 'sinatra'
 require 'mongoid'
 
 require_relative 'models/s3_upload'
+require_relative 'models/upload'
 
 Mongoid.load!('mongoid.yml')
 
@@ -108,20 +109,31 @@ post '/uploads' do
   bucket = settings.env['S3']['bucket']
 
   # Validations
-  unless params[:file].is_a? Hash
-    return 400, 'Must specify a file'
-  end
 
-  upload = S3Upload.new bucket
-  upload.file = params[:file][:tempfile]
-  upload.filename = params[:file][:filename]
+  upload = Upload.new
   upload.user_hash = session['user_hash']
+  upload.filename = params[:file][:filename]
 
-  unless upload.save!
+  unless upload.valid?
     return 400, upload.errors.to_json
   end
 
-  return upload.signed_url
+  # Upload file
+
+  s3_upload = S3Upload.new bucket
+  s3_upload.file = params[:file][:tempfile]
+  s3_upload.filename = params[:file][:filename]
+  s3_upload.user_hash = session['user_hash']
+
+  unless s3_upload.save!
+    return 400, s3_upload.errors.to_json
+  end
+
+  # Persit record
+
+  upload.save!
+
+  return s3_upload.signed_url
 end
 
 get '/mimics/new' do
