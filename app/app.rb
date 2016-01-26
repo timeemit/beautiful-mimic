@@ -99,7 +99,7 @@ post '/uploads' do
   #
   # Upload Schema:
   # `user_hash`: string
-  # `file_handle`: string
+  # `filename`: string
   #
 
   bucket = settings.env['S3']['bucket']
