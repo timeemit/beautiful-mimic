@@ -1,8 +1,11 @@
 require 'yaml'
 require 'securerandom'
 require 'sinatra'
+require 'mongoid'
 
 require_relative 'models/s3_upload'
+
+Mongoid.load!('mongoid.yml')
 
 enable :sessions
 enable :logging
