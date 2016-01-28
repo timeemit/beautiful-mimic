@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../lib/model'
+require_relative '../../lib/model'
 
 describe Model do
   let(:model) { Model.new }
