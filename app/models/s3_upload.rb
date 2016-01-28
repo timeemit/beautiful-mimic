@@ -14,10 +14,10 @@ class S3Upload < Model
 
   def signed_url(style='thumb')
     signer = Aws::S3::Presigner.new
-    key = "#{@user_hash}/#{style}s/#{filename}"
+    file_key = "#{@user_hash}/#{style}s/#{filename}"
 
     begin
-      url = signer.presigned_url(:get_object, {bucket: @bucket, key: key, expires_in: 30})
+      url = signer.presigned_url(:get_object, {bucket: @bucket, key: file_key, expires_in: 30})
     rescue Exception => error
       p error
       p error.response
@@ -37,13 +37,13 @@ class S3Upload < Model
 
     resize!
 
-    keys_to_paths = {
+    file_keys_to_paths = {
       "#{@user_hash}/originals/#{filename}" => file,
       "#{@user_hash}/thumbs/#{filename}" => File.open("#{file.path}.thumb")
     }
 
-    keys_to_paths.each do |key, path|
-      to_s3 key, path
+    file_keys_to_paths.each do |file_key, path|
+      to_s3 file_key, path
     end
 
     return true
@@ -79,15 +79,7 @@ class S3Upload < Model
     end
   end
 
-  def to_s3(key, file_path)
-    begin
-      s3.put_object(bucket: @bucket, key: key, body: file_path)
-    rescue Exception => error
-      p error
-      p error.response
-
-      return 'An error occurred while storing the image', 511
-    end
-
+  def to_s3(file_key, file_path)
+    s3.put_object(bucket: @bucket, key: file_key, body: file_path)
   end
 end
