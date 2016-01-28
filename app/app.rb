@@ -4,6 +4,7 @@ require 'securerandom'  # For random session user hashes
 require 'sinatra'
 require 'mongoid'
 
+require_relative 'lib/aws_authenticator'
 require_relative 'models/s3_upload'
 require_relative 'models/upload'
 
@@ -16,15 +17,7 @@ set :session_secret, 'qyAi9Y/mkwZo7Z0CFqtBqJr5ZE4oX0J3VVxU1PzGZV8='
 
 # Initiialize
 
-aws_key = Aws::Credentials.new(
-  settings.env['AWS']['access_key_id'],
-  settings.env['AWS']['secret_access_key']
-)
-
-Aws.config.update({
-  region: 'us-west-1',
-  credentials: aws_key
-})
+AwsAuthenticator.authenticate!(settings.env)
 
 # User Management
 
