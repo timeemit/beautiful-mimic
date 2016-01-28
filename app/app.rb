@@ -8,15 +8,16 @@ require_relative 'lib/aws_authenticator'
 require_relative 'models/s3_upload'
 require_relative 'models/upload'
 
-Mongoid.load!('mongoid.yml')
+environment_path = File.expand_path("environments/#{settings.environment}.yml", __dir__)
 
 enable :sessions
 enable :logging
-set :env, YAML::load_file(File.join(__dir__, 'environments', "#{settings.environment}.yml") )
+set :env, YAML::load_file( environment_path )
 set :session_secret, 'qyAi9Y/mkwZo7Z0CFqtBqJr5ZE4oX0J3VVxU1PzGZV8='
 
 # Initiialize
 
+Mongoid.load!(environment_path, 'mongo')
 AwsAuthenticator.authenticate!(settings.env)
 
 # User Management
