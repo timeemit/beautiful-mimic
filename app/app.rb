@@ -1,5 +1,6 @@
-require 'yaml'
-require 'securerandom'
+require 'yaml'          # For environment parsing
+require 'digest'        # For SHA256
+require 'securerandom'  # For random session user hashes
 require 'sinatra'
 require 'mongoid'
 
@@ -107,31 +108,48 @@ post '/uploads' do
   #
 
   bucket = settings.env['S3']['bucket']
+  user_hash = session['user_hash']
 
-  # Validations
+  # Ensure params structure
+
+  begin
+    file = params[:file][:tempfile]
+    filename = params[:file][:filename]
+  rescue => e
+    return 400
+  end
+
+  # SHA256 of file ensures uniqueness
+
+  file_hash = Digest::SHA256.new.hexdigest file.read
+  file.rewind
+
+  # Objects
 
   upload = Upload.new
-  upload.user_hash = session['user_hash']
-  upload.filename = params[:file][:filename]
+  upload.user_hash = user_hash
+  upload.filename = filename
+  upload.file_hash = file_hash
 
+  s3_upload = S3Upload.new bucket
+  s3_upload.user_hash = user_hash
+  s3_upload.filename = filename
+  s3_upload.file = file
+
+  # Validations
+  #
   unless upload.valid?
     return 400, upload.errors.to_json
   end
 
-  # Upload file
-
-  s3_upload = S3Upload.new bucket
-  s3_upload.file = params[:file][:tempfile]
-  s3_upload.filename = params[:file][:filename]
-  s3_upload.user_hash = session['user_hash']
-
-  unless s3_upload.save!
+  unless s3_upload.valid?
     return 400, s3_upload.errors.to_json
   end
 
-  # Persit record
+  # Persit
 
-  upload.save!
+  s3_upload.save! # => To S3
+  upload.save!    # => To mongo
 
   return s3_upload.signed_url
 end
