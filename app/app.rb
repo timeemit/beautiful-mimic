@@ -113,8 +113,8 @@ post '/uploads' do
   # Ensure params structure
 
   begin
-    file = params[:file][:tempfile]
-    filename = params[:file][:filename]
+    file = params['file'][:tempfile]
+    filename = params['file'][:filename]
   rescue => e
     return 400
   end
