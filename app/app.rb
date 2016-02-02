@@ -19,6 +19,7 @@ set :session_secret, 'qyAi9Y/mkwZo7Z0CFqtBqJr5ZE4oX0J3VVxU1PzGZV8='
 
 Mongoid.load!(environment_path, 'mongo')
 AwsAuthenticator.authenticate!(settings.env)
+PAGE_COUNT = 15
 
 # User Management
 
@@ -64,9 +65,27 @@ end
 
 get '/uploads' do
   'Retrieve uploaded photos'
+
+  user_hash = session['user_hash']
+  begin
+    page = params['page'] || 1
+    page = page.to_i
+    raise unless page > 0
+  rescue => e
+    return 400
+  end
+
+  return Upload.
+    where(user_hash: user_hash).
+    only(:filename, :created_at).
+    sort(created_at: -1).
+    limit(PAGE_COUNT).
+    skip(PAGE_COUNT * (page - 1)).
+    to_json(except: :_id)
 end
 
 get '/uploads/:filename' do
+  'COMPLETE,TESTED'
   'Retrieve an uploaded photo'
 
   bucket = settings.env['S3']['bucket']
@@ -78,6 +97,7 @@ get '/uploads/:filename' do
 end
 
 get '/uploads/:filename/original' do
+  'COMPLETE,TESTED'
   'Retrieve the original copy of an uploaded photo'
 
   bucket = settings.env['S3']['bucket']
@@ -89,6 +109,7 @@ get '/uploads/:filename/original' do
 end
 
 post '/uploads' do
+  'COMPLETE,TESTED'
   'Upload a new, private photo'
 
   # Processes a thumbnail and preview pics
@@ -169,5 +190,5 @@ end
 post '/unlock' do
   'Unlock mimics'
 
-  # Pay to for mimic(s) to be unlocked
+  # Pay for mimic(s) to be unlocked
 end
