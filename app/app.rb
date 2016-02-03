@@ -64,6 +64,7 @@ get '/' do
 end
 
 get '/uploads' do
+  'COMPLETE,TESTED'
   'Retrieve uploaded photos'
 
   user_hash = session['user_hash']
@@ -152,7 +153,7 @@ post '/uploads' do
   s3_upload.file = file
 
   # Validations
-  #
+  
   unless upload.valid?
     return 400, upload.errors.to_json
   end
