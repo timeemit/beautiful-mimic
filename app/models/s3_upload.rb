@@ -1,4 +1,3 @@
-require 'aws-sdk'
 require 'mini_magick'
 require_relative '../lib/model'
 

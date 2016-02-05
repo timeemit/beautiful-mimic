@@ -1,3 +1,5 @@
+require 'aws-sdk'
+
 class AwsAuthenticator 
   def self.authenticate!(env)
     aws_key = Aws::Credentials.new(
