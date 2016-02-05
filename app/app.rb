@@ -185,6 +185,7 @@ post '/mimics' do
   # `user_hash`: string
   # `content_id`: string ( reference to the uploads collection )
   # `style_id`: string ( reference to the uploads collection )
+  # `computed_at`: timestamp ( not always present )
   # `unlocked_at`: timestamp ( not always present )
 end
 
