@@ -1,23 +1,41 @@
 require 'yaml'
 require 'rspec'
 require 'mongo'
+require 'mongoid'
 
 require_relative '../lib/aws_authenticator'
+require_relative '../models/upload'
+require_relative '../models/mimic'
 
 module SpecBase
-  VARS = YAML::load_file( File.expand_path('../../environments/test.yml', __FILE__) )
+
+  def self.vars
+    @vars ||= YAML::load_file(self.environment_path)
+  end
+
+  def self.environment_path
+    File.expand_path('../../environments/test.yml', __FILE__)
+  end
 
   def self.initialize!
-    AwsAuthenticator.authenticate!(VARS)
+    AwsAuthenticator.authenticate!(vars)
+    Mongoid.load!(environment_path, 'mongo')
   end
 
   def self.bucket
-    VARS['S3']['bucket']
+    vars['S3']['bucket']
   end
 
   def self.mongo
-    mongo_vars = VARS['mongo']['clients']['default']
+    mongo_vars = vars['mongo']['clients']['default']
     @mongo ||= Mongo::Client.new("mongodb://#{mongo_vars['hosts'][0]}/#{mongo_vars['database']}")
   end
 
+end
+
+RSpec.configure do |c|
+  c.include SpecBase
+  c.before(:suite) { SpecBase.initialize! }
+  c.after(:suite) { Aws::S3::Bucket.new(SpecBase.bucket).clear! }
+  c.after(:each) { SpecBase.mongo.database.drop }
 end

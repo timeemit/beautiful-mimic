@@ -26,10 +26,6 @@ module RSpecMixin
   end
 end
 
-RSpec.configure do |c| 
+RSpec.configure do |c|
   c.include RSpecMixin 
-  c.include SpecBase
-  c.before(:suite) { SpecBase.initialize! }
-  c.after(:each) { SpecBase.mongo.database.drop }
-  c.after(:suite) { Aws::S3::Bucket.new(SpecBase.bucket).clear! }
 end
