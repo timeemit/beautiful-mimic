@@ -120,6 +120,7 @@ post '/uploads' do
   #
   # Upload Schema:
   # `user_hash`: string
+  # `file_hash`: string
   # `filename`: string
   #
 
