@@ -175,6 +175,7 @@ get '/mimics/new' do
 end
 
 post '/mimics' do
+  'COMPLETED,TESTED'
   'Make a beautiful mimic'
 
   # Persist a mimic record
