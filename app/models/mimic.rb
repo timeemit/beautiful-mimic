@@ -10,5 +10,7 @@ class Mimic
   belongs_to :style_upload, class_name: 'Upload', inverse_of: :style_mimics
 
   validates :user_hash, presence: true
+  validates :content_upload_id, presence: true
+  validates :style_upload_id, presence: true
 
 end

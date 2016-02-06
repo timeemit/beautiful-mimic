@@ -24,7 +24,7 @@ PAGE_COUNT = 15
 # User Management
 
 before do
-  # Set a cookie with key `user_hash` to be a random hash 
+  # Set a cookie with key `user_hash` to be a random hash
   session['user_hash'] ||= SecureRandom.hex(30)
 end
 
@@ -153,7 +153,7 @@ post '/uploads' do
   s3_upload.file = file
 
   # Validations
-  
+
   unless upload.valid?
     return 400, upload.errors.to_json
   end
@@ -187,6 +187,49 @@ post '/mimics' do
   # `style_id`: string ( reference to the uploads collection )
   # `computed_at`: timestamp ( not always present )
   # `unlocked_at`: timestamp ( not always present )
+
+  user_hash = session['user_hash']
+
+  begin
+    content_hash = params[:content_hash]
+    style_hash = params[:style_hash]
+  rescue => e
+    return 400, {message: 'invalid'}
+  end
+
+  # Queries
+
+  content_upload = Upload.
+    where(user_hash: user_hash).
+    where(file_hash: content_hash).
+    first
+
+  style_upload = Upload.
+    in(user_hash: [user_hash, nil]).
+    where(file_hash: style_hash).
+    first
+
+  # Object
+
+  mimic = Mimic.new
+  mimic.user_hash = user_hash
+  mimic.content_upload = content_upload
+  mimic.style_upload = style_upload
+
+  # Validations
+
+  unless mimic.valid?
+    return 400, mimic.errors.to_json
+  end
+
+  # Persit
+
+  mimic.save!    # => To mongo
+
+  # Queue Job
+  # TODO
+
+  return 201
 end
 
 post '/unlock' do
