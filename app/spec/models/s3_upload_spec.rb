@@ -53,4 +53,12 @@ describe S3Upload do
     expect( upload.errors[:filename] ).to be_empty
     expect( upload.errors[:user_hash] ).to_not be_empty
   end
+
+  it 'can persist and read' do
+    expect( upload.save! ).to be true
+    tempfile = Tempfile.new(upload.filename)
+    upload.download(tempfile.path, 'original')
+    upload.file.rewind
+    expect( tempfile.read ).to eql upload.file.read
+  end
 end
