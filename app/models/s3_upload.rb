@@ -2,6 +2,7 @@ require 'mini_magick'
 require_relative '../lib/model'
 
 class S3Upload < Model
+  attr_reader :bucket
   attr_accessor :file
   attr_accessor :filename
   attr_accessor :user_hash
@@ -13,10 +14,9 @@ class S3Upload < Model
 
   def signed_url(style='thumb')
     signer = Aws::S3::Presigner.new
-    file_key = "#{@user_hash}/#{style}s/#{filename}"
 
     begin
-      url = signer.presigned_url(:get_object, {bucket: @bucket, key: file_key, expires_in: 30})
+      url = signer.presigned_url(:get_object, {bucket: bucket, key: file_key(style), expires_in: 30})
     rescue Exception => error
       p error
       p error.response
@@ -42,13 +42,17 @@ class S3Upload < Model
     }
 
     file_keys_to_paths.each do |file_key, path|
-      to_s3 file_key, path
+      s3.put_object(bucket: @bucket, key: file_key, body: path)
     end
 
     return true
   end
 
   private
+
+  def file_key(style)
+    file_key = "#{@user_hash}/#{style}s/#{@filename}"
+  end
 
   def s3
     @s3 ||= Aws::S3::Client.new
@@ -76,9 +80,5 @@ class S3Upload < Model
     unless user_hash.is_a? String and not user_hash.empty?
       add_error :user_hash, 'Session user hash must be present'
     end
-  end
-
-  def to_s3(file_key, file_path)
-    s3.put_object(bucket: @bucket, key: file_key, body: file_path)
   end
 end
