@@ -36,7 +36,7 @@ class S3Upload < Model
   def resize!
     image = MiniMagick::Image.open(file.path)
     image.resize('100x100')
-    image.write("#{file.path}.thumb")
+    image.write(thumbfile_path)
   end
 
   def save!
@@ -46,12 +46,14 @@ class S3Upload < Model
 
     file_keys_to_paths = {
       file_key('original') => file,
-      file_key('thumb') => File.open("#{file.path}.thumb")
+      file_key('thumb') => File.open(thumbfile_path)
     }
 
     file_keys_to_paths.each do |file_key, path|
       s3.put_object(bucket: @bucket, key: file_key, body: path)
     end
+
+    file_path = File.unlink(thumbfile_path)
 
     return true
   end
@@ -60,6 +62,10 @@ class S3Upload < Model
 
   def file_key(style)
     file_key = "#{@user_hash}/#{style}s/#{@filename}"
+  end
+
+  def thumbfile_path
+    thumbfile = "#{file.path}.thumb"
   end
 
   def s3
