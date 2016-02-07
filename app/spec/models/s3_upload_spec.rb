@@ -2,7 +2,7 @@ require_relative '../spec_base'
 
 describe S3Upload do
   let(:upload) do
-    upload = S3Upload.new('beautiful.mimic.development')
+    upload = S3Upload.new(SpecBase.vars['S3']['bucket'])
     upload.file = File.open(File.join(__dir__, '../fixtures/marilyn-monroe.jpg'))
     upload.filename = 'marilyn-monroe.jpg'
     upload.user_hash = 'aaaaaaaaaaaa'
