@@ -235,7 +235,10 @@ post '/mimics' do
   mimic.save!    # => To mongo
 
   # Queue Job
-  # TODO
+  MimicMaker.perform_async(
+    bucket = settings.env['S3']['bucket'],
+    mimic.id
+  )
 
   return 201
 end

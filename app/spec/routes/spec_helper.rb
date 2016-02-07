@@ -1,5 +1,6 @@
 require 'json'
 require 'rack/test'
+require 'sidekiq/testing'
 require 'rspec'
 
 ENV['RACK_ENV'] = 'test'
@@ -29,4 +30,5 @@ end
 
 RSpec.configure do |c|
   c.include RSpecMixin 
+  c.after(:each) { Sidekiq::Worker.clear_all }
 end
