@@ -43,7 +43,7 @@ class MimicMaker
 
     # Compute
 
-    %x(th neural_style.lua -print_iter 0 -style_image #{style_tempfile.path} -content_image #{content_tempfile.path})
+    %x(th neural_style.lua -print_iter 0 -style_image #{style_tempfile.path} -content_image #{content_tempfile.path} -output_image #{output_tempfile.path})
 
     # Upload the results
 
@@ -57,6 +57,7 @@ class MimicMaker
     s3_output.save!
 
     # Done!
+
     mimic.touch(:computed_at)
   end
 end
