@@ -5,7 +5,9 @@ require 'mongoid'
 
 require_relative '../lib/aws_authenticator'
 require_relative '../models/upload'
+require_relative '../models/s3_upload'
 require_relative '../models/mimic'
+require_relative '../workers/mimic_maker'
 
 module SpecBase
 

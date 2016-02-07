@@ -1,5 +1,4 @@
-require 'rspec'
-require_relative '../../models/s3_upload'
+require_relative '../spec_base'
 
 describe S3Upload do
   let(:upload) do
