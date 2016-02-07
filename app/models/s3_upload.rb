@@ -37,8 +37,8 @@ class S3Upload < Model
     resize!
 
     file_keys_to_paths = {
-      "#{@user_hash}/originals/#{filename}" => file,
-      "#{@user_hash}/thumbs/#{filename}" => File.open("#{file.path}.thumb")
+      file_key('original') => file,
+      file_key('thumb') => File.open("#{file.path}.thumb")
     }
 
     file_keys_to_paths.each do |file_key, path|
