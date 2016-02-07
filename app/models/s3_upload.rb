@@ -9,10 +9,10 @@ class S3Upload < Model
 
   def initialize(*opts)
     opts = opts[0] ? opts[0] : {}
-    @file = opts[:file]
     @bucket = opts[:bucket]
     @filename = opts[:filename]
     @user_hash = opts[:user_hash]
+    @file = opts[:file] # Not required
     super()
     self
   end
@@ -28,8 +28,6 @@ class S3Upload < Model
   end
 
   def signed_url(style='thumb')
-    return false unless valid?
-
     signer = Aws::S3::Presigner.new
 
     begin

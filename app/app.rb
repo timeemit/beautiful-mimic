@@ -90,9 +90,11 @@ get '/uploads/:filename' do
   'Retrieve an uploaded photo'
 
   bucket = settings.env['S3']['bucket']
-  upload = S3Upload.new(bucket)
-  upload.user_hash = session['user_hash']
-  upload.filename = params['filename']
+  upload = S3Upload.new(
+    bucket: bucket,
+    user_hash: session['user_hash'],
+    filename: params['filename']
+  )
 
   redirect to(upload.signed_url)
 end
@@ -102,9 +104,11 @@ get '/uploads/:filename/original' do
   'Retrieve the original copy of an uploaded photo'
 
   bucket = settings.env['S3']['bucket']
-  upload = S3Upload.new(bucket)
-  upload.user_hash = session['user_hash']
-  upload.filename = params['filename']
+  upload = S3Upload.new(
+    bucket: bucket,
+    user_hash: session['user_hash'],
+    filename: params['filename']
+  )
 
   redirect to(upload.signed_url 'original')
 end
@@ -148,10 +152,12 @@ post '/uploads' do
   upload.filename = filename
   upload.file_hash = file_hash
 
-  s3_upload = S3Upload.new bucket
-  s3_upload.user_hash = user_hash
-  s3_upload.filename = filename
-  s3_upload.file = file
+  s3_upload = S3Upload.new(
+    bucket: bucket,
+    user_hash: user_hash,
+    filename: filename,
+    file: file
+  )
 
   # Validations
 
