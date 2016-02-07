@@ -7,6 +7,7 @@ gem 'unicorn', '~> 5.0.1'
 gem 'mongoid', '~> 5.1.0'
 gem 'aws-sdk', '~> 2.2.8'
 gem 'mini_magick', '~> 4.3.6'
+gem 'sidekiq', '~> 4.0.1'
 
 group :test do
   gem 'rspec', '~> 3.4.0'
