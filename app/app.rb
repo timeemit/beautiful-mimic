@@ -7,6 +7,8 @@ require 'mongoid'
 require_relative 'lib/aws_authenticator'
 require_relative 'models/s3_upload'
 require_relative 'models/upload'
+require_relative 'models/mimic'
+require_relative 'models/uploader'
 
 environment_path = File.expand_path("environments/#{settings.environment}.yml", __dir__)
 
@@ -140,41 +142,22 @@ post '/uploads' do
     return 400
   end
 
-  # SHA256 of file ensures uniqueness
-
-  file_hash = Digest::SHA256.new.hexdigest file.read
-  file.rewind
-
-  # Objects
-
-  upload = Upload.new
-  upload.user_hash = user_hash
-  upload.filename = filename
-  upload.file_hash = file_hash
-
-  s3_upload = S3Upload.new(
-    bucket: bucket,
-    user_hash: user_hash,
-    filename: filename,
-    file: file
-  )
+  uploader = Uploader.new(bucket, user_hash, filename, file)
 
   # Validations
 
-  unless upload.valid?
-    return 400, upload.errors.to_json
+  unless uploader.upload.valid?
+    return 400, uploader.upload.errors.to_json
   end
 
-  unless s3_upload.valid?
-    return 400, s3_upload.errors.to_json
+  unless uploader.s3_upload.valid?
+    return 400, uploader.s3_upload.errors.to_json
   end
 
   # Persit
+  uploader.save!
 
-  s3_upload.save! # => To S3
-  upload.save!    # => To mongo
-
-  return s3_upload.signed_url
+  return uploader.s3_upload.signed_url
 end
 
 get '/mimics/new' do
