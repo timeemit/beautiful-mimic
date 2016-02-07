@@ -2,7 +2,7 @@ require_relative '../spec_base'
 
 describe Mimic do
   it 'requires a user hash' do
-    mimic = Mimic.new
+    mimic = Mimic.new(content_upload_id: 'a', style_upload_id: 'b')
     expect(mimic.valid?).to be false
     mimic.user_hash = 'aaaa'
     expect(mimic.valid?).to be true
