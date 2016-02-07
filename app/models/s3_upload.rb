@@ -12,6 +12,14 @@ class S3Upload < Model
     super()
   end
 
+  def download(path, style='thumb')
+    resp = s3.get_object(
+      response_target: path,
+      bucket: bucket,
+      key: file_key(style)
+    )
+  end
+
   def signed_url(style='thumb')
     signer = Aws::S3::Presigner.new
 
