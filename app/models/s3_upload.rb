@@ -2,17 +2,24 @@ require 'mini_magick'
 require_relative '../lib/model'
 
 class S3Upload < Model
+  attr_reader :file
   attr_reader :bucket
-  attr_accessor :file
-  attr_accessor :filename
-  attr_accessor :user_hash
+  attr_reader :filename
+  attr_reader :user_hash
 
-  def initialize(bucket)
-    @bucket = bucket
+  def initialize(*opts)
+    opts = opts[0] ? opts[0] : {}
+    @file = opts[:file]
+    @bucket = opts[:bucket]
+    @filename = opts[:filename]
+    @user_hash = opts[:user_hash]
     super()
+    self
   end
 
   def download(path, style='thumb')
+    return false unless valid?
+
     resp = s3.get_object(
       response_target: path,
       bucket: bucket,
@@ -21,6 +28,8 @@ class S3Upload < Model
   end
 
   def signed_url(style='thumb')
+    return false unless valid?
+
     signer = Aws::S3::Presigner.new
 
     begin
@@ -80,7 +89,7 @@ class S3Upload < Model
 
   def validate_file_size!
     unless file && file.size < 2 ** 22 # ~ 4 megabytes
-      add_error :file,  'File size must be less than 4MB'
+      add_error :file, 'File size must be less than 4MB'
     end
   end
 
