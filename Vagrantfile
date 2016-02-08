@@ -49,8 +49,8 @@ Vagrant.configure(2) do |config|
     compute.vm.provision 'chef_zero' do |chef|
       # chef.add_recipe 'web'
       # chef.add_recipe 'app'
-      chef.add_recipe 'db'
-      # chef.add_recipe 'redis'
+      # chef.add_recipe 'db'
+      chef.add_recipe 'redis'
     end
   end
 
