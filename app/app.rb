@@ -23,12 +23,36 @@ Mongoid.load!(environment_path, 'mongo')
 AwsAuthenticator.authenticate!(settings.env)
 PAGE_COUNT = 15
 
-# User Management
-
 before do
   # Set a cookie with key `user_hash` to be a random hash
   session['user_hash'] ||= SecureRandom.hex(30)
 end
+
+# Views
+
+get '/' do
+  'First Time: Form for new mimic'
+  'Return User: Index of mimics'
+  user_hash = session['user_hash']
+
+  redirect to('/mimics/new') unless Mimic.where(user_hash: user_hash).exists?
+
+  erb :index
+end
+
+get '/mimics/new' do
+  'Form for new new mimic'
+
+  erb :new
+end
+
+get '/style' do
+  'Sass stylesheet'
+
+  scss :stylesheet, :style => :expanded
+end
+
+# User Management
 
 post '/users' do
   'Create User'
@@ -58,12 +82,6 @@ get '/confirmations' do
 end
 
 # Buesiness Logic
-
-get '/' do
-  'First Time: Form for new mimic'
-  'Return User: Index of mimics'
-  session['user_hash']
-end
 
 get '/uploads' do
   'COMPLETE,TESTED'
@@ -158,10 +176,6 @@ post '/uploads' do
   uploader.save!
 
   return uploader.s3_upload.signed_url
-end
-
-get '/mimics/new' do
-  'Form for new new mimic'
 end
 
 post '/mimics' do
