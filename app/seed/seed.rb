@@ -29,10 +29,9 @@ filepaths.each do |filepath|
     filename,
     File.new(filepath)
   )
-  begin
-    uploader.save!
-  rescue Mongoid::Errors::Validations => e
-    p "Uploading: #{filename}: Validation Error"
-    next
+  unless uploader.save!
+    p uploader.s3_upload.errors
+    p uploader.upload.errors
+    raise "Uploading: #{filename}: Invalid!"
   end
 end
