@@ -122,8 +122,7 @@ get '/uploads/:file_hash' do
   upload = S3Upload.new(
     bucket: bucket,
     user_hash: upload.user_hash, # May be nil in the case of system images
-    file_hash: file_hash,
-    filename: params['filename']
+    file_hash: file_hash
   )
 
   redirect to(upload.signed_url)
@@ -146,8 +145,7 @@ get '/uploads/:file_hash/original' do
   upload = S3Upload.new(
     bucket: bucket,
     user_hash: upload.user_hash, # May be nil in the case of system images
-    file_hash: file_hash,
-    filename: params['filename']
+    file_hash: file_hash
   )
 
   redirect to(upload.signed_url 'original')
