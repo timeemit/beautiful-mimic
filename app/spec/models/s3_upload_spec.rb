@@ -8,7 +8,7 @@ describe S3Upload do
     @upload ||= S3Upload.new(
       file: opts[:file] || file,
       bucket: opts[:bucket] || SpecBase.vars['S3']['bucket'],
-      filename: opts[:filename] || 'marilyn-monroe.jpg',
+      file_hash: opts[:file_hash] || 'aaaaaaaaaa1111111111',
       user_hash: opts[:user_hash] || 'aaaaaaaaaaaa'
     )
   end
@@ -41,25 +41,17 @@ describe S3Upload do
     expect( upload.errors[:user_hash] ).to be_empty
   end
 
-  it 'needs to have an appropriate file extension' do
-    upload(filename: 'marilyn-monroe.exe') # Oh noes!
-    expect( upload.valid? ).to be false
-    expect( upload.errors[:file] ).to be_empty
-    expect( upload.errors[:filename] ).to_not be_empty
-    expect( upload.errors[:user_hash] ).to be_empty
-  end
-
   it 'it needs to have a user hash' do
     upload(user_hash: '')
     expect( upload.valid? ).to be false
     expect( upload.errors[:file] ).to be_empty
-    expect( upload.errors[:filename] ).to be_empty
+    expect( upload.errors[:file_hash] ).to be_empty
     expect( upload.errors[:user_hash] ).to_not be_empty
   end
 
   it 'can persist and read' do
     expect( upload.save! ).to be true
-    tempfile = Tempfile.new(upload.filename)
+    tempfile = Tempfile.new('test')
     upload.download(tempfile.path, 'original')
     upload.file.rewind
     expect( tempfile.read ).to eql upload.file.read

@@ -4,14 +4,14 @@ require_relative '../lib/model'
 class S3Upload < Model
   attr_reader :file
   attr_reader :bucket
-  attr_reader :filename
+  attr_reader :file_hash
   attr_reader :user_hash
 
   def initialize(*opts)
     opts = opts[0] ? opts[0] : {}
     @bucket = opts[:bucket]
-    @filename = opts[:filename]
     @user_hash = opts[:user_hash]
+    @file_hash = opts[:file_hash]
     @file = opts[:file] # Not required
     super()
     self
@@ -68,7 +68,7 @@ class S3Upload < Model
   private
 
   def file_key(style)
-    file_key = "#{@user_hash}/#{style}s/#{@filename}"
+    file_key = "#{@user_hash}/#{style}s/#{@file_hash}"
   end
 
   def thumbfile_path
@@ -81,8 +81,8 @@ class S3Upload < Model
 
   def validate!
     validate_file_size!
-    validate_file_extension!
     validate_user_hash_presence!
+    validate_file_hash_presence!
   end
 
   def validate_file_size!
@@ -91,9 +91,9 @@ class S3Upload < Model
     end
   end
 
-  def validate_file_extension!
-    unless filename and %w(.jpg .jpeg .png .tiff).include? File.extname(filename)
-      add_error :filename, 'File must be an image'
+  def validate_file_hash_presence!
+    unless file_hash.is_a? String and not file_hash.empty?
+      add_error :file_hash, 'File hash must be present'
     end
   end
 
