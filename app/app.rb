@@ -97,8 +97,8 @@ get '/uploads' do
   end
 
   return Upload.
-    where(user_hash: user_hash).
-    only(:filename, :created_at).
+    in(user_hash: [user_hash, nil]).
+    only(:filename, :file_hash, :created_at).
     sort(created_at: -1).
     limit(PAGE_COUNT).
     skip(PAGE_COUNT * (page - 1)).
