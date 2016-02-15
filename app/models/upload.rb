@@ -1,4 +1,9 @@
 class Upload
+  # Upload Schema:
+  # `user_hash`: string
+  # `file_hash`: string
+  # `filename`: string
+
   include Mongoid::Document
   include Mongoid::Timestamps::Created
 

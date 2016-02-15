@@ -1,4 +1,11 @@
 class Mimic
+  # Mimic Schema
+  # `user_hash`: string
+  # `computed_at`: timestamp ( not always present )
+  # `unlocked_at`: timestamp ( not always present )
+  # `content_id`: string ( reference to the uploads collection )
+  # `style_id`: string ( reference to the uploads collection )
+
   include Mongoid::Document
   include Mongoid::Timestamps::Created
 

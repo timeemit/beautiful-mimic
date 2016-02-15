@@ -161,12 +161,6 @@ post '/uploads' do
   # Uploads file to S3
   # Saves handle to MongoDB record
   # Associate record with `user_hash`
-  #
-  # Upload Schema:
-  # `user_hash`: string
-  # `file_hash`: string
-  # `filename`: string
-  #
 
   bucket = settings.env['S3']['bucket']
   user_hash = session['user_hash']
@@ -204,14 +198,6 @@ post '/mimics' do
 
   # Persist a mimic record
   # Queue a Sidekiq task
-  #
-  # Mimic Schema
-  # `created_at`: timestamp
-  # `user_hash`: string
-  # `content_id`: string ( reference to the uploads collection )
-  # `style_id`: string ( reference to the uploads collection )
-  # `computed_at`: timestamp ( not always present )
-  # `unlocked_at`: timestamp ( not always present )
 
   user_hash = session['user_hash']
 
@@ -252,6 +238,7 @@ post '/mimics' do
   mimic.save!    # => To mongo
 
   # Queue Job
+
   MimicMaker.perform_async(
     bucket = settings.env['S3']['bucket'],
     mimic.id
