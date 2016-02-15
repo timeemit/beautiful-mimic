@@ -29,7 +29,7 @@ class Uploader
     @s3_upload = S3Upload.new(
       bucket: bucket,
       user_hash: user_hash,
-      filename: filename,
+      file_hash: file_hash,
       file: file
     )
   end
