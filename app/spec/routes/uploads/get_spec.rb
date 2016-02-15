@@ -20,21 +20,23 @@ describe 'GET /uploads' do
   end
 
   it 'Can return the uploaded file thumb' do
-    get '/uploads/marilyn-monroe.jpg'
+    file_hash = Upload.last.file_hash
+    get "/uploads/#{file_hash}"
     expect(last_response.status).to eq 302
     expect(last_response.body).to eq ''
     expect(last_response.headers['Location']).to start_with 'https://s3-us-west-1.amazonaws.com/beautiful.mimic.tests'
-    expect(last_response.headers['Location']).to include 'thumbs/marilyn-monroe.jpg'
-    expect(last_response.headers['Location']).to_not include 'thumbs/marilyn-monroe.jpg/original'
+    expect(last_response.headers['Location']).to include "thumbs/#{file_hash}"
+    expect(last_response.headers['Location']).to_not include "thumbs/#{file_hash}/original"
   end
 
-  it 'Can return the original uploaded file' do
-    get '/uploads/marilyn-monroe.jpg/original'
+  it 'Can return the originally uploaded file' do
+    file_hash = Upload.last.file_hash
+    get "/uploads/#{file_hash}/original"
     expect(last_response.status).to eq 302
     expect(last_response.body).to eq ''
     expect(last_response.headers['Location']).to start_with 'https://s3-us-west-1.amazonaws.com/beautiful.mimic.tests'
-    expect(last_response.headers['Location']).to_not include 'thumbs/marilyn-monroe.jpg'
-    expect(last_response.headers['Location']).to include 'originals/marilyn-monroe.jpg'
+    expect(last_response.headers['Location']).to_not include "thumbs/#{file_hash}"
+    expect(last_response.headers['Location']).to include "originals/#{file_hash}"
   end
 
   it 'Can retrive all of the previous submissions' do
