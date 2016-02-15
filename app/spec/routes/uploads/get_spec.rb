@@ -1,6 +1,20 @@
 require_relative '../spec_helper'
 
 describe 'GET /uploads' do
+  let(:user_hash) { 'neo' }
+
+  def fixture_file(filename='marilyn-monroe.jpg' , file_type='image/jpeg' )
+    file_path = File.expand_path("../../../fixtures/#{filename}", __FILE__)
+    Rack::Test::UploadedFile.new( file_path, file_type, true )
+  end
+
+  def upload_image(filename='marilyn-monroe.jpg')
+    # Upload a photo
+    post '/uploads', { file: fixture_file(filename)}
+    expect(last_response.status).to eq 200
+    expect(last_response.body).to_not eq ''
+  end
+
   before do
     upload_image
   end

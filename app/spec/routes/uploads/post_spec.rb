@@ -1,6 +1,19 @@
 require_relative '../spec_helper'
 
 describe 'POST /uploads' do
+
+  def fixture_file(filename='marilyn-monroe.jpg' , file_type='image/jpeg' )
+    file_path = File.expand_path("../../../fixtures/#{filename}", __FILE__)
+    Rack::Test::UploadedFile.new( file_path, file_type, true )
+  end
+
+  def upload_image(filename='marilyn-monroe.jpg')
+    # Upload a photo
+    post '/uploads', file: fixture_file(filename)
+    expect(last_response.status).to eq 200
+    expect(last_response.body).to_not eq ''
+  end
+
   it 'Should 400 on an empty request' do
     post '/uploads'
     expect(last_response.status).to eq 400
