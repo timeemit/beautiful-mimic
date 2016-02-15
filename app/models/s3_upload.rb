@@ -81,7 +81,6 @@ class S3Upload < Model
 
   def validate!
     validate_file_size!
-    validate_user_hash_presence!
     validate_file_hash_presence!
   end
 
@@ -94,12 +93,6 @@ class S3Upload < Model
   def validate_file_hash_presence!
     unless file_hash.is_a? String and not file_hash.empty?
       add_error :file_hash, 'File hash must be present'
-    end
-  end
-
-  def validate_user_hash_presence!
-    unless user_hash.is_a? String and not user_hash.empty?
-      add_error :user_hash, 'Session user hash must be present'
     end
   end
 end

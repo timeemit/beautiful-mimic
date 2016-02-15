@@ -41,14 +41,6 @@ describe S3Upload do
     expect( upload.errors[:user_hash] ).to be_empty
   end
 
-  it 'it needs to have a user hash' do
-    upload(user_hash: '')
-    expect( upload.valid? ).to be false
-    expect( upload.errors[:file] ).to be_empty
-    expect( upload.errors[:file_hash] ).to be_empty
-    expect( upload.errors[:user_hash] ).to_not be_empty
-  end
-
   it 'can persist and read' do
     expect( upload.save! ).to be true
     tempfile = Tempfile.new('test')
