@@ -33,8 +33,8 @@ describe 'POST /mimics' do
   end
 
   it 'Succeeds for valid files' do
-    Upload.create(user_hash: 'neo', file_hash: 'red', filename: 'redpill')
-    Upload.create(user_hash: 'neo', file_hash: 'blue', filename: 'bluepill')
+    Upload.create!(user_hash: 'neo', file_hash: 'red', filename: 'redpill.jpg')
+    Upload.create!(user_hash: 'neo', file_hash: 'blue', filename: 'bluepill.jpg')
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
@@ -44,8 +44,8 @@ describe 'POST /mimics' do
   end
 
   it 'Can associate style with a system upload' do
-    Upload.create(file_hash: 'red', filename: 'redpill', user_hash: 'neo')
-    Upload.create(file_hash: 'blue', filename: 'bluepill')
+    Upload.create(file_hash: 'red', filename: 'redpill.jpg', user_hash: 'neo')
+    Upload.create(file_hash: 'blue', filename: 'bluepill.jpg')
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
@@ -55,8 +55,8 @@ describe 'POST /mimics' do
   end
 
   it 'Cannot associate content with a system upload' do
-    Upload.create(file_hash: 'red', filename: 'redpill')
-    Upload.create(file_hash: 'blue', filename: 'bluepill', user_hash: 'neo')
+    Upload.create(file_hash: 'red', filename: 'redpill.jpg')
+    Upload.create(file_hash: 'blue', filename: 'bluepill.jpg', user_hash: 'neo')
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 400
