@@ -1,0 +1,29 @@
+body { 
+  font-family: Arial;
+  width: 800px;
+  margin: 0 auto;
+  background-color: #B3E5FC;
+}
+
+.center {
+  margin: 0 auto;
+  display: block;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.header img.logo {
+  float: right;
+  margin-top: 15px;
+}
+
+img.logo {
+  display: block;
+}
+
+.logo-text {
+  font-weight: lighter;
+}
+
