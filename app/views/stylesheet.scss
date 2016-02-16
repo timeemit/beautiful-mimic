@@ -2,6 +2,7 @@ $blue: #B3E5FC;
 $yellow: #FFF176;
 $green: #009688;
 $grey: #D6D6D6;
+$magenta: #EA80FC;
 
 body { 
   font-family: Arial;
@@ -39,4 +40,16 @@ img.logo {
 .hover-yellow-border:hover {
   border-color: $yellow;
   cursor: pointer;
+}
+
+.drawer .img-ctrl.active img {
+  border: 4px solid $yellow;
+}
+
+.drawer .img-ctrl:not(.active) img {
+  border: 4px solid $grey;  /* Grey border */
+}
+
+.drawer .img-ctrl img:hover {
+  border: 4px solid $magenta;
 }
