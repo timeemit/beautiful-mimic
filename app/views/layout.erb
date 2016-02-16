@@ -140,7 +140,7 @@
               <div className='green-background pointer-up-right'></div>
             </div>
             <div className='drawer green-background center'>
-              <UploadedImages chosen={this.props.chosen} uploads={this.props.uploads} />
+              <UploadedImages choice_handler={this.props.choice_handler} chosen={this.props.chosen} uploads={this.props.uploads} />
               <Uploader />
             </div>
           </div>
@@ -151,23 +151,33 @@
 
     var UploadedImages = React.createClass({
       render: function(){
-        var chosen_file_hash = this.props.chosen.file_hash;
+        var chosen = this.props.chosen;
+        var choice_handler = this.props.choice_handler;
         var imgs = this.props.uploads.map(function(upload) {
-          var className = 'center img-ctrl';
-          if ( chosen_file_hash === upload.file_hash ) {
-            className += ' active';
-          }
-          return (
-            <div className='pure-u-1-2'>
-              <div className={ className } >
-                <img width='80%' className='pure-img center grey-border' src={ '/uploads/' + upload.file_hash }></img> 
-              </div>
-            </div>
-          );
+          return ( <UploadedImage choice_handler={choice_handler} upload={upload} chosen={chosen} /> )
         });
         return (
           <div className='pure-g'>
           { imgs }
+          </div>
+        );
+      }
+    });
+
+    var UploadedImage = React.createClass({
+      choose_image: function() {
+        this.props.choice_handler(this.props.upload);
+      },
+      render: function(){
+        var className = 'center img-ctrl';
+        if ( this.props.chosen.file_hash === this.props.upload.file_hash ) {
+          className += ' active';
+        }
+        return (
+          <div className='pure-u-1-2'>
+            <div className={ className } >
+              <img width='80%' onClick={ this.choose_image } className='pure-img center grey-border' src={ '/uploads/' + this.props.upload.file_hash }></img>
+            </div>
           </div>
         );
       }
@@ -193,8 +203,8 @@
           uploads: [],
           content_choice: {},
           style_choice: {},
-          choose_content: false,
-          choose_style: false
+          reveal_content: false,
+          reveal_style: false
         };
       },
 
@@ -205,8 +215,8 @@
             uploads: result,
             content_choice: result[0],
             style_choice: result[1],
-            choose_content: false,
-            choose_style: false
+            reveal_content: false,
+            reveal_style: false
           });
         }.bind(this));
       },
@@ -215,17 +225,25 @@
         this.serverRequest.abort();
       },
 
+      choose_content: function(choice) {
+        this.setState({ content_choice: choice });
+      },
+
+      choose_style: function(choice) {
+        this.setState({ style_choice: choice });
+      },
+
       toggle_content: function() {
         this.setState({
-          choose_content: !this.state.choose_content,
-          choose_style: false
+          reveal_content: !this.state.reveal_content,
+          reveal_style: false
         });
       },
 
       toggle_style: function() {
         this.setState({
-          choose_content: false,
-          choose_style: !this.state.choose_style
+          reveal_content: false,
+          reveal_style: !this.state.reveal_style
         });
       },
 
@@ -235,7 +253,7 @@
             <div className='pure-u-1 pure-u-lg-1-3'>
               <h1 className='center-text'>Photo</h1>
               <ChosenImage click_handler={this.toggle_content} file_hash={this.state.content_choice.file_hash} />
-              <ImageDrawer reveal={this.state.choose_content} uploads={this.state.uploads} chosen={this.state.content_choice} />
+              <ImageDrawer choice_handler={this.choose_content} reveal={this.state.reveal_content} uploads={this.state.uploads} chosen={this.state.content_choice} />
             </div>
             <div className='pure-u-1 pure-u-lg-1-3'>
               <h1 className='center-text'>+</h1>
@@ -243,7 +261,7 @@
             <div className='pure-u-1 pure-u-lg-1-3'>
               <h1 className='center-text'>Style</h1>
               <ChosenImage click_handler={this.toggle_style} file_hash={this.state.style_choice.file_hash} />
-              <ImageDrawer reveal={this.state.choose_style} uploads={this.state.uploads} chosen={this.state.style_choice} />
+              <ImageDrawer choice_handler={this.choose_style} reveal={this.state.reveal_style} uploads={this.state.uploads} chosen={this.state.style_choice} />
             </div>
           </div>
         );
