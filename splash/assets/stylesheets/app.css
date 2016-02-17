@@ -91,6 +91,7 @@ img.logo {
 
 .drawer .img-ctrl img:hover {
   border: 3px solid #EA80FC;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 64em) {
@@ -102,6 +103,7 @@ img.logo {
   /* Disable the border specified for smaller screens */
   .drawer .img-ctrl img:hover {
     border: none;
+    cursor: pointer;
   }
 
   .drawer .img-ctrl.active img {

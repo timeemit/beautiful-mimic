@@ -104,15 +104,6 @@ var NewMimic = React.createClass({
       ),
       React.createElement(
         'div',
-        { className: 'pure-u-1 pure-u-lg-1-5' },
-        React.createElement(
-          'h1',
-          { className: 'center-text' },
-          '+'
-        )
-      ),
-      React.createElement(
-        'div',
         { className: 'pure-u-1 pure-u-lg-2-5' },
         React.createElement(
           'h1',
@@ -124,6 +115,23 @@ var NewMimic = React.createClass({
           ReactCSSTransitionGroup,
           { transitionName: 'image-drawer', transitionEnterTimeout: 500, transitionLeaveTimeout: 300 },
           React.createElement(ImageDrawer, { key: this.state.reveal_style, choice_handler: this.choose_style, reveal: this.state.reveal_style, uploads: this.state.uploads, chosen: this.state.style_choice })
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'pure-u-1 pure-u-lg-1-5' },
+        React.createElement(
+          'div',
+          { className: 'center-text' },
+          React.createElement(
+            'h2',
+            null,
+            React.createElement(
+              'button',
+              { className: 'pure-button pure-button-primary' },
+              'Mimic'
+            )
+          )
         )
       )
     );

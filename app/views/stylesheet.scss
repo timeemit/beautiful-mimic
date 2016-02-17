@@ -20,6 +20,14 @@ body {
   text-align: center;
 }
 
+.static {
+  position: fixed;
+}
+
+.float-right {
+  float: right;
+}
+
 .header img.logo {
   float: right;
   margin-top: 15px;
@@ -93,6 +101,7 @@ img.logo {
 
 .drawer .img-ctrl img:hover {
   border: 3px solid $magenta;
+  cursor: pointer;
 }
 
 .image-drawer-enter {
