@@ -89,7 +89,7 @@ var NewMimic = React.createClass({
       { className: 'pure-g' },
       React.createElement(
         'div',
-        { className: 'pure-u-1 pure-u-lg-1-3' },
+        { className: 'pure-u-1 pure-u-lg-2-5' },
         React.createElement(
           'h1',
           { className: 'center-text' },
@@ -104,7 +104,7 @@ var NewMimic = React.createClass({
       ),
       React.createElement(
         'div',
-        { className: 'pure-u-1 pure-u-lg-1-3' },
+        { className: 'pure-u-1 pure-u-lg-1-5' },
         React.createElement(
           'h1',
           { className: 'center-text' },
@@ -113,7 +113,7 @@ var NewMimic = React.createClass({
       ),
       React.createElement(
         'div',
-        { className: 'pure-u-1 pure-u-lg-1-3' },
+        { className: 'pure-u-1 pure-u-lg-2-5' },
         React.createElement(
           'h1',
           { className: 'center-text' },

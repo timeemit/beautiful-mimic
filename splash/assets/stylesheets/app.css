@@ -78,18 +78,19 @@ img.logo {
 .drawer {
   position: relative;
   padding: 10px;
+  border: 3px solid #D6D6D6;
 }
 
 .drawer .img-ctrl.active img {
-  border: 4px solid #FFF176;
+  border: 3px solid #FFF176;
 }
 
 .drawer .img-ctrl:not(.active) img {
-  border: 4px solid #D6D6D6;  /* Grey border */
+  border: 3px solid #D6D6D6;  /* Grey border */
 }
 
 .drawer .img-ctrl img:hover {
-  border: 4px solid #EA80FC;
+  border: 3px solid #EA80FC;
 }
 
 @media screen and (min-width: 64em) {
@@ -113,15 +114,15 @@ img.logo {
   /* End disablers */
 
   .drawer .img-ctrl.active {
-    border: 4px solid #FFF176;
+    border: 3px solid #FFF176;
   }
 
   .drawer .img-ctrl:not(.active) {
-    border: 4px solid #D6D6D6; /* Grey border */
+    border: 3px solid #D6D6D6; /* Grey border */
   }
 
   .drawer .img-ctrl:hover {
-    border: 4px solid #EA80FC;
+    border: 3px solid #EA80FC;
   }
 }
 

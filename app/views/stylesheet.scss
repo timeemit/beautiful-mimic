@@ -80,6 +80,19 @@ img.logo {
 .drawer {
   position: relative;
   padding: 10px;
+  border: 6px solid $grey;
+}
+
+.drawer .img-ctrl.active img {
+  border: 3px solid $yellow;
+}
+
+.drawer .img-ctrl:not(.active) img {
+  border: 3px solid $grey;  /* Grey border */
+}
+
+.drawer .img-ctrl img:hover {
+  border: 3px solid $magenta;
 }
 
 .image-drawer-enter {
@@ -98,16 +111,4 @@ img.logo {
 .image-drawer-leave.image-drawer-leave-active {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
-}
-
-.drawer .img-ctrl.active img {
-  border: 4px solid $yellow;
-}
-
-.drawer .img-ctrl:not(.active) img {
-  border: 4px solid $grey;  /* Grey border */
-}
-
-.drawer .img-ctrl img:hover {
-  border: 4px solid $magenta;
 }
