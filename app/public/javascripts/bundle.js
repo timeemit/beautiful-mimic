@@ -13,23 +13,19 @@ var ImageDrawer = React.createClass({
       return null;
     }
     return React.createElement(
-      ReactCSSTransitionGroup,
-      { transitionName: 'example', transitionEnterTimeout: 500, transitionLeaveTimeout: 300 },
+      'div',
+      null,
       React.createElement(
         'div',
-        { className: 'image-drawer js-image-drawer' },
-        React.createElement(
-          'div',
-          { className: 'center pointer-up' },
-          React.createElement('div', { className: 'green-background pointer-up-left' }),
-          React.createElement('div', { className: 'green-background pointer-up-right' })
-        ),
-        React.createElement(
-          'div',
-          { className: 'drawer green-background center' },
-          React.createElement(UploadedImages, { choice_handler: this.props.choice_handler, chosen: this.props.chosen, uploads: this.props.uploads }),
-          React.createElement(Uploader, null)
-        )
+        { className: 'center pointer-up' },
+        React.createElement('div', { className: 'green-background pointer-up-left' }),
+        React.createElement('div', { className: 'green-background pointer-up-right' })
+      ),
+      React.createElement(
+        'div',
+        { className: 'drawer green-background center' },
+        React.createElement(UploadedImages, { choice_handler: this.props.choice_handler, chosen: this.props.chosen, uploads: this.props.uploads }),
+        React.createElement(Uploader, null)
       )
     );
   }
@@ -100,7 +96,11 @@ var NewMimic = React.createClass({
           'Photo'
         ),
         React.createElement(ChosenImage, { click_handler: this.toggle_content, file_hash: this.state.content_choice.file_hash }),
-        React.createElement(ImageDrawer, { choice_handler: this.choose_content, reveal: this.state.reveal_content, uploads: this.state.uploads, chosen: this.state.content_choice })
+        React.createElement(
+          ReactCSSTransitionGroup,
+          { transitionName: 'image-drawer', transitionEnterTimeout: 500, transitionLeaveTimeout: 300 },
+          React.createElement(ImageDrawer, { key: this.state.reveal_content, choice_handler: this.choose_content, reveal: this.state.reveal_content, uploads: this.state.uploads, chosen: this.state.content_choice })
+        )
       ),
       React.createElement(
         'div',
@@ -120,7 +120,11 @@ var NewMimic = React.createClass({
           'Style'
         ),
         React.createElement(ChosenImage, { click_handler: this.toggle_style, file_hash: this.state.style_choice.file_hash }),
-        React.createElement(ImageDrawer, { choice_handler: this.choose_style, reveal: this.state.reveal_style, uploads: this.state.uploads, chosen: this.state.style_choice })
+        React.createElement(
+          ReactCSSTransitionGroup,
+          { transitionName: 'image-drawer', transitionEnterTimeout: 500, transitionLeaveTimeout: 300 },
+          React.createElement(ImageDrawer, { key: this.state.reveal_style, choice_handler: this.choose_style, reveal: this.state.reveal_style, uploads: this.state.uploads, chosen: this.state.style_choice })
+        )
       )
     );
   }
@@ -154,7 +158,7 @@ var UploadedImages = React.createClass({
     var chosen = this.props.chosen;
     var choice_handler = this.props.choice_handler;
     var imgs = this.props.uploads.map(function (upload) {
-      return React.createElement(UploadedImage, { choice_handler: choice_handler, upload: upload, chosen: chosen });
+      return React.createElement(UploadedImage, { key: upload.file_hash, choice_handler: choice_handler, upload: upload, chosen: chosen });
     });
     return React.createElement(
       'div',

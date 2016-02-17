@@ -54,7 +54,9 @@ var NewMimic = React.createClass({
         <div className='pure-u-1 pure-u-lg-1-3'>
           <h1 className='center-text'>Photo</h1>
           <ChosenImage click_handler={this.toggle_content} file_hash={this.state.content_choice.file_hash} />
-          <ImageDrawer choice_handler={this.choose_content} reveal={this.state.reveal_content} uploads={this.state.uploads} chosen={this.state.content_choice} />
+          <ReactCSSTransitionGroup transitionName='image-drawer' transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+            <ImageDrawer key={this.state.reveal_content} choice_handler={this.choose_content} reveal={this.state.reveal_content} uploads={this.state.uploads} chosen={this.state.content_choice} />
+          </ReactCSSTransitionGroup>
         </div>
         <div className='pure-u-1 pure-u-lg-1-3'>
           <h1 className='center-text'>+</h1>
@@ -62,7 +64,9 @@ var NewMimic = React.createClass({
         <div className='pure-u-1 pure-u-lg-1-3'>
           <h1 className='center-text'>Style</h1>
           <ChosenImage click_handler={this.toggle_style} file_hash={this.state.style_choice.file_hash} />
-          <ImageDrawer choice_handler={this.choose_style} reveal={this.state.reveal_style} uploads={this.state.uploads} chosen={this.state.style_choice} />
+          <ReactCSSTransitionGroup transitionName='image-drawer' transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+            <ImageDrawer key={this.state.reveal_style}  choice_handler={this.choose_style} reveal={this.state.reveal_style} uploads={this.state.uploads} chosen={this.state.style_choice} />
+          </ReactCSSTransitionGroup>
         </div>
       </div>
     );

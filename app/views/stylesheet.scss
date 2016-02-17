@@ -82,6 +82,24 @@ img.logo {
   padding: 10px;
 }
 
+.image-drawer-enter {
+  opacity: 0.01;
+}
+
+.image-drawer-enter.image-drawer-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.image-drawer-leave {
+  opacity: 1;
+}
+
+.image-drawer-leave.image-drawer-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
 .drawer .img-ctrl.active img {
   border: 4px solid $yellow;
 }
