@@ -175,11 +175,11 @@ var Uploader = React.createClass({
         { className: 'pure-u-1 center-text' },
         React.createElement(
           'a',
-          { href: 'http://app.beautifulmimic.com', className: 'pure-button pure-button-active' },
+          { href: '#', className: 'pure-button pure-button-active' },
           React.createElement(
             'i',
-            { 'class': 'fa fa-upload' },
-            ' Upload your own!'
+            { className: 'fa fa-upload' },
+            ' Upload'
           )
         )
       )

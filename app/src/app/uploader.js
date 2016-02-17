@@ -3,8 +3,8 @@ var Uploader = React.createClass({
     return (
       <div className='pure-g'>
         <h3 className='pure-u-1 center-text'>
-          <a href='http://app.beautifulmimic.com' className='pure-button pure-button-active'>
-            <i class='fa fa-upload'> Upload your own!</i>
+          <a href='#' className='pure-button pure-button-active'>
+            <i className='fa fa-upload'> Upload</i>
           </a>
         </h3>
       </div>
