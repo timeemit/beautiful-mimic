@@ -1,17 +1,16 @@
 var ImageDrawer = React.createClass({
   render: function(){
+    var pointer = null;
+
     if ( !this.props.reveal ) {
       return null;
     }
     return (
       <div>
-        <div className='center pointer-up'>
-          <div className='green-background pointer-up-left'></div>
-          <div className='green-background pointer-up-right'></div>
-        </div>
+        <ImageDrawerTip left={this.props.left} />
         <div className='drawer green-background center'>
-          <UploadedImages choice_handler={this.props.choice_handler} chosen={this.props.chosen} uploads={this.props.uploads} />
           <Uploader />
+          <UploadedImages choice_handler={this.props.choice_handler} chosen={this.props.chosen} uploads={this.props.uploads} />
         </div>
       </div>
     );

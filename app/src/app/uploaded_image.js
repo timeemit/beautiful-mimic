@@ -8,9 +8,9 @@ var UploadedImage = React.createClass({
       className += ' active';
     }
     return (
-      <div className='pure-u-1-2'>
+      <div className='pure-u-1-6'>
         <div className={ className } >
-          <img alt={ this.props.upload.filename } width='80%' onClick={ this.choose_image } className='pure-img center grey-border' src={ '/uploads/' + this.props.upload.file_hash }></img>
+          <img alt={ this.props.upload.filename } onClick={ this.choose_image } className='pure-img center grey-border' src={ '/uploads/' + this.props.upload.file_hash }></img>
         </div>
       </div>
     );

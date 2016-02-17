@@ -9,27 +9,71 @@ var ImageDrawer = React.createClass({
   displayName: 'ImageDrawer',
 
   render: function () {
+    var pointer = null;
+
     if (!this.props.reveal) {
       return null;
     }
     return React.createElement(
       'div',
       null,
-      React.createElement(
-        'div',
-        { className: 'center pointer-up' },
-        React.createElement('div', { className: 'green-background pointer-up-left' }),
-        React.createElement('div', { className: 'green-background pointer-up-right' })
-      ),
+      React.createElement(ImageDrawerTip, { left: this.props.left }),
       React.createElement(
         'div',
         { className: 'drawer green-background center' },
-        React.createElement(UploadedImages, { choice_handler: this.props.choice_handler, chosen: this.props.chosen, uploads: this.props.uploads }),
-        React.createElement(Uploader, null)
+        React.createElement(Uploader, null),
+        React.createElement(UploadedImages, { choice_handler: this.props.choice_handler, chosen: this.props.chosen, uploads: this.props.uploads })
       )
     );
   }
 
+});
+var ImageDrawerTip = React.createClass({
+  displayName: 'ImageDrawerTip',
+
+  render: function () {
+    tip = React.createElement(
+      'div',
+      { className: 'center pointer-up' },
+      React.createElement('div', { className: 'green-background pointer-up-left' }),
+      React.createElement('div', { className: 'green-background pointer-up-right' })
+    );
+    if (this.props.left) {
+      return React.createElement(
+        'div',
+        { className: 'pure-g' },
+        React.createElement(
+          'div',
+          { className: 'pure-u-1 pure-u-lg-1-2' },
+          ' ',
+          tip,
+          ' '
+        ),
+        React.createElement(
+          'div',
+          { className: 'pure-u-1 pure-u-lg-1-2' },
+          ' '
+        )
+      );
+    } else {
+      return React.createElement(
+        'div',
+        { className: 'pure-g' },
+        React.createElement(
+          'div',
+          { className: 'pure-u-1 pure-u-lg-1-2' },
+          ' '
+        ),
+        React.createElement(
+          'div',
+          { className: 'pure-u-1 pure-u-lg-1-2' },
+          ' ',
+          tip,
+          ' '
+        )
+      );
+    }
+  }
 });
 var NewMimic = React.createClass({
   displayName: 'NewMimic',
@@ -84,42 +128,54 @@ var NewMimic = React.createClass({
   },
 
   render: function () {
+    var reveal_drawer = this.state.reveal_content || this.state.reveal_style;
+    var chosen = null;
+    var choice_handler = null;
+
+    if (reveal_drawer) {
+      if (this.state.reveal_content) {
+        chosen = this.state.content_choice;
+        choice_handler = this.choose_content;
+      } else {
+        chosen = this.state.style_choice;
+        choice_handler = this.choose_style;
+      }
+    }
     return React.createElement(
       'div',
       { className: 'pure-g' },
       React.createElement(
         'div',
-        { className: 'pure-u-1 pure-u-lg-2-5' },
+        { className: 'pure-u-1-2' },
         React.createElement(
           'h1',
           { className: 'center-text' },
           'Photo'
         ),
-        React.createElement(ChosenImage, { click_handler: this.toggle_content, file_hash: this.state.content_choice.file_hash }),
-        React.createElement(
-          ReactCSSTransitionGroup,
-          { transitionName: 'image-drawer', transitionEnterTimeout: 500, transitionLeaveTimeout: 300 },
-          React.createElement(ImageDrawer, { key: this.state.reveal_content, choice_handler: this.choose_content, reveal: this.state.reveal_content, uploads: this.state.uploads, chosen: this.state.content_choice })
-        )
+        React.createElement(ChosenImage, { click_handler: this.toggle_content, file_hash: this.state.content_choice.file_hash })
       ),
       React.createElement(
         'div',
-        { className: 'pure-u-1 pure-u-lg-2-5' },
+        { className: 'pure-u-1-2' },
         React.createElement(
           'h1',
           { className: 'center-text' },
           'Style'
         ),
-        React.createElement(ChosenImage, { click_handler: this.toggle_style, file_hash: this.state.style_choice.file_hash }),
+        React.createElement(ChosenImage, { click_handler: this.toggle_style, file_hash: this.state.style_choice.file_hash })
+      ),
+      React.createElement(
+        'div',
+        { className: 'pure-u-1' },
         React.createElement(
           ReactCSSTransitionGroup,
           { transitionName: 'image-drawer', transitionEnterTimeout: 500, transitionLeaveTimeout: 300 },
-          React.createElement(ImageDrawer, { key: this.state.reveal_style, choice_handler: this.choose_style, reveal: this.state.reveal_style, uploads: this.state.uploads, chosen: this.state.style_choice })
+          React.createElement(ImageDrawer, { key: reveal_drawer, left: this.state.reveal_content, choice_handler: choice_handler, reveal: reveal_drawer, uploads: this.state.uploads, chosen: chosen })
         )
       ),
       React.createElement(
         'div',
-        { className: 'pure-u-1 pure-u-lg-1-5' },
+        { className: 'pure-u-1' },
         React.createElement(
           'div',
           { className: 'center-text' },
@@ -150,11 +206,11 @@ var UploadedImage = React.createClass({
     }
     return React.createElement(
       'div',
-      { className: 'pure-u-1-2' },
+      { className: 'pure-u-1-6' },
       React.createElement(
         'div',
         { className: className },
-        React.createElement('img', { alt: this.props.upload.filename, width: '80%', onClick: this.choose_image, className: 'pure-img center grey-border', src: '/uploads/' + this.props.upload.file_hash })
+        React.createElement('img', { alt: this.props.upload.filename, onClick: this.choose_image, className: 'pure-img center grey-border', src: '/uploads/' + this.props.upload.file_hash })
       )
     );
   }
@@ -183,7 +239,7 @@ var Uploader = React.createClass({
       'div',
       { className: 'pure-g' },
       React.createElement(
-        'h3',
+        'h2',
         { className: 'pure-u-1 center-text' },
         React.createElement(
           'a',
