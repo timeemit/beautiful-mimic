@@ -48,6 +48,14 @@ var NewMimic = React.createClass({
     });
   },
 
+  add_upload: function(upload) {
+    var uploads = this.state.uploads;
+    uploads.unshift(upload);
+    this.setState({
+      uploads: uploads
+    });
+  },
+
   render: function() {
     var reveal_drawer = this.state.reveal_content || this.state.reveal_style;
     var chosen = null;
@@ -74,14 +82,12 @@ var NewMimic = React.createClass({
         </div>
         <div className='pure-u-1'>
           <ReactCSSTransitionGroup transitionName='image-drawer' transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-            <ImageDrawer key={reveal_drawer} left={this.state.reveal_content} choice_handler={choice_handler} reveal={reveal_drawer} uploads={this.state.uploads} chosen={chosen} />
+            <ImageDrawer key={reveal_drawer} choice_handler={choice_handler} add_upload={this.add_upload} reveal={reveal_drawer} uploads={this.state.uploads} chosen={chosen} left={this.state.reveal_content} />
           </ReactCSSTransitionGroup>
         </div>
-        <div className='pure-u-1'>
-          <div className='center-text'>
-            <h2><button className='pure-button pure-button-primary'>Mimic</button></h2>
-          </div>
-        </div>
+        <button className='pure-button pure-button-primary pure-u-1'>
+          <h2 className='center-text'>Mimic</h2>
+        </button>
       </div>
     );
   },

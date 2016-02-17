@@ -41,6 +41,6 @@ describe 'POST /uploads' do
   it 'Succeeds for valid files' do
     post '/uploads', file: fixture_file
     expect(last_response.status).to eq 200
-    expect(last_response.body).to_not eq ''
+    expect(last_response.body).to eq Upload.last.to_json(only: [:filename, :file_hash, :created_at])
   end
 end

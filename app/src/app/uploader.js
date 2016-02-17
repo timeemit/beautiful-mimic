@@ -1,13 +1,30 @@
 var Uploader = React.createClass({
+  submit: function(e){
+    var form_data = new FormData();
+
+    form_data.append('file', e.target.files[0]);
+
+    $.post({
+      url: '/uploads',
+      type: 'POST',
+      data: form_data, 
+      contentType: false,
+      processData: false,
+      success: function(response){
+        this.props.add_upload(JSON.parse(response));
+      }.bind(this)
+    });
+  },
   render: function(){
     return (
-      <div className='pure-g'>
-        <h2 className='pure-u-1 center-text'>
-          <a href='#' className='pure-button pure-button-active'>
+      <h3>
+        <label className='file-upload center pure-button'>
+          <span>
             <i className='fa fa-upload'> Upload</i>
-          </a>
-        </h2>
-      </div>
+          </span>
+          <input type='file' onChange={this.submit} className='upload'></input>
+        </label>
+      </h3>
     )
   }
 });

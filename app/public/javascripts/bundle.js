@@ -21,7 +21,7 @@ var ImageDrawer = React.createClass({
       React.createElement(
         'div',
         { className: 'drawer green-background center' },
-        React.createElement(Uploader, null),
+        React.createElement(Uploader, { add_upload: this.props.add_upload }),
         React.createElement(UploadedImages, { choice_handler: this.props.choice_handler, chosen: this.props.chosen, uploads: this.props.uploads })
       )
     );
@@ -127,6 +127,14 @@ var NewMimic = React.createClass({
     });
   },
 
+  add_upload: function (upload) {
+    var uploads = this.state.uploads;
+    uploads.unshift(upload);
+    this.setState({
+      uploads: uploads
+    });
+  },
+
   render: function () {
     var reveal_drawer = this.state.reveal_content || this.state.reveal_style;
     var chosen = null;
@@ -170,24 +178,16 @@ var NewMimic = React.createClass({
         React.createElement(
           ReactCSSTransitionGroup,
           { transitionName: 'image-drawer', transitionEnterTimeout: 500, transitionLeaveTimeout: 300 },
-          React.createElement(ImageDrawer, { key: reveal_drawer, left: this.state.reveal_content, choice_handler: choice_handler, reveal: reveal_drawer, uploads: this.state.uploads, chosen: chosen })
+          React.createElement(ImageDrawer, { key: reveal_drawer, choice_handler: choice_handler, add_upload: this.add_upload, reveal: reveal_drawer, uploads: this.state.uploads, chosen: chosen, left: this.state.reveal_content })
         )
       ),
       React.createElement(
-        'div',
-        { className: 'pure-u-1' },
+        'button',
+        { className: 'pure-button pure-button-primary pure-u-1' },
         React.createElement(
-          'div',
+          'h2',
           { className: 'center-text' },
-          React.createElement(
-            'h2',
-            null,
-            React.createElement(
-              'button',
-              { className: 'pure-button pure-button-primary' },
-              'Mimic'
-            )
-          )
+          'Mimic'
         )
       )
     );
@@ -234,22 +234,39 @@ var UploadedImages = React.createClass({
 var Uploader = React.createClass({
   displayName: 'Uploader',
 
+  submit: function (e) {
+    var form_data = new FormData();
+
+    form_data.append('file', e.target.files[0]);
+
+    $.post({
+      url: '/uploads',
+      type: 'POST',
+      data: form_data,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        this.props.add_upload(JSON.parse(response));
+      }.bind(this)
+    });
+  },
   render: function () {
     return React.createElement(
-      'div',
-      { className: 'pure-g' },
+      'h3',
+      null,
       React.createElement(
-        'h2',
-        { className: 'pure-u-1 center-text' },
+        'label',
+        { className: 'file-upload center pure-button' },
         React.createElement(
-          'a',
-          { href: '#', className: 'pure-button pure-button-active' },
+          'span',
+          null,
           React.createElement(
             'i',
             { className: 'fa fa-upload' },
             ' Upload'
           )
-        )
+        ),
+        React.createElement('input', { type: 'file', onChange: this.submit, className: 'upload' })
       )
     );
   }

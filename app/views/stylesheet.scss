@@ -128,3 +128,9 @@ img.logo {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
+
+label.file-upload input[type="file"] {
+    position: fixed;
+    top: -1000px;
+}
+

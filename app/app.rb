@@ -187,7 +187,7 @@ post '/uploads' do
   # Persit
   uploader.save!
 
-  return uploader.s3_upload.signed_url
+  return uploader.upload.to_json(only: [:filename, :file_hash, :created_at])
 end
 
 post '/mimics' do
