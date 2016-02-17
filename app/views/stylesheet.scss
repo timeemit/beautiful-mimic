@@ -91,6 +91,12 @@ img.logo {
   border: 6px solid $grey;
 }
 
+.drawer .img-ctrl img {
+  transition: top 0.2s linear 0s;
+  position: relative;
+  top: 0;
+}
+
 .drawer .img-ctrl.active img {
   border: 3px solid $yellow;
 }
@@ -102,6 +108,7 @@ img.logo {
 .drawer .img-ctrl img:hover {
   border: 3px solid $magenta;
   cursor: pointer;
+  top: -10px;
 }
 
 .image-drawer-enter {
