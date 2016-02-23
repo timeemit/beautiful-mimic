@@ -2,7 +2,15 @@ var ChosenImage = React.createClass({
   displayName: 'ChosenImage',
 
   render: function () {
-    return React.createElement('img', { onClick: this.props.click_handler, className: 'pure-img center grey-border hover-yellow-border', width: '90%', src: '/uploads/' + this.props.file_hash + '/original' });
+    if (!this.props.file_hash) {
+      return null;
+    }
+
+    return React.createElement(
+      ReactCSSTransitionGroup,
+      { transitionName: 'chosen-image', transitionEnterTimeout: 2000, transitionLeaveTimeout: 1500, transitionAppearTimeout: 2000, transitionAppear: true },
+      React.createElement('img', { key: this.props.file_hash, onClick: this.props.click_handler, className: 'pure-img center grey-border hover-yellow-border', width: '90%', src: '/uploads/' + this.props.file_hash + '/original' })
+    );
   }
 });
 var ImageDrawer = React.createClass({
