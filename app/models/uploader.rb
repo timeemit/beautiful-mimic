@@ -1,3 +1,4 @@
+require 'digest'
 require_relative 'upload'
 require_relative 's3_upload'
 require_relative 'mimic'

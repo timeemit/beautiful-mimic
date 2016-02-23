@@ -1,5 +1,4 @@
 require 'yaml'          # For environment parsing
-require 'digest'        # For SHA256
 require 'securerandom'  # For random session user hashes
 require 'sinatra'
 require 'mongoid'

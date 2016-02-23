@@ -32,6 +32,8 @@ describe MimicMaker do
     expect( mimic.computed_at ).to be nil
     expect_any_instance_of( Kernel ).to receive(:`).with(/^th neural_style\.lua -print_iter 0 -style_image .+ -content_image .+ -output_image .+$/)
     MimicMaker.new.perform(bucket, mimic.id)
-    expect( mimic.reload.computed_at ).to be_a Time
+    mimic.reload
+    expect( mimic.computed_at ).to be_a Time
+    expect( mimic.mimic_hash ).to be_a String
   end
 end

@@ -50,13 +50,15 @@ class MimicMaker
       bucket: bucket,
       user_hash: mimic.user_hash,
       filename: "#{content_upload.filename}.mimic",
-      file: content_tempfile
+      file: output_tempfile
     )
 
     s3_output.save!
 
     # Done!
 
-    mimic.touch(:computed_at)
+    mimic.mimic_hash = Digest::SHA256.new.hexdigest output_tempfile.read
+    mimic.computed_at = Time.now
+    mimic.save
   end
 end

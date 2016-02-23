@@ -12,7 +12,8 @@ class Mimic
   field :user_hash, type: String # foreign key to user
   field :content_hash, type: String # foreign key to content upload
   field :style_hash, type: String # foreign key to style upload
-  field :computed_at, type: Time # set when the mimic is computed and successfully uploaded
+  field :mimic_hash, type: String # set when the mimic is computed
+  field :computed_at, type: Time # set when the mimic is computed
   field :unlocked_at, type: Time # set when the user when the unlocks the mimic
 
   validates :user_hash, presence: true
