@@ -210,24 +210,12 @@ post '/mimics' do
     return 400, {message: 'invalid'}
   end
 
-  # Queries
-
-  content_upload = Upload.
-    where(user_hash: user_hash).
-    where(file_hash: content_hash).
-    first
-
-  style_upload = Upload.
-    in(user_hash: [user_hash, nil]).
-    where(file_hash: style_hash).
-    first
-
   # Object
 
   mimic = Mimic.new
   mimic.user_hash = user_hash
-  mimic.content_upload = content_upload
-  mimic.style_upload = style_upload
+  mimic.content_hash = content_hash
+  mimic.style_hash = style_hash
 
   # Validations
 

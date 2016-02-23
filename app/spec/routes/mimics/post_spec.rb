@@ -19,7 +19,7 @@ describe 'POST /mimics' do
   it 'Should 400 on an empty request' do
     post '/mimics'
     expect(last_response.status).to eq 400
-    expect(JSON.parse(last_response.body)).to eq({"content_upload_id"=>["can't be blank"], "style_upload_id"=>["can't be blank"]})
+    expect(JSON.parse(last_response.body)).to eq({"content_hash"=>["can't be blank", "not uploaded"], "style_hash"=>["can't be blank", "not uploaded"]})
 
     assert_failure
   end
@@ -27,7 +27,7 @@ describe 'POST /mimics' do
   it 'Should 400 for nonexistent uploads' do
     post '/mimics', style_hash: 'blue', content_hash: 'red'
     expect(last_response.status).to eq 400
-    expect(JSON.parse(last_response.body)).to eq({"content_upload_id"=>["can't be blank"], "style_upload_id"=>["can't be blank"]})
+    expect(JSON.parse(last_response.body)).to eq({"content_hash"=>["not uploaded"], "style_hash"=>["not uploaded"]})
 
     assert_failure
   end
@@ -44,8 +44,8 @@ describe 'POST /mimics' do
   end
 
   it 'Can associate style with a system upload' do
-    Upload.create(file_hash: 'red', filename: 'redpill.jpg', user_hash: 'neo')
-    Upload.create(file_hash: 'blue', filename: 'bluepill.jpg')
+    Upload.create!(file_hash: 'red', filename: 'redpill.jpg', user_hash: 'neo')
+    Upload.create!(file_hash: 'blue', filename: 'bluepill.jpg')
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
@@ -54,14 +54,14 @@ describe 'POST /mimics' do
     assert_success
   end
 
-  it 'Cannot associate content with a system upload' do
-    Upload.create(file_hash: 'red', filename: 'redpill.jpg')
-    Upload.create(file_hash: 'blue', filename: 'bluepill.jpg', user_hash: 'neo')
+  it 'Can associate content with a system upload' do
+    Upload.create!(file_hash: 'red', filename: 'redpill.jpg')
+    Upload.create!(file_hash: 'blue', filename: 'bluepill.jpg', user_hash: 'neo')
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
-    expect(last_response.status).to eq 400
-    expect(JSON.parse(last_response.body)).to eq({"content_upload_id"=>["can't be blank"]})
+    expect(last_response.status).to eq 201
+    expect(last_response.body).to eq ''
 
-    expect(Mimic.count).to eql 0
+    assert_success
   end
 end

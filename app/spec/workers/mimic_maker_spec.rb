@@ -25,8 +25,8 @@ describe MimicMaker do
 
     mimic = Mimic.create(
       user_hash: user_hash,
-      content_upload_id: marilyn.upload.id,
-      style_upload_id: frank.upload.id,
+      content_hash: marilyn.upload.file_hash,
+      style_hash: frank.upload.file_hash,
     )
 
     expect( mimic.computed_at ).to be nil

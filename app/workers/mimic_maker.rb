@@ -10,11 +10,10 @@ class MimicMaker
   def perform(bucket, mimic_id)
     # Fetch records
     mimic = Mimic.find(mimic_id)
-    uploads = Upload.find(
-      mimic.content_upload_id,
-      mimic.style_upload_id
+    uploads = Upload.in(
+      file_hash: [ mimic.content_hash, mimic.style_hash ]
     )
-    if uploads.first.id == mimic.content_upload_id
+    if uploads.first.file_hash == mimic.content_hash
       content_upload = uploads.first
       style_upload = uploads.last
     else
