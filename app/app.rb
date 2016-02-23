@@ -5,10 +5,12 @@ require 'sinatra'
 require 'mongoid'
 
 require_relative 'lib/aws_authenticator'
+require_relative 'lib/sidekiq_client'
 require_relative 'models/s3_upload'
 require_relative 'models/upload'
 require_relative 'models/mimic'
 require_relative 'models/uploader'
+require_relative 'workers/mimic_maker'
 
 environment_path = File.expand_path("environments/#{settings.environment}.yml", __dir__)
 
@@ -21,6 +23,8 @@ set :session_secret, 'qyAi9Y/mkwZo7Z0CFqtBqJr5ZE4oX0J3VVxU1PzGZV8='
 
 Mongoid.load!(environment_path, 'mongo')
 AwsAuthenticator.authenticate!(settings.env)
+SidekiqClient.connect!(settings.env)
+
 PAGE_COUNT = 15
 
 before do

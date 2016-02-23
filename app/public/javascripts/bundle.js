@@ -143,6 +143,14 @@ var NewMimic = React.createClass({
     });
   },
 
+  submit: function () {
+    var data = {
+      content_hash: this.state.content_choice.file_hash,
+      style_hash: this.state.style_choice.file_hash
+    };
+    $.post('/mimics', data);
+  },
+
   render: function () {
     var reveal_drawer = this.state.reveal_content || this.state.reveal_style;
     var chosen = null;
@@ -191,7 +199,7 @@ var NewMimic = React.createClass({
       ),
       React.createElement(
         'button',
-        { className: 'pure-button pure-button-primary pure-u-1' },
+        { onClick: this.submit, className: 'pure-button pure-button-primary pure-u-1' },
         React.createElement(
           'h2',
           { className: 'center-text' },

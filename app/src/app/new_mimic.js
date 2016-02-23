@@ -56,6 +56,14 @@ var NewMimic = React.createClass({
     });
   },
 
+  submit: function() {
+    var data = {
+      content_hash: this.state.content_choice.file_hash,
+      style_hash: this.state.style_choice.file_hash
+    }
+    $.post('/mimics', data)
+  },
+
   render: function() {
     var reveal_drawer = this.state.reveal_content || this.state.reveal_style;
     var chosen = null;
@@ -85,7 +93,7 @@ var NewMimic = React.createClass({
             <ImageDrawer key={reveal_drawer} choice_handler={choice_handler} add_upload={this.add_upload} reveal={reveal_drawer} uploads={this.state.uploads} chosen={chosen} left={this.state.reveal_content} />
           </ReactCSSTransitionGroup>
         </div>
-        <button className='pure-button pure-button-primary pure-u-1'>
+        <button onClick={this.submit} className='pure-button pure-button-primary pure-u-1'>
           <h2 className='center-text'>Mimic</h2>
         </button>
       </div>
