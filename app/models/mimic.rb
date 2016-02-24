@@ -18,7 +18,7 @@ class Mimic
 
   validates :user_hash, presence: true
   validates :content_hash, presence: true
-  validates :style_hash, presence: true
+  validates :style_hash, presence: true, uniqueness: [:user_hash, :content_hash]
   validate :content_upload_exists
   validate :style_upload_exists
 
