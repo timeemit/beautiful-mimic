@@ -148,7 +148,10 @@ var NewMimic = React.createClass({
       content_hash: this.state.content_choice.file_hash,
       style_hash: this.state.style_choice.file_hash
     };
-    $.post('/mimics', data);
+    var callback = function (response) {
+      window.location = '/';
+    };
+    $.post('/mimics', data, callback);
   },
 
   render: function () {
