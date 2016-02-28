@@ -83,6 +83,58 @@ var ImageDrawerTip = React.createClass({
     }
   }
 });
+var Mimics = React.createClass({
+  displayName: 'Mimics',
+
+  getInitialState: function () {
+    return {
+      mimics: []
+    };
+  },
+
+  componentDidMount: function () {
+    this.serverRequest = $.get('/mimics', function (result) {
+      var result = JSON.parse(result);
+      this.setState({
+        mimics: result
+      });
+    }.bind(this));
+  },
+
+  componentWillUnmount: function () {
+    this.serverRequest.abort();
+  },
+
+  render: function () {
+    var mimics = this.state.mimics.map(function (mimic) {
+      var key = mimic.content_hash + '-' + mimic.style_hash;
+      return React.createElement(
+        'div',
+        { key: key, className: 'pure-u-1-3 mimic' },
+        React.createElement('div', { className: 'pure-u-3-4' }),
+        React.createElement(
+          'div',
+          { className: 'pure-u-1-4 mimic-reveal' },
+          React.createElement(
+            'a',
+            { 'data-lightbox': 'hello', href: '/uploads/' + mimic.content_hash },
+            React.createElement('img', { className: 'pure-img', src: '/uploads/' + mimic.content_hash })
+          ),
+          React.createElement(
+            'a',
+            { 'data-lightbox': 'hello', href: '/uploads/' + mimic.content_hash },
+            React.createElement('img', { className: 'pure-img margin-above', src: '/uploads/' + mimic.style_hash })
+          )
+        )
+      );
+    });
+    return React.createElement(
+      'div',
+      { className: 'pure-g mimics-index' },
+      mimics
+    );
+  }
+});
 var NewMimic = React.createClass({
   displayName: 'NewMimic',
 

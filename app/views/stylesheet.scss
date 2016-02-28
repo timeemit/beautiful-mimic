@@ -152,8 +152,21 @@ img.logo {
   transition: max-width 1500ms, opacity 1500ms;
 }
 
-
 label.file-upload input[type="file"] {
-    position: fixed;
-    top: -1000px;
+  position: fixed;
+  top: -1000px;
+}
+
+.mimic .mimic-reveal {
+  opacity: 0;
+  transition: opacity 700ms linear;
+}
+
+.mimic:hover .mimic-reveal {
+  opacity: 1;
+  transition: opacity 1000ms linear;
+}
+
+.margin-above {
+  margin-top: 10px;
 }

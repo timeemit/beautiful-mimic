@@ -45,6 +45,4 @@ class Mimic
       where(file_hash: style_hash).
       exists?
   end
-
-
 end

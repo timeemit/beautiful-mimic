@@ -193,6 +193,27 @@ post '/uploads' do
   return uploader.upload.to_json(only: [:filename, :file_hash, :created_at])
 end
 
+get '/mimics' do
+  'Retrieve uploaded photos'
+
+  user_hash = session['user_hash']
+  begin
+    page = params['page'] || 1
+    page = page.to_i
+    raise unless page > 0
+  rescue => e
+    return 400
+  end
+
+  return Mimic.
+    where(user_hash: user_hash).
+    only(:content_hash, :style_hash, :mimic_hash).
+    sort(created_at: -1).
+    limit(PAGE_COUNT).
+    skip(PAGE_COUNT * (page - 1)).
+    to_json(except: :_id)
+end
+
 post '/mimics' do
   'COMPLETED,TESTED'
   'Make a beautiful mimic'
