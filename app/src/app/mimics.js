@@ -27,8 +27,8 @@ var Mimics = React.createClass({
             {/* Mimic Goes Here */}
           </div>
           <div className='pure-u-1-4 mimic-reveal'>
-            <a data-lightbox='hello' href={'/uploads/' + mimic.content_hash}><img className='pure-img' src={'/uploads/' + mimic.content_hash}></img></a>
-            <a data-lightbox='hello' href={'/uploads/' + mimic.content_hash}><img className='pure-img margin-above' src={'/uploads/' + mimic.style_hash}></img></a>
+            <img className='pure-img' src={'/uploads/' + mimic.content_hash}></img>
+            <img className='pure-img margin-above' src={'/uploads/' + mimic.style_hash}></img>
           </div>
         </div>
       )

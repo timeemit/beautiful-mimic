@@ -115,16 +115,8 @@ var Mimics = React.createClass({
         React.createElement(
           'div',
           { className: 'pure-u-1-4 mimic-reveal' },
-          React.createElement(
-            'a',
-            { 'data-lightbox': 'hello', href: '/uploads/' + mimic.content_hash },
-            React.createElement('img', { className: 'pure-img', src: '/uploads/' + mimic.content_hash })
-          ),
-          React.createElement(
-            'a',
-            { 'data-lightbox': 'hello', href: '/uploads/' + mimic.content_hash },
-            React.createElement('img', { className: 'pure-img margin-above', src: '/uploads/' + mimic.style_hash })
-          )
+          React.createElement('img', { className: 'pure-img', src: '/uploads/' + mimic.content_hash }),
+          React.createElement('img', { className: 'pure-img margin-above', src: '/uploads/' + mimic.style_hash })
         )
       );
     });
