@@ -111,19 +111,36 @@ var Mimics = React.createClass({
       return React.createElement(
         'div',
         { key: key, className: 'pure-u-1-3 mimic' },
-        React.createElement('div', { className: 'pure-u-3-4' }),
         React.createElement(
           'div',
-          { className: 'pure-u-1-4 mimic-reveal' },
-          React.createElement('img', { className: 'pure-img', src: '/uploads/' + mimic.content_hash }),
-          React.createElement('img', { className: 'pure-img margin-above', src: '/uploads/' + mimic.style_hash })
+          { className: 'pure-u-1' },
+          React.createElement('img', { className: 'pure-img center', src: '/uploads/' + '32a9dc2a78d2c4fa02dfbd914c7270374f77a11a9e2b2c3d8341c65ddfdb7113' })
+        ),
+        React.createElement(
+          'div',
+          { className: 'pure-u-1-2 mimic-reveal margin-above' },
+          React.createElement('img', { className: 'pure-img center', src: '/uploads/' + mimic.content_hash })
+        ),
+        React.createElement(
+          'div',
+          { className: 'pure-u-1-2 mimic-reveal margin-above' },
+          React.createElement('img', { className: 'pure-img center', src: '/uploads/' + mimic.style_hash })
         )
       );
     });
     return React.createElement(
       'div',
-      { className: 'pure-g mimics-index' },
-      mimics
+      null,
+      React.createElement(
+        'h1',
+        { className: 'center-text' },
+        'My Mimics'
+      ),
+      React.createElement(
+        'div',
+        { className: 'pure-g mimics-index' },
+        mimics
+      )
     );
   }
 });
@@ -246,7 +263,7 @@ var NewMimic = React.createClass({
       ),
       React.createElement(
         'button',
-        { onClick: this.submit, className: 'pure-button pure-button-primary pure-u-1' },
+        { onClick: this.submit, className: 'pure-button pure-button-primary pure-u-1 page-break' },
         React.createElement(
           'h2',
           { className: 'center-text' },

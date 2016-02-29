@@ -23,19 +23,24 @@ var Mimics = React.createClass({
       var key = mimic.content_hash + '-' + mimic.style_hash;
       return (
         <div key={key} className='pure-u-1-3 mimic'>
-          <div className='pure-u-3-4'> 
-            {/* Mimic Goes Here */}
+          <div className='pure-u-1'>
+            <img className='pure-img center' src={'/uploads/' + '32a9dc2a78d2c4fa02dfbd914c7270374f77a11a9e2b2c3d8341c65ddfdb7113'}></img>
           </div>
-          <div className='pure-u-1-4 mimic-reveal'>
-            <img className='pure-img' src={'/uploads/' + mimic.content_hash}></img>
-            <img className='pure-img margin-above' src={'/uploads/' + mimic.style_hash}></img>
+          <div className='pure-u-1-2 mimic-reveal margin-above'>
+            <img className='pure-img center' src={'/uploads/' + mimic.content_hash}></img>
+          </div>
+          <div className='pure-u-1-2 mimic-reveal margin-above'>
+            <img className='pure-img center' src={'/uploads/' + mimic.style_hash}></img>
           </div>
         </div>
       )
     });
     return (
-      <div className='pure-g mimics-index'>
-        { mimics }
+      <div>
+        <h1 className='center-text'>My Mimics</h1>
+        <div className='pure-g mimics-index'>
+          { mimics }
+        </div>
       </div>
     )
   }
