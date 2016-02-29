@@ -27,12 +27,6 @@ get '/uploads/:file_hash' do
   user_hash = session['user_hash']
   file_hash = params['file_hash']
   style = params['style']
-  upload = Upload.
-    in(user_hash: [user_hash, nil]).
-    where(file_hash: file_hash).
-    first
-
-  return 401 unless upload
 
   bucket = settings.env['S3']['bucket']
   upload = S3Upload.new(
