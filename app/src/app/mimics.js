@@ -20,11 +20,17 @@ var Mimics = React.createClass({
 
   render: function(){
     var mimics = this.state.mimics.map(function(mimic) {
+      var mimic_img = null;
       var key = mimic.content_hash + '-' + mimic.style_hash;
+      if ( mimic.mimic_hash ) {
+        mimic_img = ( <img className='pure-img center' src={'/mimics/' + mimic.mimic_hash}></img> );
+      } else {
+        mimic_img = ( <img className='pure-img center rotate' src='/images/logo-yellow.png'></img> );
+      }
       return (
         <div key={key} className='pure-u-1-3 mimic'>
           <div className='pure-u-1'>
-            <img className='pure-img center' src={'/uploads/' + '32a9dc2a78d2c4fa02dfbd914c7270374f77a11a9e2b2c3d8341c65ddfdb7113'}></img>
+            { mimic_img }
           </div>
           <div className='pure-u-1-2 mimic-reveal margin-above'>
             <img className='pure-img center' src={'/uploads/' + mimic.content_hash}></img>

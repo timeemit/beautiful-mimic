@@ -107,14 +107,20 @@ var Mimics = React.createClass({
 
   render: function () {
     var mimics = this.state.mimics.map(function (mimic) {
+      var mimic_img = null;
       var key = mimic.content_hash + '-' + mimic.style_hash;
+      if (mimic.mimic_hash) {
+        mimic_img = React.createElement('img', { className: 'pure-img center', src: '/mimics/' + mimic.mimic_hash });
+      } else {
+        mimic_img = React.createElement('img', { className: 'pure-img center rotate', src: '/images/logo-yellow.png' });
+      }
       return React.createElement(
         'div',
         { key: key, className: 'pure-u-1-3 mimic' },
         React.createElement(
           'div',
           { className: 'pure-u-1' },
-          React.createElement('img', { className: 'pure-img center', src: '/uploads/' + '32a9dc2a78d2c4fa02dfbd914c7270374f77a11a9e2b2c3d8341c65ddfdb7113' })
+          mimic_img
         ),
         React.createElement(
           'div',

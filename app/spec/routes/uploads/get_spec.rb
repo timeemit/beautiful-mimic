@@ -31,7 +31,7 @@ describe 'GET /uploads' do
 
   it 'Can return the originally uploaded file' do
     file_hash = Upload.last.file_hash
-    get "/uploads/#{file_hash}/original"
+    get "/uploads/#{file_hash}", style: 'original'
     expect(last_response.status).to eq 302
     expect(last_response.body).to eq ''
     expect(last_response.headers['Location']).to start_with 'https://s3-us-west-1.amazonaws.com/beautiful.mimic.tests'
