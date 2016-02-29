@@ -26,6 +26,7 @@ get '/uploads/:file_hash' do
 
   user_hash = session['user_hash']
   file_hash = params['file_hash']
+  style = params['style']
   upload = Upload.
     in(user_hash: [user_hash, nil]).
     where(file_hash: file_hash).
@@ -40,31 +41,9 @@ get '/uploads/:file_hash' do
     file_hash: file_hash
   )
 
-  redirect to(upload.signed_url)
+  redirect to(upload.signed_url style)
 end
 
-get '/uploads/:file_hash' do
-  'COMPLETE,TESTED'
-  'Retrieve the original copy of an uploaded photo'
-
-  user_hash = session['user_hash']
-  file_hash = params['file_hash']
-  upload = Upload.
-    in(user_hash: [user_hash, nil]).
-    where(file_hash: file_hash).
-    first
-
-  return 401 unless upload
-
-  bucket = settings.env['S3']['bucket']
-  upload = S3Upload.new(
-    bucket: bucket,
-    user_hash: upload.user_hash, # May be nil in the case of system images
-    file_hash: file_hash
-  )
-
-  redirect to(upload.signed_url 'original')
-end
 post '/uploads' do
   'COMPLETE,TESTED'
   'Upload a new, private photo'

@@ -27,7 +27,8 @@ class S3Upload < Model
     )
   end
 
-  def signed_url(style='thumb')
+  def signed_url(style=nil)
+    style = 'thumb' unless style
     signer = Aws::S3::Presigner.new
 
     begin
