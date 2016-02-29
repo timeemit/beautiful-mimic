@@ -97,7 +97,7 @@ var NewMimic = React.createClass({
           </ReactCSSTransitionGroup>
         </div>
         <button onClick={this.submit} className='pure-button pure-button-primary pure-u-1 page-break'>
-          <h2 className='center-text'>Mimic</h2>
+          <h2 className='center-text'>Make a Mimic</h2>
         </button>
       </div>
     );

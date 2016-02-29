@@ -267,7 +267,7 @@ var NewMimic = React.createClass({
         React.createElement(
           'h2',
           { className: 'center-text' },
-          'Mimic'
+          'Make a Mimic'
         )
       )
     );
