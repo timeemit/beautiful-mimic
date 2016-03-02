@@ -3,8 +3,9 @@ require 'mongoid'
 require_relative '../lib/aws_authenticator'
 require_relative '../models/uploader'
 
+environments = ['development', 'test', 'production']
 environment = ARGV[0]
-raise ArgumentError unless ['development', 'test', 'production'].include? environment
+raise "Choose one of #{environments}" unless environments.include? environment
 
 # Collect args
 environment_path = File.expand_path("environments/#{environment}.yml", "#{__dir__}/..")
