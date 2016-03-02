@@ -2,6 +2,8 @@ require 'mini_magick'
 require_relative '../lib/model'
 
 class S3Upload < Model
+  SYSTEM_KEY = 'SYSTEM'
+
   attr_reader :file
   attr_reader :bucket
   attr_reader :file_hash
@@ -69,7 +71,8 @@ class S3Upload < Model
   private
 
   def file_key(style)
-    file_key = "#{@user_hash}/#{style}s/#{@file_hash}"
+    file_key = @user_hash ? @user_hash : SYSTEM_KEY
+    file_key += "/#{style}s/#{@file_hash}"
   end
 
   def thumbfile_path
