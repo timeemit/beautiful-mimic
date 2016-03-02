@@ -30,73 +30,6 @@ var MimicShow = React.createClass({
     );
   }
 });
-var Mimics = React.createClass({
-  displayName: 'Mimics',
-
-  getInitialState: function () {
-    return {
-      mimics: []
-    };
-  },
-
-  componentDidMount: function () {
-    this.serverRequest = $.get('/mimics', function (result) {
-      var result = JSON.parse(result);
-      this.setState({
-        mimics: result
-      });
-    }.bind(this));
-  },
-
-  componentWillUnmount: function () {
-    this.serverRequest.abort();
-  },
-
-  render: function () {
-    var mimics = this.state.mimics.map(function (mimic) {
-      var mimic_img = null;
-      var key = mimic.content_hash + '-' + mimic.style_hash;
-      if (mimic.mimic_hash) {
-        mimic_img = React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.mimic_hash });
-      } else {
-        mimic_img = React.createElement('img', { className: 'pure-img center rotate', src: '/images/logo-yellow.png' });
-      }
-      return React.createElement(
-        'div',
-        { key: key, className: 'pure-u-1-3 mimic' },
-        React.createElement(
-          'div',
-          { className: 'pure-u-1' },
-          mimic_img
-        ),
-        React.createElement(
-          'div',
-          { className: 'pure-u-1-2 mimic-reveal margin-above' },
-          React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.content_hash })
-        ),
-        React.createElement(
-          'div',
-          { className: 'pure-u-1-2 mimic-reveal margin-above' },
-          React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.style_hash })
-        )
-      );
-    });
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'h1',
-        { className: 'center-text' },
-        'My Mimics'
-      ),
-      React.createElement(
-        'div',
-        { className: 'pure-g mimics-index' },
-        mimics
-      )
-    );
-  }
-});
 var ChosenImage = React.createClass({
   displayName: 'ChosenImage',
 
@@ -177,8 +110,8 @@ var NewMimic = React.createClass({
       content_hash: this.state.content_choice.file_hash,
       style_hash: this.state.style_choice.file_hash
     };
-    var callback = function (response) {
-      window.location = '/';
+    var callback = function (new_mimic) {
+      window.location = '/mimics/' + data.content_hash + '-' + data.style_hash;
     };
     $.post('/mimics', data, callback);
   },

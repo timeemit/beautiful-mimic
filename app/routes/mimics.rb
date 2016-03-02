@@ -82,5 +82,5 @@ post '/mimics' do
     mimic.id
   )
 
-  return 201
+  return 201, mimic.to_json(except: :_id)
 end

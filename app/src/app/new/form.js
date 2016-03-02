@@ -61,10 +61,10 @@ var NewMimic = React.createClass({
       content_hash: this.state.content_choice.file_hash,
       style_hash: this.state.style_choice.file_hash
     }
-    var callback = function(response) {
-      window.location = '/';
+    var callback = function(new_mimic) {
+      window.location = '/mimics/' + data.content_hash + '-' + data.style_hash;
     }
-    $.post('/mimics', data, callback)
+    $.post('/mimics', data, callback);
   },
 
   render: function() {
