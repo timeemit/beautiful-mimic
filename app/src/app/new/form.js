@@ -71,13 +71,15 @@ var NewMimic = React.createClass({
     var reveal_drawer = this.state.reveal_content || this.state.reveal_style;
     var chosen = null;
     var choice_handler = null;
+    var content_choice = this.state.content_choice;
+    var style_choice = this.state.style_choice;
 
     if ( reveal_drawer ) {
       if ( this.state.reveal_content ) {
-        chosen = this.state.content_choice;
+        chosen = content_choice;
         choice_handler = this.choose_content;
       } else {
-        chosen = this.state.style_choice;
+        chosen = style_choice;
         choice_handler = this.choose_style;
       }
     }
@@ -85,11 +87,11 @@ var NewMimic = React.createClass({
       <div className='pure-g'>
         <div className='pure-u-1-2'>
           <h1 className='center-text'>Photo</h1>
-          <ChosenImage click_handler={this.toggle_content} file_hash={this.state.content_choice.file_hash} />
+          <ChosenImage click_handler={this.toggle_content} file_hash={content_choice.file_hash} />
         </div>
         <div className='pure-u-1-2'>
           <h1 className='center-text'>Style</h1>
-          <ChosenImage click_handler={this.toggle_style} file_hash={this.state.style_choice.file_hash} />
+          <ChosenImage click_handler={this.toggle_style} file_hash={style_choice.file_hash} />
         </div>
         <div className='pure-u-1'>
           <ReactCSSTransitionGroup transitionName='image-drawer' transitionEnterTimeout={500} transitionLeaveTimeout={300}>

@@ -4,13 +4,14 @@ var UploadedImage = React.createClass({
   },
   render: function(){
     var className = 'center img-ctrl';
+    var upload = this.props.upload;
     if ( this.props.chosen.file_hash === this.props.upload.file_hash ) {
       className += ' active';
     }
     return (
       <div className='pure-u-1-6'>
         <div className={ className } >
-          <img alt={ this.props.upload.filename } onClick={ this.choose_image } className='pure-img center grey-border' src={ '/uploads/' + this.props.upload.file_hash }></img>
+          <img alt={ upload.filename } onClick={ this.choose_image } className='pure-img center grey-border' src={ '/files/' + upload.file_hash }></img>
         </div>
       </div>
     );

@@ -1,86 +1,33 @@
-var ChosenImage = React.createClass({
-  displayName: 'ChosenImage',
+var MimicShow = React.createClass({
+  displayName: 'MimicShow',
 
   render: function () {
-    if (!this.props.file_hash) {
-      return null;
-    }
-
-    return React.createElement(
-      ReactCSSTransitionGroup,
-      { transitionName: 'chosen-image', transitionEnterTimeout: 2000, transitionLeaveTimeout: 1500, transitionAppearTimeout: 2000, transitionAppear: true },
-      React.createElement('img', { key: this.props.file_hash, onClick: this.props.click_handler, className: 'pure-img center grey-border hover-yellow-border', width: '90%', src: '/uploads/' + this.props.file_hash + '?style=original' })
-    );
-  }
-});
-var ImageDrawer = React.createClass({
-  displayName: 'ImageDrawer',
-
-  render: function () {
-    var pointer = null;
-
-    if (!this.props.reveal) {
-      return null;
+    var mimic = this.props.mimic;
+    var mimic_img = null;
+    if (mimic.mimic_hash) {
+      mimic_img = React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.mimic_hash + '?style=original' });
+    } else {
+      mimic_img = React.createElement('img', { className: 'pure-img center rotate', src: '/images/logo-yellow.png' });
     }
     return React.createElement(
       'div',
       null,
-      React.createElement(ImageDrawerTip, { left: this.props.left }),
       React.createElement(
         'div',
-        { className: 'drawer green-background center' },
-        React.createElement(Uploader, { add_upload: this.props.add_upload }),
-        React.createElement(UploadedImages, { choice_handler: this.props.choice_handler, chosen: this.props.chosen, uploads: this.props.uploads })
+        { className: 'pure-u-1' },
+        mimic_img
+      ),
+      React.createElement(
+        'div',
+        { className: 'pure-u-1-2 margin-above' },
+        React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.content_hash + '?style=original' })
+      ),
+      React.createElement(
+        'div',
+        { className: 'pure-u-1-2 margin-above' },
+        React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.style_hash + '?style=original' })
       )
     );
-  }
-
-});
-var ImageDrawerTip = React.createClass({
-  displayName: 'ImageDrawerTip',
-
-  render: function () {
-    tip = React.createElement(
-      'div',
-      { className: 'center pointer-up' },
-      React.createElement('div', { className: 'green-background pointer-up-left' }),
-      React.createElement('div', { className: 'green-background pointer-up-right' })
-    );
-    if (this.props.left) {
-      return React.createElement(
-        'div',
-        { className: 'pure-g' },
-        React.createElement(
-          'div',
-          { className: 'pure-u-1 pure-u-lg-1-2' },
-          ' ',
-          tip,
-          ' '
-        ),
-        React.createElement(
-          'div',
-          { className: 'pure-u-1 pure-u-lg-1-2' },
-          ' '
-        )
-      );
-    } else {
-      return React.createElement(
-        'div',
-        { className: 'pure-g' },
-        React.createElement(
-          'div',
-          { className: 'pure-u-1 pure-u-lg-1-2' },
-          ' '
-        ),
-        React.createElement(
-          'div',
-          { className: 'pure-u-1 pure-u-lg-1-2' },
-          ' ',
-          tip,
-          ' '
-        )
-      );
-    }
   }
 });
 var Mimics = React.createClass({
@@ -110,7 +57,7 @@ var Mimics = React.createClass({
       var mimic_img = null;
       var key = mimic.content_hash + '-' + mimic.style_hash;
       if (mimic.mimic_hash) {
-        mimic_img = React.createElement('img', { className: 'pure-img center', src: '/mimics/' + mimic.mimic_hash });
+        mimic_img = React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.mimic_hash });
       } else {
         mimic_img = React.createElement('img', { className: 'pure-img center rotate', src: '/images/logo-yellow.png' });
       }
@@ -125,12 +72,12 @@ var Mimics = React.createClass({
         React.createElement(
           'div',
           { className: 'pure-u-1-2 mimic-reveal margin-above' },
-          React.createElement('img', { className: 'pure-img center', src: '/uploads/' + mimic.content_hash })
+          React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.content_hash })
         ),
         React.createElement(
           'div',
           { className: 'pure-u-1-2 mimic-reveal margin-above' },
-          React.createElement('img', { className: 'pure-img center', src: '/uploads/' + mimic.style_hash })
+          React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.style_hash })
         )
       );
     });
@@ -147,6 +94,21 @@ var Mimics = React.createClass({
         { className: 'pure-g mimics-index' },
         mimics
       )
+    );
+  }
+});
+var ChosenImage = React.createClass({
+  displayName: 'ChosenImage',
+
+  render: function () {
+    if (!this.props.file_hash) {
+      return null;
+    }
+
+    return React.createElement(
+      ReactCSSTransitionGroup,
+      { transitionName: 'chosen-image', transitionEnterTimeout: 2000, transitionLeaveTimeout: 1500, transitionAppearTimeout: 2000, transitionAppear: true },
+      React.createElement('img', { key: this.props.file_hash, onClick: this.props.click_handler, className: 'pure-img center grey-border hover-yellow-border', width: '90%', src: '/files/' + this.props.file_hash + '?style=original' })
     );
   }
 });
@@ -225,13 +187,15 @@ var NewMimic = React.createClass({
     var reveal_drawer = this.state.reveal_content || this.state.reveal_style;
     var chosen = null;
     var choice_handler = null;
+    var content_choice = this.state.content_choice;
+    var style_choice = this.state.style_choice;
 
     if (reveal_drawer) {
       if (this.state.reveal_content) {
-        chosen = this.state.content_choice;
+        chosen = content_choice;
         choice_handler = this.choose_content;
       } else {
-        chosen = this.state.style_choice;
+        chosen = style_choice;
         choice_handler = this.choose_style;
       }
     }
@@ -246,7 +210,7 @@ var NewMimic = React.createClass({
           { className: 'center-text' },
           'Photo'
         ),
-        React.createElement(ChosenImage, { click_handler: this.toggle_content, file_hash: this.state.content_choice.file_hash })
+        React.createElement(ChosenImage, { click_handler: this.toggle_content, file_hash: content_choice.file_hash })
       ),
       React.createElement(
         'div',
@@ -256,7 +220,7 @@ var NewMimic = React.createClass({
           { className: 'center-text' },
           'Style'
         ),
-        React.createElement(ChosenImage, { click_handler: this.toggle_style, file_hash: this.state.style_choice.file_hash })
+        React.createElement(ChosenImage, { click_handler: this.toggle_style, file_hash: style_choice.file_hash })
       ),
       React.createElement(
         'div',
@@ -279,6 +243,76 @@ var NewMimic = React.createClass({
     );
   }
 });
+var ImageDrawer = React.createClass({
+  displayName: 'ImageDrawer',
+
+  render: function () {
+    var pointer = null;
+
+    if (!this.props.reveal) {
+      return null;
+    }
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(ImageDrawerTip, { left: this.props.left }),
+      React.createElement(
+        'div',
+        { className: 'drawer green-background center' },
+        React.createElement(Uploader, { add_upload: this.props.add_upload }),
+        React.createElement(UploadedImages, { choice_handler: this.props.choice_handler, chosen: this.props.chosen, uploads: this.props.uploads })
+      )
+    );
+  }
+
+});
+var ImageDrawerTip = React.createClass({
+  displayName: 'ImageDrawerTip',
+
+  render: function () {
+    tip = React.createElement(
+      'div',
+      { className: 'center pointer-up' },
+      React.createElement('div', { className: 'green-background pointer-up-left' }),
+      React.createElement('div', { className: 'green-background pointer-up-right' })
+    );
+    if (this.props.left) {
+      return React.createElement(
+        'div',
+        { className: 'pure-g' },
+        React.createElement(
+          'div',
+          { className: 'pure-u-1 pure-u-lg-1-2' },
+          ' ',
+          tip,
+          ' '
+        ),
+        React.createElement(
+          'div',
+          { className: 'pure-u-1 pure-u-lg-1-2' },
+          ' '
+        )
+      );
+    } else {
+      return React.createElement(
+        'div',
+        { className: 'pure-g' },
+        React.createElement(
+          'div',
+          { className: 'pure-u-1 pure-u-lg-1-2' },
+          ' '
+        ),
+        React.createElement(
+          'div',
+          { className: 'pure-u-1 pure-u-lg-1-2' },
+          ' ',
+          tip,
+          ' '
+        )
+      );
+    }
+  }
+});
 var UploadedImage = React.createClass({
   displayName: 'UploadedImage',
 
@@ -287,6 +321,7 @@ var UploadedImage = React.createClass({
   },
   render: function () {
     var className = 'center img-ctrl';
+    var upload = this.props.upload;
     if (this.props.chosen.file_hash === this.props.upload.file_hash) {
       className += ' active';
     }
@@ -296,7 +331,7 @@ var UploadedImage = React.createClass({
       React.createElement(
         'div',
         { className: className },
-        React.createElement('img', { alt: this.props.upload.filename, onClick: this.choose_image, className: 'pure-img center grey-border', src: '/uploads/' + this.props.upload.file_hash })
+        React.createElement('img', { alt: upload.filename, onClick: this.choose_image, className: 'pure-img center grey-border', src: '/files/' + upload.file_hash })
       )
     );
   }
