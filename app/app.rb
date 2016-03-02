@@ -12,6 +12,7 @@ require_relative 'models/uploader'
 require_relative 'workers/mimic_maker'
 require_relative 'routes/uploads'
 require_relative 'routes/mimics'
+require_relative 'routes/files'
 
 environment_path = File.expand_path("environments/#{settings.environment}.yml", __dir__)
 

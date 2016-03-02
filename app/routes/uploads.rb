@@ -20,24 +20,6 @@ get '/uploads' do
     to_json(except: :_id)
 end
 
-get '/uploads/:file_hash' do
-  'COMPLETE,TESTED'
-  'Retrieve an uploaded photo'
-
-  user_hash = session['user_hash']
-  file_hash = params['file_hash']
-  style = params['style']
-
-  bucket = settings.env['S3']['bucket']
-  upload = S3Upload.new(
-    bucket: bucket,
-    user_hash: upload.user_hash, # May be nil in the case of system images
-    file_hash: file_hash
-  )
-
-  redirect to(upload.signed_url style)
-end
-
 post '/uploads' do
   'COMPLETE,TESTED'
   'Upload a new, private photo'

@@ -23,7 +23,7 @@ var Mimics = React.createClass({
       var mimic_img = null;
       var key = mimic.content_hash + '-' + mimic.style_hash;
       if ( mimic.mimic_hash ) {
-        mimic_img = ( <img className='pure-img center' src={'/mimics/' + mimic.mimic_hash}></img> );
+        mimic_img = ( <img className='pure-img center' src={ '/files/' + mimic.mimic_hash }></img> );
       } else {
         mimic_img = ( <img className='pure-img center rotate' src='/images/logo-yellow.png'></img> );
       }
@@ -33,10 +33,10 @@ var Mimics = React.createClass({
             { mimic_img }
           </div>
           <div className='pure-u-1-2 mimic-reveal margin-above'>
-            <img className='pure-img center' src={'/uploads/' + mimic.content_hash}></img>
+            <img className='pure-img center' src={ '/files/' + mimic.content_hash }></img>
           </div>
           <div className='pure-u-1-2 mimic-reveal margin-above'>
-            <img className='pure-img center' src={'/uploads/' + mimic.style_hash}></img>
+            <img className='pure-img center' src={ '/files/' + mimic.style_hash }></img>
           </div>
         </div>
       )

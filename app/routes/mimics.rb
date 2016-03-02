@@ -19,6 +19,23 @@ get '/mimics' do
     to_json(except: :_id)
 end
 
+get '/mimics/:content_hash-:style_hash' do
+  'View uploaed mimic'
+
+  user_hash = session['user_hash']
+  content_hash = params['content_hash']
+  style_hash = params['style_hash']
+
+  @mimic = Mimic.
+    where(user_hash: user_hash).
+    where(content_hash: content_hash).
+    where(style_hash: style_hash).
+    only(:content_hash, :style_hash, :mimic_hash).
+    limit(1).first.to_json(except: :_id)
+
+  erb :show
+end
+
 get '/mimics/new' do
   'Form for new new mimic'
 
