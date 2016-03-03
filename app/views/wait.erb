@@ -1,9 +1,11 @@
 <link rel='stylesheet' href='/stylesheets/2048.css'>
-<div class='text'>
-  <p>Making your Beautiful Mimic can take a couple minutes</p>
-  <p>Enjoy this game of 2048 or make a <a href='/mimics/new'>new mimic</a></p>
+<div id='game'>
+  <div class='text'>
+    <p>Making your Beautiful Mimic can take a couple minutes</p>
+    <p>Enjoy this game of 2048 or make a <a href='/mimics/new'>new mimic</a></p>
+  </div>
+  <div id='boardDiv'></div>
 </div>
-<div id='boardDiv'></div>
 <script>
   ReactDOM.render(React.createElement(BoardView, null), document.getElementById('boardDiv'));
 </script>
