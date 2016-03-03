@@ -338,9 +338,16 @@ var GameEndOverlay = React.createClass({
         contents
       ),
       React.createElement(
+        'a',
+        { className: 'link', href: window.location },
+        'Whatever.',
+        React.createElement('br', null),
+        'View mimic!'
+      ),
+      React.createElement(
         'button',
         { className: 'tryAgain', onClick: this.props.onRestart, onTouchEnd: this.props.onRestart },
-        'Try again'
+        'Not now! Try again.'
       )
     );
   }

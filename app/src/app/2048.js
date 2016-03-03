@@ -309,7 +309,8 @@ var GameEndOverlay = React.createClass({
     return (
       <div className='overlay'>
         <p className='message'>{contents}</p>
-        <button className="tryAgain" onClick={this.props.onRestart} onTouchEnd={this.props.onRestart}>Try again</button>
+        <a className='link' href={window.location}>Whatever.<br />View mimic!</a>
+        <button className="tryAgain" onClick={this.props.onRestart} onTouchEnd={this.props.onRestart}>Not now! Try again.</button>
       </div>
     )
   }

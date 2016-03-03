@@ -26,18 +26,15 @@ get '/mimics/:content_hash-:style_hash' do
   content_hash = params['content_hash']
   style_hash = params['style_hash']
 
-  @mimic = Mimic.
+  mimic = Mimic.
     where(user_hash: user_hash).
     where(content_hash: content_hash).
     where(style_hash: style_hash).
     only(:content_hash, :style_hash, :mimic_hash).
-    limit(1).first.to_json(except: :_id)
+    limit(1).first
 
-  if @mimic['mimic_hash']
-    erb :show
-  else
-    erb :wait
-  end
+  @mimic = mimic.to_json
+  erb mimic.mimic_hash ? :show : :wait
 end
 
 get '/mimics/new' do

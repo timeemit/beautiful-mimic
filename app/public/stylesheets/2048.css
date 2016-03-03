@@ -185,7 +185,7 @@ body {
   background-color: rgba(221, 221, 221, 0.5);
   border-radius: 7px; }
 
-.tryAgain {
+.overlay .tryAgain {
   background-color: #876;
   color: #fff;
   height: 40px;
@@ -199,6 +199,13 @@ body {
 .overlay .message {
   color: #666; }
 
+.overlay .link {
+  text-decoration: inherit;
+  height: 40px;
+  width: 200px;
+  font-size: 30px;
+  border: none;
+  margin-bottom: 70px; }
 
 .position_0_0:not(.isMoving) {
   top: 5;
