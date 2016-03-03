@@ -33,7 +33,11 @@ get '/mimics/:content_hash-:style_hash' do
     only(:content_hash, :style_hash, :mimic_hash).
     limit(1).first.to_json(except: :_id)
 
-  erb :show
+  if @mimic['mimic_hash']
+    erb :show
+  else
+    erb :wait
+  end
 end
 
 get '/mimics/new' do
