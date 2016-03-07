@@ -16,9 +16,9 @@ class Mimic
   field :computed_at, type: Time # set when the mimic is computed
   field :unlocked_at, type: Time # set when the user when the unlocks the mimic
 
-  validates :user_hash, presence: true
+  validates :user_hash, presence: true, uniqueness: {scope: [:content_hash, :style_hash]}
   validates :content_hash, presence: true
-  validates :style_hash, presence: true, uniqueness: [:user_hash, :content_hash]
+  validates :style_hash, presence: true
   validate :content_upload_exists
   validate :style_upload_exists
 
