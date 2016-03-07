@@ -1,3 +1,5 @@
+package 'upstart'
+
 file '/var/log/unicorn.stdout.log' do
   user 'ubuntu'
   action :touch
