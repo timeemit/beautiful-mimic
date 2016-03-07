@@ -83,5 +83,5 @@ post '/mimics' do
     mimic.id
   )
 
-  return 201, mimic.to_json(except: :_id)
+  return 201, mimic.to_json(only: [:content_hash, :style_hash])
 end

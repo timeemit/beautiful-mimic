@@ -38,7 +38,7 @@ describe 'POST /mimics' do
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
-    expect(last_response.body).to eq ''
+    expect(JSON.parse(last_response.body)).to eq({'content_hash' => 'red', 'style_hash' => 'blue'})
 
     assert_success
   end
@@ -49,7 +49,7 @@ describe 'POST /mimics' do
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
-    expect(last_response.body).to eq ''
+    expect(JSON.parse(last_response.body)).to eq({'content_hash' => 'red', 'style_hash' => 'blue'})
 
     assert_success
   end
@@ -60,7 +60,7 @@ describe 'POST /mimics' do
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
-    expect(last_response.body).to eq ''
+    expect(JSON.parse(last_response.body)).to eq({'content_hash' => 'red', 'style_hash' => 'blue'})
 
     assert_success
   end
