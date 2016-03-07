@@ -22,14 +22,6 @@ class Mimic
   validate :content_upload_exists
   validate :style_upload_exists
 
-  def content_upload
-    Upload.where(user_hash: user_hash, file_hash: content_hash).first
-  end
-
-  def style_upload
-    Upload.where(user_hash: user_hash, file_hash: style_hash).first
-  end
-
   private
 
   def content_upload_exists 
