@@ -3,19 +3,19 @@
 
 package 'git'
 
-directory '/opt/bm/compute'
-directory '/opt/bm/compute/lib'
+directory '/opt/compute'
+directory '/opt/compute/lib'
 
-remote_file '/opt/bm/compute/lib/install-deps' do
+remote_file '/opt/compute/lib/install-deps' do
   source 'https://raw.githubusercontent.com/torch/ezinstall/master/install-deps'
 end
 
 execute 'install torch dependencies' do
-  command 'cat /opt/bm/compute/lib/install-deps | bash'
+  command 'cat /opt/compute/lib/install-deps | bash'
   not_if 'which th'
 end
 
-git '/opt/bm/compute/lib/torch' do
+git '/opt/compute/lib/torch' do
   repository 'https://github.com/torch/distro.git'
   enable_submodules true
 end
@@ -23,7 +23,7 @@ end
 execute 'install torch' do
   command './install.sh -b'
   user 'root'
-  cwd '/opt/bm/compute/lib/torch'
+  cwd '/opt/compute/lib/torch'
   not_if 'which th'
 end
 
@@ -34,34 +34,34 @@ package 'libprotobuf-dev'
 package 'protobuf-compiler'
 
 execute 'install loadcaffe' do
-  command '. /opt/bm/compute/lib/torch/install/bin/torch-activate && luarocks install loadcaffe'
+  command '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks install loadcaffe'
   user 'root'
-  not_if '. /opt/bm/compute/lib/torch/install/bin/torch-activate && luarocks show loadcaffe'
+  not_if '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks show loadcaffe'
 end
 
 # STEP 3
 # Install neural-style
 
-git '/opt/bm/compute/lib/neural-style' do
+git '/opt/compute/lib/neural-style' do
   repository 'https://github.com/jcjohnson/neural-style.git'
 end
 
 execute 'install neural-style' do
   command 'sh models/download_models.sh'
   user 'root'
-  cwd '/opt/bm/compute/lib/neural-style'
+  cwd '/opt/compute/lib/neural-style'
   not_if '[ -f moedles/VGG_ILSVRC_19_layers.caffemodel ]'
 end
 
 # STEP 4
 # Install CUDA
 
-remote_file '/opt/bm/compute/lib/cuda' do
+remote_file '/opt/compute/lib/cuda' do
   source 'http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers/rpmdeb/cuda-repo-ubuntu1404-7-0-local_7.0-28_amd64.deb'
 end
 
 dpkg_package 'cuda' do
-  source '/opt/bm/compute/lib/cuda'
+  source '/opt/compute/lib/cuda'
 end
 
 package 'cuda' do
@@ -72,13 +72,13 @@ end
 # Install CUDA backend for Lua
 
 execute 'install cutorch' do
-  command '. /opt/bm/compute/lib/torch/install/bin/torch-activate && luarocks install cutorch'
+  command '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks install cutorch'
   user 'root'
-  not_if '. /opt/bm/compute/lib/torch/install/bin/torch-activate && luarocks show cutorch'
+  not_if '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks show cutorch'
 end
 
 execute 'install cunn' do
-  command '. /opt/bm/compute/lib/torch/install/bin/torch-activate && luarocks install cunn'
+  command '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks install cunn'
   user 'root'
-  not_if '. /opt/bm/compute/lib/torch/install/bin/torch-activate && luarocks show cunn'
+  not_if '. /opt/compute/lib/torch/install/bin/torch-activate && luarocks show cunn'
 end
