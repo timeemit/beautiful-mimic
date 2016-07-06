@@ -1,0 +1,141 @@
+---
+- hosts: all
+  gather_facts: true
+
+  vars:
+    - compute_dir: /opt/compute
+    - cuda_dir: /opt/cuda
+    - torch_dir: '{{compute_dir}}/lib/torch'
+    - neural_dir: '{{compute_dir}}/lib/neural-style'
+  
+  tasks:
+  - name: 'Upload sudoers file'
+    copy: src=../files/sudoers dest=/etc/sudoers.tmp
+    become: yes
+    register: sudoers
+
+  - name: 'Sudoers file'
+    shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers
+    become: yes
+    when: sudoers|changed
+
+  - name: 'Create wheel group'
+    group: name=wheel state=present
+    become: yes
+
+  - name: 'Create bm user'
+    user: name=bm groups=wheel
+    become: yes
+
+  - name: 'SSH directory for bm user'
+    file: state=directory path=/home/bm/.ssh owner=bm group=bm mode=0700
+    become: yes
+    become_user: bm
+
+  - name: 'SSH access for bm user'
+    copy: src=../files/authorized_keys dest=/home/bm/.ssh/authorized_keys owner=bm group=bm mode=0600
+    become: yes
+    become_user: bm
+
+  - name: 'Update aptitude'
+    apt: update_cache=yes
+    become: yes
+
+  - name: 'Upgrade'
+    apt: upgrade=dist
+    become: yes
+
+  - name: 'Create compute directory structure'
+    file: path={{item}} state=directory owner=bm group=bm
+    with_items:
+      - '{{compute_dir}}/..'
+      - '{{compute_dir}}'
+      - '{{compute_dir}}/lib'
+    become: yes
+
+  - name: 'Download CUDA'
+    get_url: url=http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/cuda-repo-ubuntu1404-7-5-local_7.5-18_amd64.deb dest=/opt/cuda.deb owner=bm group=bm
+    become: yes
+
+  - name: 'Unpackage CUDA'
+    apt: deb=/opt/cuda.deb
+    become: yes
+
+  - name: 'Update cache'
+    apt: update_cache=yes
+    become: yes
+
+  - name: 'Install CUDA'
+    apt: name=cuda
+    become: yes
+
+  - name: 'Install dependencides'
+    apt: name={{item}} state=latest
+    with_items:
+      - git
+      - libprotobuf-dev # For loadcaffe
+      - protobuf-compiler # For loadcaffe
+    become: yes
+
+  # Step 1
+  - name: 'Checkout torch library'
+    git: dest={{torch_dir}} repo=https://github.com/torch/distro.git recursive=true
+        version=5b009425b1af3f4a39adab37cbfa202659a75a85 accept_hostkey=true
+    ignore_errors: true # Torch modifies the repo after installation, so ignore changes on subsequent runs
+    become: yes
+    become_user: bm
+
+  - name: 'Install torch dependencies'
+    shell: '{{torch_dir}}/install-deps'
+    args:
+      creates: /opt/OpenBLAS
+    ignore_errors: true
+    become: yes
+    become_user: bm
+
+  - name: 'Install torch'
+    command: './install.sh -b'
+    args:
+      chdir: '{{torch_dir}}'
+      creates: '{{torch_dir}}/install/bin/th'
+    become: yes
+    become_user: bm
+
+  # Step 2
+  - name: 'Install rocks for lua'
+    command: '{{torch_dir}}/install/bin/luarocks install {{item}}'
+    environment:
+      CUDA_BIN_PATH: /usr/local/cuda/bin
+    args:
+      creates: '{{torch_dir}}/install/lib/luarocks/rocks/{{item}}'
+    with_items:
+      - loadcaffe
+      - cutorch
+      - cunn
+      - cudnn
+    become: yes
+    become_user: bm
+
+  # Step 3
+  - name: 'Checkout neural-style'
+    git: dest={{neural_dir}}
+        repo=https://github.com/jcjohnson/neural-style.git
+        version=be42a12bc9f852596fbf37ea9d25b0139f66cfe6
+    become: yes
+    become_user: bm
+
+  - name: 'Make downloader an executable'
+    file: path={{neural_dir}}/models/download_models.sh mode='u+x' state=file
+    become: yes
+    become_user: bm
+
+  - name: 'Download models'
+    shell: ./models/download_models.sh
+    args:
+      chdir: '{{neural_dir}}'
+      creates: '{{neural_dir}}/models/VGG_ILSVRC_19_layers.caffemodel'
+    become: yes
+    become_user: bm
+
+  # Step 4
+  # Install CUDA -- Done by amazon!  Thanks amazon!
