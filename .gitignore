@@ -3,3 +3,4 @@
 .vagrant/
 data/*
 .sass-cache
+ops/syntaxcache/*
