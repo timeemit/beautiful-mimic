@@ -8,7 +8,7 @@ set :repo_url, 'git@github.com:timeemit/beautiful-mimic.git'
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, '/opt/compute/app'
+set :deploy_to, '/opt/beautiful-mimic'
 
 # Default value for :scm is :git
 # set :scm, :git

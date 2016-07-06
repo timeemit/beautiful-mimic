@@ -112,6 +112,3 @@ DEPENDENCIES
   sidekiq (~> 4.0.1)
   sinatra (~> 1.4.6)
   unicorn (~> 5.0.1)
-
-BUNDLED WITH
-   1.10.6

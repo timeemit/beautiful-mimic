@@ -21,7 +21,7 @@
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
-role :compute, %w( 52.33.33.200 )
+role :compute, %w(52.33.216.140)
 
 
 # Configuration
@@ -43,8 +43,8 @@ role :compute, %w( 52.33.33.200 )
 # Global options
 # --------------
 set :ssh_options, {
-  user: 'ubuntu',
-  port: 5555,
+  user: 'bm',
+  port: 22,
   keys: %w(/Users/liamnorris1231853211/.ssh/beautiful-mimic.pem),
   forward_agent: true,
   auth_methods: %w(publickey)
