@@ -1,2 +1,2 @@
 [compute]
-52.40.17.142 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/beautiful-mimic.pem
+52.33.216.140 ansible_ssh_user=ec2-user ansible_ssh_private_key_file=~/.ssh/beautiful-mimic.pem

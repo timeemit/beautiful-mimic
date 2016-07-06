@@ -4,7 +4,6 @@
 
   vars:
     - compute_dir: /opt/compute
-    - cuda_dir: /opt/cuda
     - torch_dir: '{{compute_dir}}/lib/torch'
     - neural_dir: '{{compute_dir}}/lib/neural-style'
   
@@ -37,44 +36,12 @@
     become: yes
     become_user: bm
 
-  - name: 'Update aptitude'
-    apt: update_cache=yes
-    become: yes
-
-  - name: 'Upgrade'
-    apt: upgrade=dist
-    become: yes
-
   - name: 'Create compute directory structure'
-    file: path={{item}} state=directory owner=bm group=bm
-    with_items:
-      - '{{compute_dir}}/..'
-      - '{{compute_dir}}'
-      - '{{compute_dir}}/lib'
+    file: path={{compute_dir}} state=directory owner=bm group=bm
     become: yes
 
-  - name: 'Download CUDA'
-    get_url: url=http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/cuda-repo-ubuntu1404-7-5-local_7.5-18_amd64.deb dest=/opt/cuda.deb owner=bm group=bm
-    become: yes
-
-  - name: 'Unpackage CUDA'
-    apt: deb=/opt/cuda.deb
-    become: yes
-
-  - name: 'Update cache'
-    apt: update_cache=yes
-    become: yes
-
-  - name: 'Install CUDA'
-    apt: name=cuda
-    become: yes
-
-  - name: 'Install dependencides'
-    apt: name={{item}} state=latest
-    with_items:
-      - git
-      - libprotobuf-dev # For loadcaffe
-      - protobuf-compiler # For loadcaffe
+  - name: 'Install git'
+    yum: name=git state=latest update_cache=yes
     become: yes
 
   # Step 1
@@ -102,10 +69,16 @@
     become_user: bm
 
   # Step 2
+  - name: 'Install luarock dependencides'
+    yum: name={{item} state=latest update_cache=yes
+    with_items:
+      - protobuf-devel # loadcaffe
+    become: yes
+
   - name: 'Install rocks for lua'
     command: '{{torch_dir}}/install/bin/luarocks install {{item}}'
     environment:
-      CUDA_BIN_PATH: /usr/local/cuda/bin
+      CUDA_BIN_PATH: /opt/nvidia/cuda/bin
     args:
       creates: '{{torch_dir}}/install/lib/luarocks/rocks/{{item}}'
     with_items:
