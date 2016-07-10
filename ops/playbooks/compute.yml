@@ -82,7 +82,11 @@
     args:
       creates: '{{torch_dir}}/install/lib/luarocks/rocks/{{item}}'
     with_items:
+      - image
+      - sys
+      - torch
       - loadcaffe
+      - nn
       - cutorch
       - cunn
       - cudnn
