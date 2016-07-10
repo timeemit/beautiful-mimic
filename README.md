@@ -24,11 +24,13 @@ This permission still needs to be granted manually.
 
 ```
 cd /opt/compute/lib/neural-style/
-mkdir /opt/code/current/splash/assets/images/combos
-/opt/compute/lib/torch/install/bin/th neural_style.lua -gpu 0 \
-  -content_image /opt/code/current/splash/assets/images/frank-sinatra.jpg \
-  -style_image /opt/code/current/splash/assets/images/bottle-of-anis.jpg \
-  -output_image /opt/code/current/splash/assets/images/combos/frank-sinatra+bottle-of-anis.jpg
+mkdir /opt/beautiful-mimic/current/splash/assets/images/combos
+LD_LIBRARY_PATH=/opt/nvidia/cuda/lib64/:$LD_LIBRARY_PATH CUDA_BIN_PATH=/opt/nvidia/cuda/bin \ 
+  /opt/compute/lib/torch/install/bin/th neural_style.lua \
+  -gpu 0 -backend cudnn -cudnn_autotune \
+  -content_image /opt/beautiful-mimic/current/splash/assets/images/frank-sinatra.jpg \
+  -style_image /opt/beautiful-mimic/current/splash/assets/images/great-wave.jpg \
+  -output_image /opt/beautiful-mimic/current/splash/assets/images/combos/frank-sinatra+great-wave.jpg
 ```
 
 ## Development notes
