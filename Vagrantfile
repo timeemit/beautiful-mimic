@@ -54,9 +54,15 @@ Vagrant.configure(2) do |config|
     end
   end
 
+  config.vm.define 'mongodb' do |compute|
+    compute.vm.provision 'ansible' do |ansible|
+      ansible.playbook = './ops/playbooks/mongodb.yml'
+    end
+  end
+
   config.vm.define 'compute' do |compute|
-    compute.vm.provision 'chef_zero' do |chef|
-      chef.run_list = 'compute'
+    compute.vm.provision 'ansible' do |ansible|
+      ansible.playbook = './ops/playbooks/compute.yml'
     end
   end
 end
