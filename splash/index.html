@@ -125,13 +125,16 @@
     </div>
     <div class='pure-u-1 pure-u-lg-1-5'>
       <img class='center' src='../assets/images/logo-yellow.png'>
-      <div class='page-break-mini' style='width:100%;height:200px;border:1px solid black;'></div>
+      <div class='center img-ctrl'>
+        <img class='pure-img center js-combo-img' src='../assets/images/combos/marilyn-monroe+great-wave.jpg'>
+      </div>
     </div>
 
   </div>
 
   <script>
     $('.js-chosen').click(function(){
+      // Toggle the drawer visibility
       var $this = $(this);
       var $img = $this.siblings('.js-image-drawer');
       if ( $img.hasClass('hidden') ) {
@@ -144,13 +147,32 @@
     });
 
     $('.js-image-drawer .img-ctrl').click(function(){
+      // Choose the image
       var $this = $(this);
       var src = $this.find('img').prop('src');
       $this.closest('.pure-g').find('.img-ctrl').removeClass('active');
       $this.addClass('active');
       $this.closest('.js-image-drawer').siblings('.js-chosen').prop('src', src);
+      $this.closest('.js-image-drawer').siblings('.js-chosen').prop('src', src);
+      determineCombo();
     });
+
+    function determineCombo() {
+      var re = /[a-zA-Z-]+(?=.jpg)/;
+      var sources = $('.js-chosen').map(function(i, item){
+        console.log(item);
+        return $(item).prop('src');
+      });
+      console.log(sources);
+      console.log(sources[0].match(re));
+      console.log(sources[1].match(re));
+      var contentTitle = sources[0].match(re)[0];
+      var styleTitle = sources[1].match(re)[0];
+      var comboSource = '../assets/images/combos/'+contentTitle+'+'+styleTitle+'.jpg';
+      $('.js-combo-img').prop('src', comboSource);
+    }
   </script>
+
   <!-- Google Analytics -->
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
