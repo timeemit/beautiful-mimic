@@ -31,7 +31,7 @@ PAGE_COUNT = 15
 
 before do
   # Set a cookie with key `user_hash` to be a random hash
-  session['user_hash'] ||= SecureRandom.hex(30)
+  session['user_hash'] ||= SecureRandom.hex(16)
 end
 
 # Views
