@@ -94,40 +94,6 @@ img.logo {
   cursor: pointer;
 }
 
-@media screen and (min-width: 64em) {
-  .drawer {
-    width: 280px;
-    left: -70px;
-  }
-  
-  /* Disable the border specified for smaller screens */
-  .drawer .img-ctrl img:hover {
-    border: none;
-    cursor: pointer;
-  }
-
-  .drawer .img-ctrl.active img {
-    border: none;
-  }
-
-  .drawer .img-ctrl:not(.active) img {
-    border: none;
-  }
-  /* End disablers */
-
-  .drawer .img-ctrl.active {
-    border: 3px solid #FFF176;
-  }
-
-  .drawer .img-ctrl:not(.active) {
-    border: 3px solid #D6D6D6; /* Grey border */
-  }
-
-  .drawer .img-ctrl:hover {
-    border: 3px solid #EA80FC;
-  }
-}
-
 .hover-yellow-border:hover {
   border-color: #FFF176;
   cursor: pointer;
