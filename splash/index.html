@@ -4,31 +4,29 @@
   <title>beautiful mimic</title>
   <!-- Favicons -->
   <!-- Generated at http://www.favicon-generator.org -->
-  <link rel='apple-touch-icon' sizes='57x57' href='../assets/images/favicons/apple-icon-57x57.png'>
-  <link rel='apple-touch-icon' sizes='60x60' href='../assets/images/favicons/apple-icon-60x60.png'>
-  <link rel='apple-touch-icon' sizes='72x72' href='../assets/images/favicons/apple-icon-72x72.png'>
-  <link rel='apple-touch-icon' sizes='76x76' href='../assets/images/favicons/apple-icon-76x76.png'>
-  <link rel='apple-touch-icon' sizes='114x114' href='../assets/images/favicons/apple-icon-114x114.png'>
-  <link rel='apple-touch-icon' sizes='120x120' href='../assets/images/favicons/apple-icon-120x120.png'>
-  <link rel='apple-touch-icon' sizes='144x144' href='../assets/images/favicons/apple-icon-144x144.png'>
-  <link rel='apple-touch-icon' sizes='152x152' href='../assets/images/favicons/apple-icon-152x152.png'>
-  <link rel='apple-touch-icon' sizes='180x180' href='../assets/images/favicons/apple-icon-180x180.png'>
-  <link rel='icon' type='image/png' sizes='192x192' href='../assets/images/favicons/android-icon-192x192.png'>
-  <link rel='icon' type='image/png' sizes='32x32' href='../assets/images/favicons/favicon-32x32.png'>
-  <link rel='icon' type='image/png' sizes='96x96' href='../assets/images/favicons/favicon-96x96.png'>
-  <link rel='icon' type='image/png' sizes='16x16' href='../assets/images/favicons/favicon-16x16.png'>
-  <link rel='manifest' href='../assets/images/favicons/manifest.json'>
+  <link rel='apple-touch-icon' sizes='57x57' href='images/favicons/apple-icon-57x57.png'>
+  <link rel='apple-touch-icon' sizes='60x60' href='images/favicons/apple-icon-60x60.png'>
+  <link rel='apple-touch-icon' sizes='72x72' href='images/favicons/apple-icon-72x72.png'>
+  <link rel='apple-touch-icon' sizes='76x76' href='images/favicons/apple-icon-76x76.png'>
+  <link rel='apple-touch-icon' sizes='114x114' href='images/favicons/apple-icon-114x114.png'>
+  <link rel='apple-touch-icon' sizes='120x120' href='images/favicons/apple-icon-120x120.png'>
+  <link rel='apple-touch-icon' sizes='144x144' href='images/favicons/apple-icon-144x144.png'>
+  <link rel='apple-touch-icon' sizes='152x152' href='images/favicons/apple-icon-152x152.png'>
+  <link rel='apple-touch-icon' sizes='180x180' href='images/favicons/apple-icon-180x180.png'>
+  <link rel='icon' type='image/png' sizes='192x192' href='images/favicons/android-icon-192x192.png'>
+  <link rel='icon' type='image/png' sizes='32x32' href='images/favicons/favicon-32x32.png'>
+  <link rel='icon' type='image/png' sizes='96x96' href='images/favicons/favicon-96x96.png'>
+  <link rel='icon' type='image/png' sizes='16x16' href='images/favicons/favicon-16x16.png'>
+  <link rel='manifest' href='images/favicons/manifest.json'>
   <meta name='msapplication-TileColor' content='#ffffff'>
-  <meta name='msapplication-TileImage' content='../assets/images/favicons/ms-icon-144x144.png'>
+  <meta name='msapplication-TileImage' content='images/favicons/ms-icon-144x144.png'>
   <meta name='theme-color' content='#ffffff'>
   <!-- End Favicons -->
 
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'>
-  <link rel='stylesheet' href='../assets/stylesheets/pure.min.css'>
-  <link rel='stylesheet' href='../assets/stylesheets/grids-responseive.min.css'>
-  <link rel='stylesheet' href='../assets/stylesheets/app.css'>
+  <link rel='stylesheet' href='stylesheet.css'>
 
-  <script src='../assets/javascripts/jquery.min.js'></script>
+  <script src='javascript.js'></script>
 </head>
 <body>
 
@@ -36,7 +34,7 @@
   <div class='header center'>
     <div class='pure-g'>
       <div class='pure-u-1-8'>
-        <img class='logo' src='../assets/images/logo-yellow.png'>
+        <img class='logo' src='images/logo-yellow.png'>
       </div>
       <div class='pure-u-1-5'>
         <h1>
@@ -168,7 +166,7 @@
       console.log(sources[1].match(re));
       var contentTitle = sources[0].match(re)[0];
       var styleTitle = sources[1].match(re)[0];
-      var comboSource = '../assets/images/combos/'+contentTitle+'+'+styleTitle+'.jpg';
+      var comboSource = 'images/combos/'+contentTitle+'+'+styleTitle+'.jpg';
       $('.js-combo-img').prop('src', comboSource);
     }
   </script>
