@@ -54,6 +54,7 @@ end
 IO.write(JS_OUTPUT, Uglifier.compile(js_source))
 IO.write(CSS_OUTPUT, Sass::Engine.new(css_source, style: :compressed, syntax: :scss).render)
 
+exit if ENVIRONMENT == 'development'
 # Upload to S3
 S3_OPTS = {bucket: BUCKET, acl: 'public-read'}
 
