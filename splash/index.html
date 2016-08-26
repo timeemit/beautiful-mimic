@@ -190,7 +190,7 @@
 
     function determineCombo() {
       var re = /[a-zA-Z-]+(?=.jpg)/;
-      var sources = $('.js-chosen').map(function(i, item){
+      var sources = $('.js-chosen img').map(function(i, item){
         return $(item).prop('src');
       });
       var contentTitle = sources[0].match(re)[0];
