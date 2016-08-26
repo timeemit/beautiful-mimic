@@ -121,7 +121,7 @@
             <!-- Drawer -->
             <div class='pure-g drawer green-background center'>
               <div class='pure-u-1-2'>
-                <div class='center img-ctrl js-active'>
+                <div class='center img-ctrl'>
                   <img class='pure-img center' src='images/creation-of-adam.jpg'>
                 </div>
               </div>
@@ -136,7 +136,7 @@
                 </div>
               </div>
               <div class='pure-u-1-2'>
-                <div class='center img-ctrl'>
+                <div class='center img-ctrl js-active'>
                   <img class='pure-img center' src='images/great-wave.jpg'>
                 </div>
               </div>
@@ -165,8 +165,9 @@
   </div>
 
   <script>
+    // Toggle the drawer visibility
     $('.js-chosen').click(function(){
-      // Toggle the drawer visibility
+      clearInterval(window.rotator);
       var $this = $(this);
       var $img = $this.closest('.js-image-wizard').find('.js-image-drawer');
       if ( $img.hasClass('hidden') ) {
@@ -178,6 +179,7 @@
       }
     });
 
+    // Choose an image
     $('.js-image-drawer .img-ctrl').click(function(){
       // Choose the image
       var $this = $(this);
@@ -188,6 +190,7 @@
       determineCombo();
     });
 
+    // Determine the combination photo when an image is changed.
     function determineCombo() {
       var re = /[a-zA-Z-]+(?=.jpg)/;
       var sources = $('.js-chosen img').map(function(i, item){
@@ -198,6 +201,26 @@
       var comboSource = 'images/combos/'+contentTitle+'+'+styleTitle+'.jpg';
       $('.js-combo-img').prop('src', comboSource);
     }
+
+    // Rotate through images every 4 seconds until a drawer is opened.
+    function rotateImages() {
+      // Collect context
+      $active = $('.js-image-wizard').last().find('.js-active');
+      index = $active.closest('.pure-u-1-2').index();
+
+      // Deactivate previous image
+      $active.removeClass('js-active');
+
+      // Activate next image
+      $images = $active.closest('.drawer').find('.img-ctrl');
+      if ( index + 1 == $images.length || index < 0 ) {
+        $images.first().trigger('click');
+      } else {
+        $($images.get(index+1)).trigger('click');
+      }
+    }
+
+    window.rotator = setInterval(rotateImages, 4000)
   </script>
 
   <!-- Google Analytics -->
