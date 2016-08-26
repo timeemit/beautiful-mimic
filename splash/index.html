@@ -55,7 +55,12 @@
           <h1 class='center-text'>Photo</h1>
         </div>
         <div class='pure-u-1'>
-          <img class='pure-img center grey-border hover-yellow-border js-chosen' src='images/marilyn-monroe.jpg'>
+          <div class='pure-g js-chosen'>
+            <div class='pure-u-1 grey-border hover-yellow-border'>
+              <img class='pure-img' src='images/marilyn-monroe.jpg'>
+            </div>
+            <button class='pure-u-1 pure-button center'><i class='fa fa-edit'></i></button>
+          </div>
         </div>
         <div class='pure-u-1'>
           <div class='pure-g hidden image-drawer js-image-drawer'>
@@ -68,7 +73,7 @@
             <!-- Drawer -->
             <div class='pure-g drawer green-background center'>
               <div class='pure-u-1-2'>
-                <div class='center img-ctrl active'>
+                <div class='center img-ctrl js-active'>
                   <img class='pure-img center' src='images/marilyn-monroe.jpg'>
                 </div>
               </div>
@@ -98,7 +103,12 @@
           <h1 class='center-text'>Style</h1>
         </div>
         <div class='pure-u-1'>
-          <img class='pure-img center grey-border hover-yellow-border js-chosen' src='images/great-wave.jpg'>
+          <div class='pure-g js-chosen'>
+            <div class='pure-u-1 grey-border hover-yellow-border'>
+              <img class='pure-img' src='images/great-wave.jpg'>
+            </div>
+            <button class='pure-button pure-u-1 center'><i class='fa fa-edit'></i></button>
+          </div>
         </div>
         <div class='pure-u-1'>
           <div class='pure-g hidden image-drawer js-image-drawer'>
@@ -111,7 +121,7 @@
             <!-- Drawer -->
             <div class='pure-g drawer green-background center'>
               <div class='pure-u-1-2'>
-                <div class='center img-ctrl active'>
+                <div class='center img-ctrl js-active'>
                   <img class='pure-img center' src='images/creation-of-adam.jpg'>
                 </div>
               </div>
@@ -172,9 +182,9 @@
       // Choose the image
       var $this = $(this);
       var src = $this.find('img').prop('src');
-      $this.closest('.js-image-wizard').find('.img-ctrl').removeClass('active');
-      $this.closest('.js-image-wizard').find('.js-chosen').prop('src', src);
-      $this.addClass('active');
+      $this.closest('.js-image-wizard').find('.js-active').removeClass('js-active');
+      $this.closest('.js-image-wizard').find('.js-chosen img').prop('src', src);
+      $this.addClass('js-active');
       determineCombo();
     });
 
