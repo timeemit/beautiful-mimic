@@ -21,7 +21,7 @@ body {
 .yellow-border { border: 3px solid #FFF176; } 
 
 .green-background { background-color: #26A69A; }
-.green-border { border: 3px solid #009688; }
+.green-border { border: 3px solid #80CBC4; }
 
 .grey-background { background-color: #D6D6D6; }
 .grey-border { border: 3px solid #D6D6D6; }
@@ -69,7 +69,6 @@ img.logo {
 .drawer {
   position: relative;
   padding: 10px;
-  border: 3px solid #D6D6D6;
 }
 
 .drawer .img-ctrl.js-active {
@@ -88,4 +87,9 @@ img.logo {
 .hover-yellow-border:hover {
   border-color: #FFF176;
   cursor: pointer;
+}
+
+.rounded-bottom {
+  border-bottom-left-radius: 30%;
+  border-bottom-right-radius: 30%;
 }

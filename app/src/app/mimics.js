@@ -43,7 +43,6 @@ var Mimics = React.createClass({
     });
     return (
       <div>
-        <h1 className='center-text'>My Mimics</h1>
         <div className='pure-g mimics-index'>
           { mimics }
         </div>

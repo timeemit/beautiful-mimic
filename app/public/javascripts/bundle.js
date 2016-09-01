@@ -433,11 +433,6 @@ var Mimics = React.createClass({
       'div',
       null,
       React.createElement(
-        'h1',
-        { className: 'center-text' },
-        'My Mimics'
-      ),
-      React.createElement(
         'div',
         { className: 'pure-g mimics-index' },
         mimics
@@ -458,20 +453,24 @@ var ChosenImage = React.createClass({
       { transitionName: 'chosen-image', transitionEnterTimeout: 2000, transitionLeaveTimeout: 1500, transitionAppearTimeout: 2000, transitionAppear: true },
       React.createElement(
         'div',
-        { key: this.props.file_hash, onClick: this.props.click_handler, className: 'pure-g' },
+        { key: this.props.file_hash, onClick: this.props.click_handler, className: 'pure-g chosen-image' },
         React.createElement(
           'div',
           { className: 'pure-u-4-5 center' },
           React.createElement(
             'div',
-            { className: 'grey-border hover-yellow-border' },
-            React.createElement('img', { className: 'pure-u-1 pure-img', src: '/files/' + this.props.file_hash + '?style=original' })
+            { className: 'pure-g display' },
+            React.createElement(
+              'div',
+              { className: 'container center' },
+              React.createElement('img', { className: 'center grey-border hover-yellow-border', src: '/files/' + this.props.file_hash + '?style=original' }),
+              React.createElement(
+                'button',
+                { className: 'pure-button rounded-bottom' },
+                React.createElement('i', { className: 'fa fa-2x fa-hand-pointer-o' })
+              )
+            )
           )
-        ),
-        React.createElement(
-          'button',
-          { className: 'pure-u-4-5 pure-button center' },
-          React.createElement('i', { className: 'fa fa-edit' })
         )
       )
     );
@@ -569,7 +568,7 @@ var NewMimic = React.createClass({
       { className: 'pure-g' },
       React.createElement(
         'div',
-        { className: 'pure-u-1-2' },
+        { className: 'pure-u-1-2 image-select' },
         React.createElement(
           'h1',
           { className: 'center-text' },
@@ -579,7 +578,7 @@ var NewMimic = React.createClass({
       ),
       React.createElement(
         'div',
-        { className: 'pure-u-1-2' },
+        { className: 'pure-u-1-2 image-select' },
         React.createElement(
           'h1',
           { className: 'center-text' },
@@ -598,11 +597,15 @@ var NewMimic = React.createClass({
       ),
       React.createElement(
         'button',
-        { onClick: this.submit, className: 'pure-button pure-button-primary pure-u-1 page-break' },
+        { onClick: this.submit, className: 'pure-button pure-u-1 page-break mimic-submit' },
         React.createElement(
           'h2',
           { className: 'center-text' },
-          'Make a Mimic'
+          React.createElement(
+            'i',
+            { className: 'fa fa-2x' },
+            '+'
+          )
         )
       )
     );
@@ -623,7 +626,7 @@ var ImageDrawer = React.createClass({
       React.createElement(ImageDrawerTip, { left: this.props.left }),
       React.createElement(
         'div',
-        { className: 'drawer green-background center' },
+        { className: 'drawer green-background dark-green-border center' },
         React.createElement(Uploader, { add_upload: this.props.add_upload }),
         React.createElement(UploadedImages, { choice_handler: this.props.choice_handler, chosen: this.props.chosen, uploads: this.props.uploads })
       )
@@ -647,14 +650,14 @@ var ImageDrawerTip = React.createClass({
         { className: 'pure-g' },
         React.createElement(
           'div',
-          { className: 'pure-u-1 pure-u-lg-1-2' },
+          { className: 'pure-u-1-2' },
           ' ',
           tip,
           ' '
         ),
         React.createElement(
           'div',
-          { className: 'pure-u-1 pure-u-lg-1-2' },
+          { className: 'pure-u-1-2' },
           ' '
         )
       );
@@ -664,12 +667,12 @@ var ImageDrawerTip = React.createClass({
         { className: 'pure-g' },
         React.createElement(
           'div',
-          { className: 'pure-u-1 pure-u-lg-1-2' },
+          { className: 'pure-u-1-2' },
           ' '
         ),
         React.createElement(
           'div',
-          { className: 'pure-u-1 pure-u-lg-1-2' },
+          { className: 'pure-u-1-2' },
           ' ',
           tip,
           ' '
@@ -746,11 +749,7 @@ var Uploader = React.createClass({
         React.createElement(
           'span',
           null,
-          React.createElement(
-            'i',
-            { className: 'fa fa-upload' },
-            ' Upload'
-          )
+          React.createElement('i', { className: 'fa fa-2x fa-upload' })
         ),
         React.createElement('input', { type: 'file', onChange: this.submit, className: 'upload' })
       )

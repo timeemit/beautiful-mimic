@@ -20,7 +20,7 @@ var Uploader = React.createClass({
       <h3>
         <label className='file-upload center pure-button'>
           <span>
-            <i className='fa fa-upload'> Upload</i>
+            <i className='fa fa-2x fa-upload'></i>
           </span>
           <input type='file' onChange={this.submit} className='upload'></input>
         </label>

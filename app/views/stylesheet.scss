@@ -1,6 +1,7 @@
 $blue: #B3E5FC;
 $yellow: #FFF176;
-$green: #009688;
+$green: #26A69A;;
+$dark-green: #80CBC4;
 $grey: #D6D6D6;
 $magenta: #EA80FC;
 
@@ -53,13 +54,9 @@ img.logo {
   font-weight: lighter;
 }
 
-.green-background {
-  background: $green;
-}
-
-.grey-border {
-  border: 4px solid $grey;
-}
+.green-background { background: $green; }
+.dark-green-border { border: 3px solid $dark-green; }
+.grey-border { border: 4px solid $grey; }
 
 .hover-yellow-border:hover {
   border-color: $yellow;
@@ -104,7 +101,6 @@ img.logo {
 .drawer {
   position: relative;
   padding: 10px;
-  border: 6px solid $grey;
 }
 
 .drawer .img-ctrl img {
@@ -145,27 +141,49 @@ img.logo {
   transition: opacity 300ms ease-in;
 }
 
+.image-select {
+  height: 400px;
+}
+
+.image-select .display {
+  max-height: 250px;
+  width: auto;
+}
+
+.image-select .display .container {
+  max-height: inherit;
+  width: auto;
+}
+
+.image-select .display .container img {
+  max-height: inherit;
+  width: auto;
+}
+
+.image-select .display .container button {
+  width: 100%;
+}
+
 .chosen-image-appear, .chosen-image-enter {
-  max-width: 0%;
   opacity: 0;
+  height: 0%;
 }
 
 .chosen-image-appear.chosen-image-appear-active, .chosen-image-enter.chosen-image-enter-active {
-  max-width: 100%;
   opacity: 1;
-  transition: max-width 2000ms, opacity 2000ms;
+  height: 100%;
+  transition: opacity 2000ms, height 2000ms;
 }
 
 .chosen-image-leave {
-  max-width: 100%;
   opacity: 1;
-  overflow: hidden;
+  height: 100%;
 }
 
 .chosen-image-leave.chosen-image-leave-active {
-  max-width: 0%;
   opacity: 0;
-  transition: max-width 1500ms, opacity 1500ms;
+  height: 100%;
+  transition: opacity 1500ms, height 1500ms;
 }
 
 label.file-upload input[type="file"] {
@@ -185,4 +203,19 @@ label.file-upload input[type="file"] {
 
 .margin-above {
   margin-top: 10px;
+}
+
+.mimic-submit {
+  transition: all 300ms ease;
+}
+
+.mimic-submit:hover {
+  border-radius: 3em;
+  background-color: #0078e7;
+  color: #fff;
+}
+
+.rounded-bottom {
+  border-bottom-left-radius: 30%;
+  border-bottom-right-radius: 30%;
 }

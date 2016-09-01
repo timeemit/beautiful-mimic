@@ -9,15 +9,15 @@ var ImageDrawerTip = React.createClass({
     if ( this.props.left ) {
       return ( 
         <div className='pure-g'>
-          <div className="pure-u-1 pure-u-lg-1-2"> { tip } </div>
-          <div className="pure-u-1 pure-u-lg-1-2"> </div>
+          <div className="pure-u-1-2"> { tip } </div>
+          <div className="pure-u-1-2"> </div>
         </div>
       )
     } else {
       return (
         <div className='pure-g'>
-          <div className="pure-u-1 pure-u-lg-1-2"> </div>
-          <div className="pure-u-1 pure-u-lg-1-2"> {tip} </div>
+          <div className="pure-u-1-2"> </div>
+          <div className="pure-u-1-2"> {tip} </div>
         </div>
       )
     }
