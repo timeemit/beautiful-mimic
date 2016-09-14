@@ -4,3 +4,6 @@
 data/*
 .sass-cache
 ops/syntaxcache/*
+app/environments/*
+splash/javascript.js
+splash/stylesheet.css
