@@ -2,6 +2,30 @@
 
 Imitate beautiful art with your selfies.
 
+## Docker
+
+Docker is used to deploy the app on kubernetes on Google Cloud.  
+
+Build with:
+
+```
+docker build -t bm-app .
+docker tag -f bm-app:<tag> us.gcr.io/fleet-authority-143304/bm-app
+```
+
+Push to cloud with
+
+```
+docker tag -f bm-app:<tag> us.gcr.io/fleet-authority-143304/bm-app
+```
+
+Deploy with
+
+```
+kubectl rolling-update bm-prod-app --image=us.gcr.io/fleet-authority-143304/bm-app:<tag>
+```
+
+
 ## MongoDB
 
 Hosted on `compose.com`
