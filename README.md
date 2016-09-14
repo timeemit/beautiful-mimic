@@ -2,6 +2,14 @@
 
 Imitate beautiful art with your selfies.
 
+## MongoDB
+
+Hosted on `compose.com`
+
+```
+mongo --ssl --sslCAFile app/environments/prod.pem aws-us-east-1-portal.12.dblayer.com:15330/bm_app_production -u bm_prod_user -p <password>
+```
+
 ## AWS
 
 AMI Instance: Amazon Linux AMI 2015.09.2 x86_64 Graphics HVM EBS
