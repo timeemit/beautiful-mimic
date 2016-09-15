@@ -8,6 +8,10 @@ gem 'mini_magick', '~> 4.3.6'
 gem 'sidekiq', '~> 4.0.1'
 gem 'sass', '~> 3.4.19'
 
+group :development do
+  gem 'rerun'
+end
+
 group :test do
   gem 'rspec', '~> 3.4.0'
   gem 'rack-test', '~> 0.6.3'
