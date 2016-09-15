@@ -79,30 +79,4 @@ describe Mimic do
     expect(mimic).to be_invalid
     expect(mimic.errors.full_messages).to eql ["Style hash can't be blank", "Style hash not uploaded"]
   end
-
-  it 'associates with a content upload' do
-    content_upload = Upload.create!(user_hash: 'neo', filename: 'redpill.png', file_hash: 'truth')
-    style_upload = Upload.create!(user_hash: 'neo', filename: 'bluepill.png', file_hash: 'bliss')
-    mimic = Mimic.new(user_hash: 'neo')
-    expect(mimic.content_upload).to be nil
-    expect(mimic.style_upload).to be nil
-
-    # Assignment
-    mimic.content_hash = content_upload.file_hash
-    mimic.style_hash = style_upload.file_hash
-    expect(mimic.content_hash).to_not be nil
-    expect(mimic.style_hash).to_not be nil
-
-    # Assert
-    expect(mimic.content_upload).to eql content_upload
-    expect(mimic.style_upload).to eql style_upload
-
-    # Persist
-    expect(mimic).to be_valid
-    expect(mimic.save).to be true
-
-    # Inverse
-    expect(content_upload.content_mimics.first).to eql mimic
-    expect(style_upload.style_mimics.first).to eql mimic
-  end
 end
