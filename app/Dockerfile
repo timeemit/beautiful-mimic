@@ -1,4 +1,4 @@
-FROM ruby:2.2
+FROM ruby:2.3
 EXPOSE 4567
 COPY . .
 RUN bundle install
