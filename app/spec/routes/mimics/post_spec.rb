@@ -7,6 +7,11 @@ describe 'POST /mimics' do
   end
 
   def assert_success
+    expect(JSON.parse(last_response.body)).to eq({
+      '_id' => {'$oid' => Mimic.last.id.to_s},
+      'content_hash' => 'red',
+      'style_hash' => 'blue'
+    })
     expect(Mimic.count).to eql 1
     expect(MimicMaker.jobs.size).to eql 1
   end
@@ -38,7 +43,22 @@ describe 'POST /mimics' do
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
-    expect(JSON.parse(last_response.body)).to eq({'content_hash' => 'red', 'style_hash' => 'blue'})
+
+    assert_success
+  end
+
+  it 'Returns success response for a resubmission' do
+    Upload.create!(user_hash: 'neo', file_hash: 'red', filename: 'redpill.jpg')
+    Upload.create!(user_hash: 'neo', file_hash: 'blue', filename: 'bluepill.jpg')
+
+    post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
+    expect(last_response.status).to eq 201
+
+    assert_success
+    Sidekiq::Worker.clear_all
+
+    post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
+    expect(last_response.status).to eq 200
 
     assert_success
   end
@@ -49,7 +69,6 @@ describe 'POST /mimics' do
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
-    expect(JSON.parse(last_response.body)).to eq({'content_hash' => 'red', 'style_hash' => 'blue'})
 
     assert_success
   end
@@ -60,7 +79,6 @@ describe 'POST /mimics' do
 
     post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
-    expect(JSON.parse(last_response.body)).to eq({'content_hash' => 'red', 'style_hash' => 'blue'})
 
     assert_success
   end

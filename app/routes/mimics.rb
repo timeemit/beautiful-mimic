@@ -16,7 +16,7 @@ get '/mimics' do
     sort(created_at: -1).
     limit(PAGE_COUNT).
     skip(PAGE_COUNT * (page - 1)).
-    to_json
+    to_json(only: [:_id, :content_hash, :style_hash, :mimic_hash])
 end
 
 get '/mimics/new' do
@@ -48,12 +48,27 @@ post '/mimics' do
   # Queue a Sidekiq task
 
   user_hash = session['user_hash']
+  content_hash = params['content_hash']
+  style_hash = params['style_hash']
 
-  begin
-    content_hash = params[:content_hash]
-    style_hash = params[:style_hash]
-  rescue => e
-    return 400, {message: 'invalid'}
+  # Check if this has been made already
+  mimic = Mimic.
+    where(user_hash: user_hash).
+    where(content_hash: content_hash).
+    where(style_hash: style_hash).
+    limit(1).
+    first
+
+  if mimic
+    # Requeue in case it hasn't gone through yet
+    if not mimic.mimic_hash
+      MimicMaker.perform_async(
+        bucket = settings.env['S3']['bucket'],
+        mimic.id
+      )
+    end
+
+    return 200, mimic.to_json(only: [:_id, :content_hash, :style_hash])
   end
 
   # Object
@@ -80,5 +95,5 @@ post '/mimics' do
     mimic.id
   )
 
-  return 201, mimic.to_json(only: [:content_hash, :style_hash])
+  return 201, mimic.to_json(only: [:_id, :content_hash, :style_hash])
 end
