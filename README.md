@@ -36,8 +36,8 @@ mongo --ssl --sslCAFile app/environments/prod.pem aws-us-east-1-portal.12.dblaye
 
 ## AWS
 
-AMI Instance: Amazon Linux AMI 2015.09.2 x86_64 Graphics HVM EBS
-Instance Type: g2.2xlarge
+*AMI Instance*: Amazon Linux AMI 2015.09.2 x86_64 Graphics HVM EBS
+*Instance Type*: g2.2xlarge
 
 ## Provision and Deploy
 
@@ -65,7 +65,10 @@ LD_LIBRARY_PATH=/opt/nvidia/cuda/lib64/:$LD_LIBRARY_PATH CUDA_BIN_PATH=/opt/nvid
   -output_image /opt/beautiful-mimic/current/splash/assets/images/combos/frank-sinatra+great-wave.jpg
 ```
 
-## Development notes
+## App Development Notes
+
+Use _rerun_ to for a local web server:
+`rerun -i 'src/*' -i 'public/*' unicorn`
 
 To build _bundle.js_:
 
