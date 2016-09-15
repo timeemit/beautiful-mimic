@@ -72,7 +72,7 @@ Use _rerun_ to for a local web server:
 
 To build _bundle.js_:
 
-`babel --presets react src/app --watch --out-file public/javascripts/bundle.js`
+`babel --presets react src/app --watch --compact --out-file public/javascripts/bundle.js`
 
 To build _react-bundle.js_:
 
