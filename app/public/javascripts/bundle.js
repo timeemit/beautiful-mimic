@@ -352,18 +352,45 @@ var GameEndOverlay = React.createClass({
     );
   }
 });
+var MimicImg = React.createClass({
+  displayName: 'MimicImg',
+
+  render: function () {
+    var mimic = this.props.mimic;
+
+    if (mimic.mimic_hash) {
+      return React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.mimic_hash });
+    } else {
+      return React.createElement('img', { className: 'pure-img center rotate', src: '/images/logo-yellow.png' });
+    }
+  }
+});
 var MimicShow = React.createClass({
   displayName: 'MimicShow',
 
   render: function () {
+    var mimic_img = null;
     var mimic = this.props.mimic;
+
+    var print_button = null;
+    if (mimic.mimic_hash) {
+      print_button = React.createElement(
+        'a',
+        { href: '/files/' + mimic.mimic_hash + '/print', className: 'pure-u-1 pure-button pure-button-primary page-break' },
+        React.createElement(
+          'h2',
+          { className: 'center-text' },
+          React.createElement('i', { className: 'fa fa-2x fa-print' })
+        )
+      );
+    }
     return React.createElement(
       'div',
       null,
       React.createElement(
         'div',
         { className: 'pure-u-1' },
-        React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.mimic_hash + '?style=original' })
+        React.createElement(MimicImg, { mimic: mimic })
       ),
       React.createElement(
         'div',
@@ -402,30 +429,28 @@ var Mimics = React.createClass({
 
   render: function () {
     var mimics = this.state.mimics.map(function (mimic) {
-      var mimic_img = null;
-      var key = mimic.content_hash + '-' + mimic.style_hash;
-      if (mimic.mimic_hash) {
-        mimic_img = React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.mimic_hash });
-      } else {
-        mimic_img = React.createElement('img', { className: 'pure-img center rotate', src: '/images/logo-yellow.png' });
-      }
+      var key = mimic._id.$oid;
       return React.createElement(
         'div',
         { key: key, className: 'pure-u-1-3 mimic' },
         React.createElement(
-          'div',
-          { className: 'pure-u-1' },
-          mimic_img
-        ),
-        React.createElement(
-          'div',
-          { className: 'pure-u-1-2 mimic-reveal margin-above' },
-          React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.content_hash })
-        ),
-        React.createElement(
-          'div',
-          { className: 'pure-u-1-2 mimic-reveal margin-above' },
-          React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.style_hash })
+          'a',
+          { href: '/mimics/' + key },
+          React.createElement(
+            'div',
+            { className: 'pure-u-1' },
+            React.createElement(MimicImg, { mimic: mimic })
+          ),
+          React.createElement(
+            'div',
+            { className: 'pure-u-1-2 mimic-reveal margin-above' },
+            React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.content_hash })
+          ),
+          React.createElement(
+            'div',
+            { className: 'pure-u-1-2 mimic-reveal margin-above' },
+            React.createElement('img', { className: 'pure-img center', src: '/files/' + mimic.style_hash })
+          )
         )
       );
     });
@@ -435,6 +460,25 @@ var Mimics = React.createClass({
       React.createElement(
         'div',
         { className: 'pure-g mimics-index' },
+        React.createElement('div', { className: 'pure-u-1-3' }),
+        React.createElement(
+          'div',
+          { className: 'pure-u-1-3' },
+          React.createElement(
+            'a',
+            { href: '/mimics/new', className: 'pure-button center' },
+            React.createElement(
+              'h2',
+              { className: 'center-text' },
+              React.createElement(
+                'i',
+                { className: 'fa fa-2x' },
+                '+'
+              )
+            )
+          )
+        ),
+        React.createElement('div', { className: 'pure-u-1-3' }),
         mimics
       )
     );
@@ -597,7 +641,7 @@ var NewMimic = React.createClass({
       ),
       React.createElement(
         'button',
-        { onClick: this.submit, className: 'pure-button pure-u-1 page-break mimic-submit' },
+        { onClick: this.submit, className: 'pure-u-1 pure-button page-break mimic-submit' },
         React.createElement(
           'h2',
           { className: 'center-text' },
