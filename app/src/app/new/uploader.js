@@ -17,14 +17,32 @@ var Uploader = React.createClass({
   },
   render: function(){
     return (
-      <h3>
-        <label className='file-upload center pure-button'>
-          <span>
-            <i className='fa fa-2x fa-upload'></i>
-          </span>
-          <input type='file' onChange={this.submit} className='upload'></input>
-        </label>
-      </h3>
+      <div className='purt-g'>
+        <div className='pure-u-1-6'></div>
+        <div className='pure-u-1-6'>
+          <h3 className='file-upload'>
+            <label className='center pure-button'>
+              <span>
+                <i className='fa fa-2x fa-camera'></i>
+              </span>
+              <input type='file' onChange={this.submit} className='upload'></input>
+            </label>
+          </h3>
+        </div>
+        <div className='pure-u-1-6'></div>
+        <div className='pure-u-1-6'></div>
+        <div className='pure-u-1-6'>
+          <h3 className='file-upload'>
+            <label className='center pure-button'>
+              <span>
+                <i className='fa fa-2x fa-upload'></i>
+              </span>
+              <input type='file' onChange={this.submit} className='upload'></input>
+            </label>
+          </h3>
+        </div>
+        <div className='pure-u-1-6'></div>
+      </div>
     )
   }
 });
