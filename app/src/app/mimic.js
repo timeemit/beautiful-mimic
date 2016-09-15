@@ -22,6 +22,7 @@ var MimicShow = React.createClass({
         <div className='pure-u-1-2 margin-above'>
           <img className='pure-img center' src={ '/files/' + mimic.style_hash + '?style=original' }></img>
         </div>
+        { print_button }
       </div>
     );
   }
