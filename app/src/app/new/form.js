@@ -98,7 +98,7 @@ var NewMimic = React.createClass({
             <ImageDrawer key={reveal_drawer} choice_handler={choice_handler} add_upload={this.add_upload} reveal={reveal_drawer} uploads={this.state.uploads} chosen={chosen} left={this.state.reveal_content} />
           </ReactCSSTransitionGroup>
         </div>
-        <button onClick={this.submit} className='pure-button pure-u-1 page-break mimic-submit'>
+        <button onClick={this.submit} className='pure-u-1 pure-button page-break mimic-submit'>
           <h2 className='center-text'><i className='fa fa-2x'>+</i></h2>
         </button>
       </div>

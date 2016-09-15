@@ -16,31 +16,28 @@ get '/mimics' do
     sort(created_at: -1).
     limit(PAGE_COUNT).
     skip(PAGE_COUNT * (page - 1)).
-    to_json(except: :_id)
-end
-
-get '/mimics/:content_hash-:style_hash' do
-  'View uploaed mimic'
-
-  user_hash = session['user_hash']
-  content_hash = params['content_hash']
-  style_hash = params['style_hash']
-
-  mimic = Mimic.
-    where(user_hash: user_hash).
-    where(content_hash: content_hash).
-    where(style_hash: style_hash).
-    only(:content_hash, :style_hash, :mimic_hash).
-    limit(1).first
-
-  @mimic = mimic.to_json
-  erb mimic.mimic_hash ? :show : :wait
+    to_json
 end
 
 get '/mimics/new' do
   'Form for new new mimic'
 
   erb :new
+end
+
+get '/mimics/:mimic_id' do
+  'View uploaed mimic'
+
+  user_hash = session['user_hash']
+  mimic_id = params['mimic_id']
+
+  mimic = Mimic.
+    where(user_hash: user_hash).
+    only(:content_hash, :style_hash, :mimic_hash).
+    find(mimic_id)
+
+  @mimic = mimic.to_json
+  erb :show
 end
 
 post '/mimics' do

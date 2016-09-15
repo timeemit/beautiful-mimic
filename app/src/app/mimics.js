@@ -20,33 +20,36 @@ var Mimics = React.createClass({
 
   render: function(){
     var mimics = this.state.mimics.map(function(mimic) {
-      var mimic_img = null;
-      var key = mimic.content_hash + '-' + mimic.style_hash;
-      if ( mimic.mimic_hash ) {
-        mimic_img = ( <img className='pure-img center' src={'/files/' + mimic.mimic_hash}></img> );
-      } else {
-        mimic_img = ( <img className='pure-img center rotate' src='/images/logo-yellow.png'></img> );
-      }
+      var key = mimic._id.$oid;
       return (
         <div key={key} className='pure-u-1-3 mimic'>
-          <div className='pure-u-1'>
-            { mimic_img }
-          </div>
-          <div className='pure-u-1-2 mimic-reveal margin-above'>
-            <img className='pure-img center' src={'/files/' + mimic.content_hash}></img>
-          </div>
-          <div className='pure-u-1-2 mimic-reveal margin-above'>
-            <img className='pure-img center' src={'/files/' + mimic.style_hash}></img>
-          </div>
+          <a href={'/mimics/' + key}>
+            <div className='pure-u-1'>
+              <MimicImg mimic={mimic} />
+            </div>
+            <div className='pure-u-1-2 mimic-reveal margin-above'>
+              <img className='pure-img center' src={'/files/' + mimic.content_hash}></img>
+            </div>
+            <div className='pure-u-1-2 mimic-reveal margin-above'>
+              <img className='pure-img center' src={'/files/' + mimic.style_hash}></img>
+            </div>
+          </a>
         </div>
       )
     });
     return (
       <div>
         <div className='pure-g mimics-index'>
+          <div className='pure-u-1-3'></div>
+          <div className='pure-u-1-3'>
+            <a href='/mimics/new' className='pure-button center'>
+              <h2 className='center-text'><i className='fa fa-2x'>+</i></h2>
+            </a>
+          </div>
+          <div className='pure-u-1-3'></div>
           { mimics }
         </div>
       </div>
-    )
+    );
   }
 });
