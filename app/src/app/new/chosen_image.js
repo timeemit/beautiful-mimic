@@ -6,7 +6,7 @@ var ChosenImage = React.createClass({
 
     return (
       <ReactCSSTransitionGroup transitionName='chosen-image' transitionEnterTimeout={2000} transitionLeaveTimeout={1500} transitionAppearTimeout={2000} transitionAppear={true}>
-        <div key={this.props.file_hash} onClick={this.props.click_handler} className='pure-g chosen-image'>
+        <div key={this.props.file_hash} onClick={this.props.click_handler} className='pure-g'>
           <div className='pure-u-4-5 center'>
             <div className='pure-g display'>
               <div className='container center'>
