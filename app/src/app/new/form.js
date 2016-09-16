@@ -103,5 +103,5 @@ var NewMimic = React.createClass({
         </button>
       </div>
     );
-  },
+  }
 });
