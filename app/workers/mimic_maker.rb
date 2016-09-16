@@ -1,9 +1,3 @@
-require 'tempfile'
-require 'sidekiq'
-require_relative '../models/upload'
-require_relative '../models/s3_upload'
-require_relative '../models/mimic'
-
 class MimicMaker
   include Sidekiq::Worker
 
