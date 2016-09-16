@@ -125,7 +125,7 @@ img.logo {
   top: 10px;
 }
 
-// image Drawer
+// Image Drawer
 
 .drawer {
   position: relative;
@@ -156,20 +156,24 @@ img.logo {
 
 .image-drawer-enter {
   opacity: 0.01;
+  max-height: 0;
 }
 
 .image-drawer-enter.image-drawer-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  max-height: 100%;
+  transition: opacity 500ms linear, max-height 500ms linear;
 }
 
 .image-drawer-leave {
   opacity: 1;
+  max-height: 100%;
 }
 
 .image-drawer-leave.image-drawer-leave-active {
   opacity: 0.01;
-  transition: opacity 300ms ease-in;
+  max-height: 0;
+  transition: opacity 300ms linear, max-height 300ms ease-in;
 }
 
 // Chosen Image
