@@ -22,7 +22,7 @@ var Mimics = React.createClass({
     var mimics = this.state.mimics.map(function(mimic) {
       var key = mimic._id.$oid;
       return (
-        <div key={key} className='pure-u-1-3 mimic'>
+        <div key={key} className='pure-u-1-3 mimic page-break'>
           <a href={'/mimics/' + key}>
             <div className='pure-u-1'>
               <MimicImg mimic={mimic} />
@@ -40,13 +40,11 @@ var Mimics = React.createClass({
     return (
       <div>
         <div className='pure-g mimics-index'>
-          <div className='pure-u-1-3'></div>
-          <div className='pure-u-1-3'>
+          <div className='pure-u-1 page-break-mini'>
             <a href='/mimics/new' className='pure-button center'>
               <h2 className='center-text'><i className='fa fa-2x'>+</i></h2>
             </a>
           </div>
-          <div className='pure-u-1-3'></div>
           { mimics }
         </div>
       </div>
