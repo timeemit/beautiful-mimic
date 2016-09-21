@@ -46,7 +46,7 @@ namespace :sidekiq do
     desc "#{command.capitalize} Sidekiq"
     task command do
       on roles :all do
-        as(user: 'root') { execute :service, "workers #{command}" }
+        as(user: 'root') { execute :initctl, "#{command} workers" }
       end
     end
   end
