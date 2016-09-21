@@ -7,3 +7,5 @@ ops/syntaxcache/*
 app/environments/*
 splash/javascript.js
 splash/stylesheet.css
+venv_2_7
+ops/files/cudnn-7.5-linux-x64-v5.1.tgz
