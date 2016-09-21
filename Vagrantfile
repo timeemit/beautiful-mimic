@@ -1,3 +1,7 @@
+require 'yaml'
+
+CONFIG = YAML::load_file(File.expand_path('app/environments/development.yml', __dir__))
+
 Vagrant.configure(2) do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
@@ -19,7 +23,7 @@ Vagrant.configure(2) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network 'private_network', ip: '10.10.10.10'
+  config.vm.network 'private_network', ip: '10.1.1.11'
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -30,7 +34,7 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder '.', '/opt/code'
+  # config.vm.synced_folder '.', '/opt/code'
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -41,7 +45,7 @@ Vagrant.configure(2) do |config|
     # vb.gui = true
   
     # Customize the amount of memory on the VM:
-    vb.memory = '4096'
+    vb.memory = '1024'
 
   end
 
@@ -63,6 +67,36 @@ Vagrant.configure(2) do |config|
   config.vm.define 'compute' do |compute|
     compute.vm.provision 'ansible' do |ansible|
       ansible.playbook = './ops/playbooks/compute.yml'
+    end
+  end
+
+  config.vm.define 'sidekiq' do |sidekiq|
+    sidekiq.vm.provision 'ansible' do |ansible|
+      ansible.playbook = './ops/playbooks/sidekiq.yml'
+      ansible.verbose = 'v'
+    end
+  end
+
+  config.vm.define 'sidekiq-aws' do |sidekiq_aws|
+    sidekiq_aws.vm.box = 'dummy'
+    sidekiq_aws.vm.synced_folder '.', '/vagrant', disabled: true
+
+    sidekiq_aws.vm.provider :aws do |aws, override|
+      aws.access_key_id = CONFIG['AWS']['access_key_id']
+      aws.secret_access_key = CONFIG['AWS']['secret_access_key']
+      aws.instance_type = 'g2.2xlarge'
+      aws.region = 'us-west-2'
+      aws.ami = 'ami-ed48958d'
+      aws.keypair_name = 'beautiful-mimic'
+      aws.elastic_ip = true
+      aws.ssh_host_attribute = :public_ip_address
+      override.ssh.username = 'ec2-user'
+      override.ssh.private_key_path = '/Users/liamnorris1231853211/.ssh/beautiful-mimic.pem'
+    end
+
+    sidekiq_aws.vm.provision 'ansible' do |ansible|
+      ansible.playbook = './ops/playbooks/sidekiq.yml'
+      ansible.verbose = 'vvvv'
     end
   end
 end
