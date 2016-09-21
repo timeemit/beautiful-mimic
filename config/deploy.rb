@@ -10,6 +10,13 @@ set :repo_url, 'git@github.com:timeemit/beautiful-mimic.git'
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, '/opt/beautiful-mimic'
 
+# RVM ruby version
+set :rvm_ruby_version, '2.3.1'
+
+# Use Gemfile in app
+set :bundle_gemfile, -> { release_path.join('app', 'Gemfile') }      # default: nil
+
+
 # Default value for :scm is :git
 # set :scm, :git
 
@@ -34,15 +41,26 @@ set :deploy_to, '/opt/beautiful-mimic'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-namespace :deploy do
+namespace :sidekiq do
+  %w(start stop restart).each do |command|
+    desc "#{command.capitalize} Sidekiq"
+    task command do
+      on roles :all do
+        as(user: 'root') { execute :service, "workers #{command}" }
+      end
+    end
+  end
+end
 
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
+namespace :deploy do
+  after :published, :place_secrets do
+    src = File.expand_path('../app/environments/production.yml', __dir__)
+    dest = '/opt/beautiful-mimic/current/app/environments/production.yml'
+    on roles(:all) do
+      execute :mkdir, '/opt/beautiful-mimic/current/app/environments'
+      upload! src, dest
     end
   end
 
+  after :finished, :'sidekiq:restart'
 end

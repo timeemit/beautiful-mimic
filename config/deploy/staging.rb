@@ -7,14 +7,7 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
-server '127.0.0.1', user: 'bm', ssh_options: {
-  user: 'bm',
-  keys: %w(~/.ssh/beautiful-mimic.pem),
-  port: 2222,
-  forward_agent: true,
-  auth_methods: %w(publickey)
-  # password: 'please use keys'
-}
+
 
 # role-based syntax
 # ==================
