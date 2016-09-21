@@ -1,0 +1,25 @@
+- name: 'Upload sudoers file'
+  copy: src=../files/sudoers dest=/etc/sudoers.tmp
+  register: sudoers
+  become_user: root
+
+- name: 'Sudoers file'
+  shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers
+  when: sudoers|changed
+  become_user: root
+
+- name: 'Create wheel group'
+  group: name=wheel state=present
+  become_user: root
+
+- name: 'Create bm user'
+  user: name=bm groups=wheel
+  become_user: root
+
+- name: 'SSH directory for bm user'
+  file: state=directory path=/home/bm/.ssh owner=bm group=bm mode=0700
+  become_user: root
+
+- name: 'SSH access for bm user'
+  copy: src=../files/authorized_keys dest=/home/bm/.ssh/authorized_keys owner=bm group=bm mode=0600
+  become_user: root

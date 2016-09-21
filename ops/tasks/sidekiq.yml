@@ -1,0 +1,44 @@
+- name: 'Install gpg'
+  command: 'gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3'
+  become_user: bm
+
+- name: 'Download RVM'
+  get_url:
+    url: http://get.rvm.io
+    dest: /home/bm/rvm-installer.sh
+    mode: '0744'
+    owner: bm
+  become_user: bm
+
+- name: 'Install RVM'
+  command: '{{home}}/rvm-installer.sh stable --ruby'
+  args:
+    creates: '{{home}}/.rvm/bin/rvm'
+  become_user: bm
+
+- name: 'Install Ruby'
+  command: '{{home}}/.rvm/bin/rvm install {{ruby_version}}'
+  args:
+    creates: '{{home}}/.rvm/rubies/ruby-{{ruby_version}}/bin/ruby'
+  become_user: bm
+
+- name: 'Install Bundler'
+  command: "{{home}}/.rvm/rubies/ruby-{{ruby_version}}/bin/gem install bundler"
+  environment:
+    PATH: '{{home}}/.rvm/rubies/ruby-{{ruby_version}}/bin:{{home}}/.rvm/bin:{{home}}/.rvm/gems/gems:$PATH' 
+  become_user: bm
+
+- name: 'Upload updstart configuration files'
+  copy: src=../files/{{item}} dest=/etc/init/{{item}}
+  with_items:
+    - sidekiq.conf
+    - workers.conf
+  become_user: root
+
+- name: 'Install git'
+  yum: name=git state=latest update_cache=yes
+  become_user: root
+
+- name: 'Create compute directory structure'
+  file: path={{app_dir}} state=directory owner=bm group=bm
+  become_user: root

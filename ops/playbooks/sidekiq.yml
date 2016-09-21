@@ -1,0 +1,48 @@
+---
+- hosts: all
+  gather_facts: true
+  become: yes
+
+  vars:
+    home: /home/bm
+    ruby_version: 2.3.1
+    app_dir: /opt/beautiful-mimic
+
+  tasks:
+    - include: ../tasks/users.yml
+
+    - include: ../tasks/sidekiq.yml
+
+    - name: 'Install packages'
+      yum: 'name={{item}} update_cache=yes'
+      become_user: root
+      with_items:
+        - python27
+        - atlas-devel
+
+    - name: 'Updgrade pip'
+      pip: name=pip state=latest
+      become_user: root
+
+    - name: 'Install pip modules'
+      pip: 'name={{item.name}} version={{item.version}} virtualenv={{app_dir}}/venv_2_7'
+      become_user: root
+      with_items:
+        - { name: NumPy, version: 1.11 }
+        - { name: six, version: 1.9 }
+
+    - name: 'Copy cudnn files into place'
+      unarchive: src=../files/cudnn-7.5-linux-x64-v5.1.tgz dest=/opt/nvidia/ owner=root group=root
+      become_user: root
+
+    - name: 'Take ownership of cuda'
+      file: path=/opt/nvidia/cuda owner=bm group=bm recurse=yes
+      become_user: root
+
+    - name: 'Install chainer'
+      pip: 'name=chainer virtualenv={{app_dir}}/venv_2_7'
+      environment:
+        CPATH: /opt/nvidia/cuda/include:$CPATH
+        LIBRARY_PATH: /opt/nvidia/cuda/lib:$LIBRARY_PATH
+        LD_LIBRARY_PATH: /opt/nvidia/cuda/lib:$LD_LIBRARY_PATH
+      become_user: bm
