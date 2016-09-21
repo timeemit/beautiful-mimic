@@ -74,12 +74,14 @@ Note: Be sure to [download cuDNN](https://developer.nvidia.com/rdp/cudnn-downloa
 ## Execution
 
 ```
-cd /opt/compute/lib/neural-style/
-mkdir /opt/beautiful-mimic/current/splash/assets/images/combos
-LD_LIBRARY_PATH=/opt/nvidia/cuda/lib64/:$LD_LIBRARY_PATH CUDA_BIN_PATH=/opt/nvidia/cuda/bin \ 
-  /opt/compute/lib/torch/install/bin/th neural_style.lua \
-  -gpu 0 -backend cudnn -cudnn_autotune \
-  -content_image /opt/beautiful-mimic/current/splash/assets/images/frank-sinatra.jpg \
-  -style_image /opt/beautiful-mimic/current/splash/assets/images/great-wave.jpg \
-  -output_image /opt/beautiful-mimic/current/splash/assets/images/combos/frank-sinatra+great-wave.jpg
+PATH=/usr/local/nvidia/cuda/bin:$PATH \
+  CPATH=/opt/nvidia/cuda/:$CPATH \
+  LIBRARY_PATH=/opt/nvidia/cuda/lib:$LIBRARY_PATH \
+  LD_LIBRARY_PATH=/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH \
+  /opt/beautiful-mimic/venv_2_7/bin/python \
+    /opt/beautiful-mimic/neural-style/generate.py \
+    --model /opt/beautiful-mimic/neural-style/models/seurat.model \
+    --gpu 0 \
+    --out produced.jpg \
+    /opt/beautiful-mimic/current/splash/images/marilyn-monroe.jpg
 ```
