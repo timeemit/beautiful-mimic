@@ -2,6 +2,15 @@
 
 Imitate beautiful art with your selfies.
 
+## Vagrant
+
+There are a few different vagrants used for development.
+The most interesting one is hosted by aws.  Don't forget to specify the provider!
+
+```
+vagrant up --provider=aws sidekiq-aws
+```
+
 ## Docker
 
 Docker is used to deploy the app on kubernetes on Google Cloud.  
