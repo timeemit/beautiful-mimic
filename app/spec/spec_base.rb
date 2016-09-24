@@ -3,6 +3,7 @@ require 'yaml'
 require 'rspec'
 require 'mongo'
 require 'mongoid'
+require 'sidekiq'
 
 require_relative '../lib/aws_authenticator'
 require_relative '../lib/s3_upload'

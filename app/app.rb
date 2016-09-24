@@ -1,3 +1,4 @@
+require 'digest'        # For file hash computation
 require 'yaml'          # For environment parsing
 require 'securerandom'  # For random session user hashes
 

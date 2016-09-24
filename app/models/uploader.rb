@@ -1,8 +1,3 @@
-require 'digest'
-require_relative 'upload'
-require_relative 's3_upload'
-require_relative 'mimic'
-
 class Uploader
 
   attr_reader :bucket, :user_hash, :filename, :file
