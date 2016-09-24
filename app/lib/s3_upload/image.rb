@@ -1,45 +1,25 @@
-require 'mini_magick'
-
 class S3Upload::Image < S3Upload
   include Model
   SYSTEM_KEY = 'SYSTEM'
 
-  attr_reader :file
-  attr_reader :bucket
-  attr_reader :file_hash
   attr_reader :user_hash
 
   def initialize(*opts)
+    super(*opts)
     opts = opts[0] ? opts[0] : {}
-    @bucket = opts[:bucket]
     @user_hash = opts[:user_hash]
-    @file_hash = opts[:file_hash]
-    @file = opts[:file] # Not required
-    super()
     self
   end
 
   def download(path, style='thumb')
     return false unless valid?
 
-    resp = s3.get_object(
-      response_target: path,
-      bucket: bucket,
-      key: file_key(style)
-    )
+    super(file_key(style), path)
   end
 
   def signed_url(style=nil)
     style = 'thumb' unless style
-    signer = Aws::S3::Presigner.new
-
-    begin
-      url = signer.presigned_url(:get_object, {bucket: bucket, key: file_key(style), expires_in: 30})
-    rescue Exception => error
-      p error
-    end
-
-    url
+    super(file_key(style))
   end
 
   def resize!
@@ -59,7 +39,7 @@ class S3Upload::Image < S3Upload
     }
 
     file_keys_to_paths.each do |file_key, path|
-      s3.put_object(bucket: @bucket, key: file_key, body: path)
+      super(path, file_key)
     end
 
     file_path = File.unlink(thumbfile_path)
@@ -70,16 +50,12 @@ class S3Upload::Image < S3Upload
   private
 
   def file_key(style)
-    file_key = @user_hash ? @user_hash : SYSTEM_KEY
-    file_key += "/#{style}s/#{@file_hash}"
+    key = @user_hash ? @user_hash : SYSTEM_KEY
+    key += "/#{style}s/#{@file_hash}"
   end
 
   def thumbfile_path
     thumbfile = "#{file.path}.thumb"
-  end
-
-  def s3
-    @s3 ||= Aws::S3::Client.new
   end
 
   def validate!
