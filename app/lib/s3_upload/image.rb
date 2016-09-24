@@ -88,7 +88,7 @@ class S3Upload::Image < S3Upload
   end
 
   def validate_file_size!
-    unless file && file.size < 2 ** 22 # ~ 4 megabytes
+    unless file && file.size < 2 ** 30 # ~ 1 gigabyte
       add_error :file, 'File size must be less than 4MB'
     end
   end

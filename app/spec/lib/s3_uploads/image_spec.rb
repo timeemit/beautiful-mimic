@@ -34,7 +34,7 @@ describe S3Upload::Image do
   end
 
   it 'needs to be a small file' do
-    allow( file ).to receive(:size) { 2 ** 22 + 1 } # Oh noes!
+    allow( file ).to receive(:size) { 2 ** 30 + 1 } # Oh noes!
     expect( upload.valid? ).to be false
     expect( upload.errors[:file] ).to_not be_empty
     expect( upload.errors[:filename] ).to be_empty
