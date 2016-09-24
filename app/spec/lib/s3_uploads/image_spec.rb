@@ -1,11 +1,11 @@
-require_relative '../spec_base'
+require_relative '../../spec_base'
 
-describe S3Upload do
-  let(:file) { File.open(File.join(__dir__, '../fixtures/marilyn-monroe.jpg')) }
+describe S3Upload::Image do
+  let(:file) { File.open(File.join(__dir__, '../../fixtures/marilyn-monroe.jpg')) }
 
   def upload(*opts)
     opts = opts[0] ? opts[0] : {}
-    @upload ||= S3Upload.new(
+    @upload ||= S3Upload::Image.new(
       file: opts[:file] || file,
       bucket: opts[:bucket] || SpecBase.vars['S3']['bucket'],
       file_hash: opts[:file_hash] || 'aaaaaaaaaa1111111111',
@@ -24,10 +24,11 @@ describe S3Upload do
   end
 
   it 'is not initially valid' do
-    expect( S3Upload.new.valid? ).to be false
+    expect( S3Upload::Image.new.valid? ).to be false
   end
 
   it 'can be valid' do
+    upload.valid?; p upload.errors
     expect( upload.valid? ).to be true
     expect( upload.errors[:file] ).to be_empty
     expect( upload.errors[:filename] ).to be_empty

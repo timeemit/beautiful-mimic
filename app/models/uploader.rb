@@ -21,7 +21,7 @@ class Uploader
 
     # Objects
 
-    @s3_upload = S3Upload.new(
+    @s3_upload = S3Upload::Image.new(
       bucket: bucket,
       user_hash: user_hash,
       file_hash: file_hash,

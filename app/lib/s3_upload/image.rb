@@ -1,7 +1,6 @@
 require 'mini_magick'
-require_relative '../lib/model'
 
-class S3Upload < Model
+class S3Upload::Image < S3Upload
   SYSTEM_KEY = 'SYSTEM'
 
   attr_reader :file
@@ -37,7 +36,6 @@ class S3Upload < Model
       url = signer.presigned_url(:get_object, {bucket: bucket, key: file_key(style), expires_in: 30})
     rescue Exception => error
       p error
-      p error.response
     end
 
     url

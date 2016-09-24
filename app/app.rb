@@ -1,11 +1,13 @@
 require 'yaml'          # For environment parsing
 require 'securerandom'  # For random session user hashes
+
 require 'sinatra'
 require 'mongoid'
 
 require_relative 'lib/aws_authenticator'
 require_relative 'lib/sidekiq_client'
-require_relative 'models/s3_upload'
+require_relative 'lib/s3_upload'
+require_relative 'lib/s3_upload/image'
 require_relative 'models/upload'
 require_relative 'models/mimic'
 require_relative 'models/uploader'

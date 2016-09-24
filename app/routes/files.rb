@@ -15,7 +15,7 @@ get '/files/:file_hash' do
   user_hash = nil if system
 
   bucket = settings.env['S3']['bucket']
-  upload = S3Upload.new(
+  upload = S3Upload::Image.new(
     bucket: bucket,
     user_hash: system ? nil : user_hash, # System "user_hashes" are stored as nil
     file_hash: file_hash

@@ -20,12 +20,12 @@ class MimicMaker
     style_tempfile = Tempfile.new(style_upload.filename)
     output_tempfile = Tempfile.new("#{mimic.user_hash}-#{content_upload.filename}-#{style_upload.filename}")
 
-    s3_content = S3Upload.new(
+    s3_content = S3Upload::Image.new(
       bucket: bucket,
       user_hash: mimic.user_hash,
       filename: content_upload.filename
     )
-    s3_style = S3Upload.new(
+    s3_style = S3Upload::Image.new(
       bucket: bucket,
       user_hash: mimic.user_hash,
       filename: style_upload.filename
@@ -40,7 +40,7 @@ class MimicMaker
 
     # Upload the results
 
-    s3_output = S3Upload.new(
+    s3_output = S3Upload::Image.new(
       bucket: bucket,
       user_hash: mimic.user_hash,
       filename: "#{content_upload.filename}.mimic",
