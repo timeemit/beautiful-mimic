@@ -86,7 +86,7 @@ Vagrant.configure(2) do |config|
       aws.secret_access_key = CONFIG['AWS']['secret_access_key']
       aws.instance_type = 'g2.2xlarge'
       aws.region = 'us-west-2'
-      aws.ami = 'ami-ed48958d'
+      aws.ami = 'ami-e9bf6089'
       aws.keypair_name = 'beautiful-mimic'
       aws.elastic_ip = true
       aws.ssh_host_attribute = :public_ip_address
