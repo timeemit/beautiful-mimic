@@ -2,9 +2,11 @@ require 'tempfile'
 
 require 'sidekiq'
 require 'mongoid'
+require 'mini_magick'
 
 require_relative '../models/upload'
 require_relative '../models/s3_upload'
+require_relative '../models/s3_upload/image'
 require_relative '../models/mimic'
 require_relative './mimic_maker'
 

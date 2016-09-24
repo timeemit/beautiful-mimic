@@ -4,6 +4,7 @@ require 'securerandom'  # For random session user hashes
 
 require 'sinatra'
 require 'mongoid'
+require 'mini_magick'
 
 require_relative 'lib/aws_authenticator'
 require_relative 'lib/sidekiq_client'
