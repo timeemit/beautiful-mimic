@@ -1,8 +1,12 @@
-require 'rspec'
-require_relative '../../lib/model'
+require_relative '../spec_base'
+
 
 describe Model do
-  let(:model) { Model.new }
+  class SomeThing
+    include Model
+  end
+
+  let(:model) {  SomeThing.new }
 
   it 'should exist!' do
     expect(1).to eq 1
@@ -10,7 +14,7 @@ describe Model do
 
   it 'can be initialized' do
     expect do 
-      Model.new
+      SomeThing.new
     end.to_not raise_error
   end
 

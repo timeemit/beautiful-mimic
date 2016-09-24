@@ -1,6 +1,7 @@
 require 'mini_magick'
 
 class S3Upload::Image < S3Upload
+  include Model
   SYSTEM_KEY = 'SYSTEM'
 
   attr_reader :file

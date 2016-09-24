@@ -28,7 +28,6 @@ describe S3Upload::Image do
   end
 
   it 'can be valid' do
-    upload.valid?; p upload.errors
     expect( upload.valid? ).to be true
     expect( upload.errors[:file] ).to be_empty
     expect( upload.errors[:filename] ).to be_empty

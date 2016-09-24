@@ -1,4 +1,4 @@
-class Model
+module Model
   attr_reader :errors
 
   def initialize

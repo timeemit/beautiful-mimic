@@ -6,6 +6,7 @@ require 'mongoid'
 require 'sidekiq'
 
 require_relative '../lib/aws_authenticator'
+require_relative '../lib/model'
 require_relative '../lib/s3_upload'
 require_relative '../lib/s3_upload/image'
 require_relative '../models/upload'
