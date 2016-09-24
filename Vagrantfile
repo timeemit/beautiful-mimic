@@ -87,6 +87,7 @@ Vagrant.configure(2) do |config|
       aws.instance_type = 'g2.2xlarge'
       aws.region = 'us-west-2'
       aws.ami = 'ami-e9bf6089'
+      aws.block_device_mapping = [{ 'DeviceName' => '/dev/xvda', 'Ebs.VolumeSize' => 50 }]
       aws.keypair_name = 'beautiful-mimic'
       aws.elastic_ip = true
       aws.ssh_host_attribute = :public_ip_address
