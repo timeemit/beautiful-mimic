@@ -7,7 +7,7 @@ class S3Upload
     opts = opts[0] ? opts[0] : {}
     @bucket = opts[:bucket]
     @file_hash = opts[:file_hash]
-    @file = opts[:file] # Not required
+    @file = opts[:file]
     self
   end
 
