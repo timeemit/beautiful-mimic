@@ -1,13 +1,12 @@
 module Model
-  attr_reader :errors
-
-  def initialize
-    @errors = Hash.new([])
+  def errors
+    @errors ||= {}
+    @errors
   end
 
   def valid?
     validate!
-    @errors.all? do |field, errors|
+    errors.all? do |field, errors|
       errors.empty?
     end
   end
@@ -19,10 +18,10 @@ module Model
   end
 
   def add_error(field, value)
-    if @errors[field].empty?
-      @errors[field] = [ value ]
+    if errors[field]
+      errors[field] << value
     else
-      @errors[field] << value
+      errors[field] = [ value ]
     end
   end
 

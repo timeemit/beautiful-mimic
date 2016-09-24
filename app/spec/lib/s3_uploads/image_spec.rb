@@ -29,16 +29,16 @@ describe S3Upload::Image do
 
   it 'can be valid' do
     expect( upload.valid? ).to be true
-    expect( upload.errors[:file] ).to be_empty
-    expect( upload.errors[:filename] ).to be_empty
+    expect( upload.errors[:file] ).to be_nil
+    expect( upload.errors[:filename] ).to be_nil
   end
 
   it 'needs to be a small file' do
     allow( file ).to receive(:size) { 2 ** 30 + 1 } # Oh noes!
     expect( upload.valid? ).to be false
-    expect( upload.errors[:file] ).to_not be_empty
-    expect( upload.errors[:filename] ).to be_empty
-    expect( upload.errors[:user_hash] ).to be_empty
+    expect( upload.errors[:file] ).to_not be_nil
+    expect( upload.errors[:filename] ).to be_nil
+    expect( upload.errors[:user_hash] ).to be_nil
   end
 
   it 'can persist and read' do
