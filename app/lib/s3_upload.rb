@@ -1,12 +1,10 @@
 class S3Upload
   attr_reader :file
   attr_reader :bucket
-  attr_reader :file_hash
 
   def initialize(*opts)
     opts = opts[0] ? opts[0] : {}
     @bucket = opts[:bucket]
-    @file_hash = opts[:file_hash]
     @file = opts[:file]
     self
   end

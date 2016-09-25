@@ -3,11 +3,13 @@ class S3Upload::Image < S3Upload
   SYSTEM_KEY = 'SYSTEM'
 
   attr_reader :user_hash
+  attr_reader :file_hash
 
   def initialize(*opts)
     super(*opts)
     opts = opts[0] ? opts[0] : {}
     @user_hash = opts[:user_hash]
+    @file_hash = opts[:file_hash]
     self
   end
 
