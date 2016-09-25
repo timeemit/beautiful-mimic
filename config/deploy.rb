@@ -64,3 +64,19 @@ namespace :deploy do
 
   after :finished, :'sidekiq:restart'
 end
+
+namespace :train_model do
+  desc 'Tail nohup'
+  task 'tail' do
+    on roles :all do
+      as(user: 'root') { execute :tail, '-2 /home/ec2-user/nohup.out' }
+    end
+  end
+
+  desc 'Follow nohup'
+  task 'follow' do
+    on roles :all do
+      as(user: 'root') { execute :tail, '-f /home/ec2-user/nohup.out' }
+    end
+  end
+end
