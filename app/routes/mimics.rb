@@ -90,10 +90,7 @@ post '/mimics' do
 
   # Queue Job
 
-  MimicMaker.perform_async(
-    bucket = settings.env['S3']['bucket'],
-    mimic.id
-  )
+  MimicMaker.perform_async mimic.id
 
   return 201, mimic.to_json(only: [:_id, :content_hash, :style_hash])
 end
