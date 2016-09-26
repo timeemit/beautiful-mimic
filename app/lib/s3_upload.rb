@@ -35,6 +35,9 @@ class S3Upload
     url
   end
 
+  def uploaded?(key)
+    Aws::S3::Object.new(bucket, key, client: s3).exists?
+  end
 
   def save!(file_path, key)
     s3.put_object(bucket: @bucket, key: key, body: file_path)
@@ -46,4 +49,7 @@ class S3Upload
     @s3 ||= Aws::S3::Client.new
   end
 
+  def bucket
+    raise NotImplementedError
+  end
 end

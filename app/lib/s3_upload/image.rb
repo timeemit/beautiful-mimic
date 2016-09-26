@@ -22,6 +22,12 @@ class S3Upload::Image < S3Upload
     super(file_key(style))
   end
 
+  def uploaded?(style)
+    style ||= 'original'
+    super(file_key(style))
+  end
+
+
   def resize!
     image = MiniMagick::Image.open(file.path)
     image.resize('100x100')
@@ -73,5 +79,9 @@ class S3Upload::Image < S3Upload
     unless file_hash.is_a? String and not file_hash.empty?
       add_error :file_hash, 'File hash must be present'
     end
+  end
+
+  def bucket
+    Secret.config['S3']['bucket']
   end
 end
