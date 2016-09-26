@@ -40,7 +40,7 @@ class S3Upload
   end
 
   def save!(file_path, key)
-    s3.put_object(bucket: @bucket, key: key, body: file_path)
+    s3.put_object(bucket: bucket, key: key, body: file_path)
   end
 
   private

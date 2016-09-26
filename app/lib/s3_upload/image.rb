@@ -11,14 +11,15 @@ class S3Upload::Image < S3Upload
     self
   end
 
-  def download(path, style='thumb')
+  def download(path, style)
+    style ||= 'thumb'
     return false unless valid?
 
     super(file_key(style), path)
   end
 
-  def signed_url(style=nil)
-    style = 'thumb' unless style
+  def signed_url(style)
+    style ||= 'thumb'
     super(file_key(style))
   end
 
