@@ -71,17 +71,36 @@ cap production deploy
 
 Note: Be sure to [download cuDNN](https://developer.nvidia.com/rdp/cudnn-download) into _ops/files/cudnn-7.5-linux-x64-v5.1.tgz_
 
+## Train
+
+```
+export IMAGE_FILE=creation-of-adam.jpg &&
+cd /opt/beautiful-mimic/neural-style && 
+PATH=/usr/local/nvidia/cuda/bin:$PATH \
+CPATH=/opt/nvidia/cuda/:$CPATH \
+LIBRARY_PATH=/opt/nvidia/cuda/lib:$LIBRARY_PATH \
+LD_LIBRARY_PATH=/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH \
+nohup /opt/beautiful-mimic/venv_2_7/bin/python \
+    /opt/beautiful-mimic/neural-style/train.py \
+    --gpu 0 \
+    --dataset /opt/beautiful-mimic/neural-style/train2014/ \
+    --style_image /opt/beautiful-mimic/current/splash/images/$IMAGE_FILE \
+    --batchsize 100 \
+  &
+```
+
+
 ## Execution
 
 ```
 PATH=/usr/local/nvidia/cuda/bin:$PATH \
-  CPATH=/opt/nvidia/cuda/:$CPATH \
-  LIBRARY_PATH=/opt/nvidia/cuda/lib:$LIBRARY_PATH \
-  LD_LIBRARY_PATH=/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH \
-  /opt/beautiful-mimic/venv_2_7/bin/python \
-    /opt/beautiful-mimic/neural-style/generate.py \
-    --model /opt/beautiful-mimic/neural-style/models/seurat.model \
-    --gpu 0 \
-    --out produced.jpg \
-    /opt/beautiful-mimic/current/splash/images/marilyn-monroe.jpg
+CPATH=/opt/nvidia/cuda/:$CPATH \
+LIBRARY_PATH=/opt/nvidia/cuda/lib:$LIBRARY_PATH \
+LD_LIBRARY_PATH=/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH \
+/opt/beautiful-mimic/venv_2_7/bin/python \
+  /opt/beautiful-mimic/neural-style/generate.py \
+  --model /opt/beautiful-mimic/neural-style/models/seurat.model \
+  --gpu 0 \
+  --out produced.jpg \
+  /opt/beautiful-mimic/current/splash/images/marilyn-monroe.jpg
 ```
