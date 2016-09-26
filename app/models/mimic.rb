@@ -31,9 +31,6 @@ class Mimic
   end
 
   def style_upload_exists 
-    self.errors.add(:style_hash, 'not uploaded') unless Upload.
-      in(user_hash: [user_hash, nil]).
-      where(file_hash: style_hash).
-      exists?
+    self.errors.add(:style_hash, 'not uploaded') unless S3Upload::TrainedModel.new(file_hash: style_hash).uploaded?
   end
 end

@@ -1,6 +1,8 @@
 require_relative '../spec_helper'
 
 describe 'POST /mimics' do
+  let(:model) { S3Upload::TrainedModel.new(file: File.open(File.join(__dir__, '../../fixtures/marilyn-monroe.jpg'))) }
+
   before do
     Sidekiq::Testing.fake!
     expect(MimicMaker.jobs.size).to eql 0
@@ -10,7 +12,7 @@ describe 'POST /mimics' do
     expect(JSON.parse(last_response.body)).to eq({
       '_id' => {'$oid' => Mimic.last.id.to_s},
       'content_hash' => 'red',
-      'style_hash' => 'blue'
+      'style_hash' => model.file_hash
     })
     expect(Mimic.count).to eql 1
     expect(MimicMaker.jobs.size).to eql 1
@@ -39,9 +41,9 @@ describe 'POST /mimics' do
 
   it 'Succeeds for valid files' do
     Upload.create!(user_hash: 'neo', file_hash: 'red', filename: 'redpill.jpg')
-    Upload.create!(user_hash: 'neo', file_hash: 'blue', filename: 'bluepill.jpg')
+    model.save!
 
-    post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
+    post '/mimics', {content_hash: 'red', style_hash: model.file_hash}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
 
     assert_success
@@ -49,15 +51,15 @@ describe 'POST /mimics' do
 
   it 'Returns success response for a resubmission' do
     Upload.create!(user_hash: 'neo', file_hash: 'red', filename: 'redpill.jpg')
-    Upload.create!(user_hash: 'neo', file_hash: 'blue', filename: 'bluepill.jpg')
+    model.save!
 
-    post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
+    post '/mimics', {content_hash: 'red', style_hash: model.file_hash}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
 
     assert_success
     Sidekiq::Worker.clear_all
 
-    post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
+    post '/mimics', {content_hash: 'red', style_hash: model.file_hash}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 200
 
     assert_success
@@ -65,9 +67,9 @@ describe 'POST /mimics' do
 
   it 'Can associate style with a system upload' do
     Upload.create!(file_hash: 'red', filename: 'redpill.jpg', user_hash: 'neo')
-    Upload.create!(file_hash: 'blue', filename: 'bluepill.jpg')
+    model.save!
 
-    post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
+    post '/mimics', {content_hash: 'red', style_hash: model.file_hash}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
 
     assert_success
@@ -75,9 +77,9 @@ describe 'POST /mimics' do
 
   it 'Can associate content with a system upload' do
     Upload.create!(file_hash: 'red', filename: 'redpill.jpg')
-    Upload.create!(file_hash: 'blue', filename: 'bluepill.jpg', user_hash: 'neo')
+    model.save!
 
-    post '/mimics', {content_hash: 'red', style_hash: 'blue'}, {'rack.session' => {user_hash: 'neo'}}
+    post '/mimics', {content_hash: 'red', style_hash: model.file_hash}, {'rack.session' => {user_hash: 'neo'}}
     expect(last_response.status).to eq 201
 
     assert_success
