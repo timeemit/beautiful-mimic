@@ -5,20 +5,23 @@ require 'mongoid'
 require 'mini_magick'
 
 require_relative '../models/upload'
-require_relative '../models/s3_upload'
-require_relative '../models/s3_upload/image'
+require_relative '../lib/secret'
+require_relative '../lib/model'
+require_relative '../lib/s3_upload'
+require_relative '../lib/s3_upload/image'
+require_relative '../lib/s3_upload/trained_model'
 require_relative '../models/mimic'
 require_relative './mimic_maker'
 
-environment_path = File.expand_path("../environments/#{ENV['SIDEKIQ_ENV']}.yml", __dir__)
-redis = YAML::load_file( environment_path )['redis']
-url = "#{redis['ip']}:#{redis['port']}"
+Secret.set! ENV['SIDEKIQ_ENV']
 
+Mongoid.load!(Secret.path, 'mongo')
+
+redis = Secret.config['redis']
+url = "#{redis['ip']}:#{redis['port']}/#{redis['db']}"
 if redis['password']
   url = "x:#{env['redis']['password']}@#{url}"
 end
-
-Mongoid.load!(environment_path, 'mongo')
 
 Sidekiq.configure_server do |config|
   config.redis = { url: "redis://#{url}" }
