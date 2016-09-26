@@ -77,11 +77,11 @@ Vagrant.configure(2) do |config|
     end
   end
 
-  config.vm.define 'sidekiq-aws' do |sidekiq_aws|
-    sidekiq_aws.vm.box = 'dummy'
-    sidekiq_aws.vm.synced_folder '.', '/vagrant', disabled: true
+  config.vm.define 'generator' do |generator|
+    generator.vm.box = 'dummy'
+    generator.vm.synced_folder '.', '/vagrant', disabled: true
 
-    sidekiq_aws.vm.provider :aws do |aws, override|
+    generator.vm.provider :aws do |aws, override|
       aws.access_key_id = CONFIG['AWS']['access_key_id']
       aws.secret_access_key = CONFIG['AWS']['secret_access_key']
       aws.instance_type = 'g2.2xlarge'
@@ -95,8 +95,8 @@ Vagrant.configure(2) do |config|
       override.ssh.private_key_path = '/Users/liamnorris1231853211/.ssh/beautiful-mimic.pem'
     end
 
-    sidekiq_aws.vm.provision 'ansible' do |ansible|
-      ansible.playbook = './ops/playbooks/sidekiq.yml'
+    generator.vm.provision 'ansible' do |ansible|
+      ansible.playbook = './ops/playbooks/generator.yml'
       ansible.verbose = 'vvvv'
     end
   end

@@ -1,0 +1,57 @@
+- name: 'Upgrade apt'
+  yum:  update_cache=yes
+  become_user: root
+
+- name: 'Install packages'
+  yum: 'name={{item}}'
+  become_user: root
+  with_items:
+    - python27
+    - atlas-devel
+
+- name: 'Updgrade pip'
+  pip: 'name=pip state=latest virtualenv={{app_dir}}/venv_2_7'
+  become_user: bm
+
+- name: 'Install pip modules'
+  pip: 'name={{item.name}} version={{item.version}} virtualenv={{app_dir}}/venv_2_7'
+  with_items:
+    - { name: NumPy, version: 1.11 }
+    - { name: six, version: 1.9 }
+    - { name: pillow, version: 3.3.1 }
+  become_user: bm
+
+- name: 'Copy cudnn files into place'
+  unarchive: src=../files/cudnn-7.5-linux-x64-v5.1.tgz dest=/opt/nvidia/ owner=root group=root creates=/opt/nvidia/cuda/include/cudnn.h 
+  become_user: root
+
+- name: 'Take ownership of cuda'
+  file: path=/opt/nvidia/cuda owner=bm group=bm recurse=yes
+  become_user: root
+
+- name: 'Install chainer'
+  pip: 'name=chainer virtualenv={{app_dir}}/venv_2_7'
+  environment:
+    CPATH: /opt/nvidia/cuda/include:$CPATH
+    LIBRARY_PATH: /opt/nvidia/cuda/lib:$LIBRARY_PATH
+    LD_LIBRARY_PATH: /opt/nvidia/cuda/lib:$LD_LIBRARY_PATH
+  become_user: bm
+
+- name: 'Clone utility repo'
+  git: 'repo=https://github.com/yusuketomoto/chainer-fast-neuralstyle.git dest={{app_dir}}/neural-style version=c7152a3'
+  become_user: bm
+
+- name: 'Download neural style models'
+  command: /bin/sh setup_model.sh
+  args:
+    chdir: '{{app_dir}}/neural-style'
+    creates: '{{app_dir}}/neural-style/VGG_ILSVRC_16_layers.caffemodel'
+  ignore_errors: yes
+  become_user: bm
+
+- name: 'Create chainer model'
+  command: '{{app_dir}}/venv_2_7/bin/python create_chainer_model.py'
+  args:
+    chdir: '{{app_dir}}/neural-style'
+    creates: '{{app_dir}}/neural-style/vgg16.model'
+  become_user: bm
