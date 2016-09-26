@@ -3,30 +3,22 @@ class Uploader
   attr_reader :bucket, :user_hash, :filename, :file
   attr_reader :upload, :s3_upload
 
-  def initialize(bucket, user_hash, filename, file)
-    @bucket = bucket
+  def initialize(user_hash, filename, file)
     @user_hash = user_hash
     @filename = filename
     @file = file
 
-    # SHA256 of file ensures uniqueness
-
-    file_hash = Digest::SHA256.new.hexdigest file.read
-    file.rewind
-
     # Objects
 
     @s3_upload = S3Upload::Image.new(
-      bucket: bucket,
       user_hash: user_hash,
-      file_hash: file_hash,
       file: file
     )
 
     @upload = Upload.new(
       user_hash: user_hash,
       filename: filename,
-      file_hash: file_hash
+      file_hash: @s3_upload.file_hash
     )
   end
 

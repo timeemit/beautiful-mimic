@@ -29,7 +29,6 @@ post '/uploads' do
   # Saves handle to MongoDB record
   # Associate record with `user_hash`
 
-  bucket = settings.env['S3']['bucket']
   user_hash = session['user_hash']
 
   # Ensure params structure
@@ -41,7 +40,7 @@ post '/uploads' do
     return 400
   end
 
-  uploader = Uploader.new(bucket, user_hash, filename, file)
+  uploader = Uploader.new(user_hash, filename, file)
 
   # Validations
 
