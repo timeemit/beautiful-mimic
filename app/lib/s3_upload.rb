@@ -1,11 +1,17 @@
 class S3Upload
   attr_reader :file
-  attr_reader :bucket
+  attr_reader :file_hash
 
   def initialize(*opts)
     opts = opts[0] ? opts[0] : {}
-    @bucket = opts[:bucket]
-    @file = opts[:file]
+    if opts[:file]
+      @file = opts[:file]
+      @file_hash = Digest::SHA256.new.hexdigest(file.read)
+      file.rewind
+    else
+      @file_hash = opts[:file_hash]
+    end
+
     self
   end
 
