@@ -1,6 +1,5 @@
 require_relative '../spec_base'
 
-
 describe Model do
   class SomeThing
     include Model

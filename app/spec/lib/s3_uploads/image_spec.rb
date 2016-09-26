@@ -7,7 +7,6 @@ describe S3Upload::Image do
     opts = opts[0] ? opts[0] : {}
     @upload ||= S3Upload::Image.new(
       file: opts[:file] || file,
-      bucket: opts[:bucket] || SpecBase.vars['S3']['bucket'],
       file_hash: opts[:file_hash] || 'aaaaaaaaaa1111111111',
       user_hash: opts[:user_hash] || 'aaaaaaaaaaaa'
     )
