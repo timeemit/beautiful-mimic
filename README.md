@@ -73,8 +73,10 @@ Note: Be sure to [download cuDNN](https://developer.nvidia.com/rdp/cudnn-downloa
 
 ## Train
 
+Execute the following command as the user `bm`.
+
 ```
-export IMAGE_FILE=creation-of-adam.jpg &&
+export IMAGE_FILE=starry-night.jpg &&
 cd /opt/beautiful-mimic/neural-style && 
 PATH=/usr/local/nvidia/cuda/bin:$PATH \
 CPATH=/opt/nvidia/cuda/:$CPATH \
@@ -85,8 +87,7 @@ nohup /opt/beautiful-mimic/venv_2_7/bin/python \
     --gpu 0 \
     --dataset /opt/beautiful-mimic/neural-style/train2014/ \
     --style_image /opt/beautiful-mimic/current/splash/images/$IMAGE_FILE \
-    --batchsize 100 \
-  &
+  > ~/nohup.out &
 ```
 
 
