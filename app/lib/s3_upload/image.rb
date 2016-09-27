@@ -28,6 +28,9 @@ class S3Upload::Image < S3Upload
     super(file_key(style))
   end
 
+  def public_url(style='thumb')
+    return Aws::S3::Object.new(bucket, file_key(style)).public_url
+  end
 
   def resize!
     image = MiniMagick::Image.open(file.path)

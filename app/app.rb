@@ -1,4 +1,5 @@
 require 'digest'        # For file hash computation
+require 'cgi'           # For forwarding urls to canvaspop store
 require 'yaml'          # For environment parsing
 require 'securerandom'  # For random session user hashes
 
