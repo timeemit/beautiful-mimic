@@ -17,3 +17,13 @@
 
     - name: 'Download training data'
       unarchive: 'src=http://msvocds.blob.core.windows.net/coco2014/train2014.zip dest={{app_dir}}/neural-style/ remote_src=yes copy=no owner=bm group=bm'
+
+    - name: 'Copy over utility for resetting CUDA'
+      copy: 'src=../files/cudaDeviceReset.cpp dest={{home}}/cudaDeviceReset.cpp'
+
+    - name: 'Compile the device reset utility'
+      command: 'nvcc --output-file {{home}}/reset_cuda_device {{home}}/cudaDeviceReset.cpp'
+      args:
+        chdir: '{{home}}'
+        creates: '{{home}}/reset_cuda_device'
+      become_user: bm
