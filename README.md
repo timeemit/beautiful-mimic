@@ -28,23 +28,31 @@ To build _react-bundle.js_:
 
 Docker is used to deploy the app on kubernetes on Google Cloud.  
 
+Determine tag with `git tag -l` and set it with:
+
+```
+export TAG=<tag>
+git tag -a $TAG -m $TAG
+git tag push --tags
+```
+
 Build with:
 
 ```
-docker build -t bm-app .
-docker tag -f bm-app:<tag> us.gcr.io/fleet-authority-143304/bm-app
+docker build -t bm-app:$TAG .
+docker tag bm-app:$TAG us.gcr.io/fleet-authority-143304/bm-app:$TAG
 ```
 
 Push to cloud with
 
 ```
-docker tag -f bm-app:<tag> us.gcr.io/fleet-authority-143304/bm-app
+gcloud docker push us.gcr.io/fleet-authority-143304/bm-app:$TAG
 ```
 
 Deploy with
 
 ```
-kubectl rolling-update bm-prod-app --image=us.gcr.io/fleet-authority-143304/bm-app:<tag>
+kubectl rolling-update bm-prod-app --image=us.gcr.io/fleet-authority-143304/bm-app:$TAG
 ```
 
 ## MongoDB and Redis
