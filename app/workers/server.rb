@@ -3,6 +3,7 @@ require 'tempfile'
 require 'sidekiq'
 require 'mongoid'
 require 'mini_magick'
+require 'open3' # for process execution
 
 require_relative '../models/upload'
 require_relative '../lib/secret'

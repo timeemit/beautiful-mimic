@@ -67,7 +67,13 @@ describe MimicMaker do
       chdir: '/opt/beautiful-mimic',
       unsetenv_others: true
     }
-    expect_any_instance_of( Kernel ).to receive(:system).with(environment, *command, *options)
+    responses = [
+      double('stdin'),
+      double('stdout', gets: 'output'),
+      double('stderr', gets: 'errors'),
+      double('wait_thr', value: double('value', success?: true))
+    ]
+    expect( Open3 ).to receive(:popen3).with(environment, command.join(' '), options).and_yield(*responses)
 
     # Make the mimic!
     MimicMaker.new.perform(mimic.id)

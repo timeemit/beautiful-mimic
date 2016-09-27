@@ -1,3 +1,5 @@
+class SystemFailure < StandardError; end
+
 class MimicMaker
   include Sidekiq::Worker
 
@@ -41,7 +43,14 @@ class MimicMaker
       chdir: '/opt/beautiful-mimic',
       unsetenv_others: true
     }
-    system(environment, *command, *options)
+
+    return_value, output = nil, nil
+    Open3.popen3(environment, command.join(' '), options) do |stdin, stdout, stderr, wait_thr|
+      return_value = wait_thr.value
+      output = "STDOUT: #{stdout}\n\nSTDERR: #{stderr}"
+    end
+
+    raise SystemFailure, "Error (#{return_value.exitstatus}):\n#{output}" unless return_value.success?
 
     # Upload the results
 
