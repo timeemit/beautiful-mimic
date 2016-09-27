@@ -82,7 +82,7 @@ PATH=/usr/local/nvidia/cuda/bin:$PATH \
 CPATH=/opt/nvidia/cuda/:$CPATH \
 LIBRARY_PATH=/opt/nvidia/cuda/lib:$LIBRARY_PATH \
 LD_LIBRARY_PATH=/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH \
-nohup /opt/beautiful-mimic/venv_2_7/bin/python \
+nohup time /opt/beautiful-mimic/venv_2_7/bin/python \
     /opt/beautiful-mimic/neural-style/train.py \
     --gpu 0 \
     --dataset /opt/beautiful-mimic/neural-style/train2014/ \
