@@ -38,7 +38,7 @@
   become_user: bm
 
 - name: 'Clone utility repo'
-  git: 'repo=https://github.com/yusuketomoto/chainer-fast-neuralstyle.git dest={{app_dir}}/neural-style version=c7152a3'
+  git: 'repo=https://github.com/6o6o/chainer-fast-neuralstyle.git dest={{app_dir}}/neural-style version=c273247'
   become_user: bm
 
 - name: 'Download neural style models'
