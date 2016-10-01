@@ -21,6 +21,10 @@ class Mimic
   validate :content_upload_exists
   validate :style_upload_exists
 
+  def content_upload
+    Upload.find_by(file_hash: self.content_hash)
+  end
+
   private
 
   def content_upload_exists 

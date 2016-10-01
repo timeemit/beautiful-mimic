@@ -12,6 +12,14 @@ describe Mimic do
     expect(mimic.valid?).to be true
   end
 
+  it 'relates to a content upload' do
+    model.save!
+    upload = Upload.create!(user_hash: 'neo', filename: 'redpill.png', file_hash: 'a')
+    mimic = Mimic.new(user_hash: 'neo', content_hash: 'a', style_hash: model.file_hash)
+    expect(mimic.valid?).to be true
+    expect(mimic.content_upload).to eql upload
+  end
+
   it 'enforces uniqueness' do
     # Setup
     model.save!
