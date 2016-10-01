@@ -27,8 +27,8 @@ class MimicMaker
     # Compute
 
     environment = {
-      'PATH' => '/usr/local/nvidia/cuda/bin:$PATH',
-      'CPATH' => '/opt/nvidia/cuda/:$CPATH',
+      'PATH' => '/opt/nvidia/cuda/bin:$PATH',
+      'CPATH' => '/opt/nvidia/cuda/include:$CPATH',
       'LIBRARY_PATH' => '/opt/nvidia/cuda/lib:$LIBRARY_PATH',
       'LD_LIBRARY_PATH' => '/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH'
     }
