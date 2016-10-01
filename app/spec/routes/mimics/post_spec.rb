@@ -9,13 +9,15 @@ describe 'POST /mimics' do
   end
 
   def assert_success
+    mimic_id = Mimic.last.id.to_s
     expect(JSON.parse(last_response.body)).to eq({
-      '_id' => {'$oid' => Mimic.last.id.to_s},
+      '_id' => {'$oid' => mimic_id},
       'content_hash' => 'red',
       'style_hash' => model.file_hash
     })
     expect(Mimic.count).to eql 1
     expect(MimicMaker.jobs.size).to eql 1
+    expect(MimicMaker.jobs[0]['args']).to eql [mimic_id]
   end
 
   def assert_failure

@@ -62,10 +62,7 @@ post '/mimics' do
   if mimic
     # Requeue in case it hasn't gone through yet
     if not mimic.mimic_hash
-      MimicMaker.perform_async(
-        bucket = settings.env['S3']['bucket'],
-        mimic.id
-      )
+      MimicMaker.perform_async mimic.id.to_s
     end
 
     return 200, mimic.to_json(only: [:_id, :content_hash, :style_hash])
@@ -90,7 +87,7 @@ post '/mimics' do
 
   # Queue Job
 
-  MimicMaker.perform_async mimic.id
+  MimicMaker.perform_async mimic.id.to_s
 
   return 201, mimic.to_json(only: [:_id, :content_hash, :style_hash])
 end
