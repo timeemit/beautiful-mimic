@@ -4,6 +4,8 @@ class MimicMaker
   include Sidekiq::Worker
 
   def perform(mimic_id)
+    p "Mimic#: #{mimic_id} -- Received work for "
+
     # Fetch records
     mimic = Mimic.find(mimic_id)
 
@@ -19,8 +21,11 @@ class MimicMaker
     s3_style = S3Upload::TrainedModel.new(
       file_hash: mimic.style_hash
     )
-    
+
+    p "Mimic#: #{mimic_id} -- Downloading content to #{content_tempfile.path}"
     s3_content.download(content_tempfile.path, 'original')
+
+    p "Mimic#: #{mimic_id} -- Downloading style model to #{style_model_tempfile.path}"
     s3_style.download(style_model_tempfile.path)
 
     # Compute
@@ -47,7 +52,7 @@ class MimicMaker
     return_value, output = nil, nil
     Open3.popen3(environment, command.join(' '), options) do |stdin, stdout, stderr, wait_thr|
       return_value = wait_thr.value
-      output = "STDOUT: #{stdout}\n\nSTDERR: #{stderr}"
+      output = "STDOUT: #{stdout.gets(nil)}\n\nSTDERR: #{stderr.gets(nil)}"
     end
 
     raise SystemFailure, "Error (#{return_value.exitstatus}):\n#{output}" unless return_value.success?
