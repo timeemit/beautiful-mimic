@@ -63,6 +63,10 @@ Hosted on `compose.com`
 mongo --ssl --sslCAFile app/environments/prod.pem aws-us-east-1-portal.12.dblayer.com:15330/bm_app_production -u bm_prod_user -p <password>
 ```
 
+```
+redis-cli -h aws-us-east-1-portal.16.dblayer.com -p 15329 -a
+```
+
 ## AWS
 
 *AMI Instance*: Amazon Linux AMI 2015.09.2 x86_64 Graphics HVM EBS
