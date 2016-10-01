@@ -21,7 +21,7 @@ Mongoid.load!(Secret.path, 'mongo')
 redis = Secret.config['redis']
 url = "#{redis['ip']}:#{redis['port']}/#{redis['db']}"
 if redis['password']
-  url = "x:#{env['redis']['password']}@#{url}"
+  url = "x:#{Secret.config['redis']['password']}@#{url}"
 end
 
 Sidekiq.configure_server do |config|
