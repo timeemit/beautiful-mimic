@@ -33,7 +33,7 @@ Determine tag with `git tag -l` and set it with:
 ```
 export TAG=<tag>
 git tag -a $TAG -m $TAG
-git tag push --tags
+git push --tags
 ```
 
 Build with:
