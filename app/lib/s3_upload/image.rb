@@ -13,8 +13,6 @@ class S3Upload::Image < S3Upload
 
   def download(path, style)
     style ||= 'thumb'
-    return false unless valid?
-
     super(file_key(style), path)
   end
 
