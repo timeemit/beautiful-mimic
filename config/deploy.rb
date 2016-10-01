@@ -46,7 +46,7 @@ namespace :sidekiq do
     desc "#{command.capitalize} Sidekiq"
     task command do
       on roles :all do
-        as(user: 'root') { execute :initctl, "#{command} workers" }
+        as(user: 'root') { execute :initctl, "#{command} sidekiq index=1" }
       end
     end
   end
@@ -54,15 +54,19 @@ end
 
 namespace :deploy do
   after :published, :place_secrets do
-    src = File.expand_path('../app/environments/production.yml', __dir__)
-    dest = '/opt/beautiful-mimic/current/app/environments/production.yml'
+    files = %w(production.yml prod.pem)
+    src = File.expand_path('../app/environments', __dir__)
+    dest = '/opt/beautiful-mimic/current/app/environments'
     on roles(:all) do
       execute :mkdir, '/opt/beautiful-mimic/current/app/environments'
-      upload! src, dest
+      files.each do |file|
+        upload! "#{src}/#{file}", "#{dest}/#{file}"
+      end
     end
   end
 
-  after :finished, :'sidekiq:restart'
+  after :finished, :'sidekiq:stop', raise_on_non_zero_exit: false
+  after :finished, :'sidekiq:start'
 end
 
 namespace :train_model do
