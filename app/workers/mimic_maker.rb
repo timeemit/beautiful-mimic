@@ -8,8 +8,8 @@ class MimicMaker
     mimic = Mimic.find(mimic_id)
 
     # Download the images to tempfiles
-    content_file = mimic.content_upload.filename
-    content_tempfile = Tempfile.new([content_file, File.extname(content_file)])
+    content = mimic.content_upload
+    content_tempfile = Tempfile.new([File.basename(content.filename), File.extname(content.filename)])
     style_model_tempfile = Tempfile.new(["#{mimic.style_hash}", '.jpg'])
     output_tempfile = Tempfile.new("#{mimic.user_hash}-#{mimic.content_hash}-#{mimic.style_hash}")
 
