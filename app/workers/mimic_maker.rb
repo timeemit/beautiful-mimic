@@ -14,8 +14,8 @@ class MimicMaker
     output_tempfile = Tempfile.new("#{mimic.user_hash}-#{mimic.content_hash}-#{mimic.style_hash}")
 
     s3_content = S3Upload::Image.new(
-      user_hash: mimic.user_hash,
-      file_hash: mimic.content_hash
+      user_hash: content.user_hash,
+      file_hash: content.file_hash
     )
     s3_style = S3Upload::TrainedModel.new(
       file_hash: mimic.style_hash
