@@ -4,8 +4,6 @@ class MimicMaker
   include Sidekiq::Worker
 
   def perform(mimic_id)
-    p "Mimic#: #{mimic_id} -- Received work for "
-
     # Fetch records
     mimic = Mimic.find(mimic_id)
 
@@ -22,10 +20,7 @@ class MimicMaker
       file_hash: mimic.style_hash
     )
 
-    p "Mimic#: #{mimic_id} -- Downloading content to #{content_tempfile.path}"
     s3_content.download(content_tempfile.path, 'original')
-
-    p "Mimic#: #{mimic_id} -- Downloading style model to #{style_model_tempfile.path}"
     s3_style.download(style_model_tempfile.path)
 
     # Compute
