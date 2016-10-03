@@ -64,7 +64,7 @@ class MimicMaker
     s3_output.save!
 
     # Done!
-    mimic.mimic_hash = Digest::SHA256.new.hexdigest output_tempfile.read
+    mimic.mimic_hash = s3_output.file_hash
     mimic.computed_at = Time.now
     mimic.save
 

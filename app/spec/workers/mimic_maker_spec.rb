@@ -34,13 +34,13 @@ describe MimicMaker do
     expect( style ).to receive(:unlink)
     expect( output ).to receive(:unlink)
     expect( Tempfile ).to receive(:new).and_return(content, style, output)
-    expect( output ).to receive(:read).and_return('content')
 
     expect( S3Upload::Image  ).to receive(:new).with(
       user_hash: user_hash,
       file_hash: mimic.content_hash,
     ).and_call_original
 
+    expected_hash = 'hash'
     s3_upload_image = double('s3_upload_image', download: nil)
     expect( S3Upload::Image  ).to receive(:new).with(
       user_hash: user_hash,
@@ -48,6 +48,7 @@ describe MimicMaker do
       file: output
     ).and_return(s3_upload_image)
     expect( s3_upload_image ).to receive(:save!)
+    expect( s3_upload_image ).to receive(:file_hash).and_return(expected_hash)
 
     environment = {
       'PATH' => '/opt/nvidia/cuda/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin',
@@ -81,6 +82,7 @@ describe MimicMaker do
     mimic.reload
     expect( mimic.computed_at ).to be_a Time
     expect( mimic.mimic_hash ).to be_a String
+    expect( mimic.mimic_hash ).to eql expected_hash
 
     # Cleanup 
     File.delete 'path2'
