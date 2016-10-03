@@ -23,8 +23,7 @@ class Uploader
   end
 
   def save!
-    return false unless s3_upload.valid? and upload.valid?
-    s3_upload.save! # => To S3
-    upload.save!    # => To mongo
+    return false unless s3_upload.valid? && upload.valid?
+    s3_upload.save! && upload.save!    # => To S3, mongo, respectively
   end
 end

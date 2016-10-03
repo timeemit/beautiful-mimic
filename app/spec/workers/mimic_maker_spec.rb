@@ -41,14 +41,13 @@ describe MimicMaker do
     ).and_call_original
 
     expected_hash = 'hash'
-    s3_upload_image = double('s3_upload_image', download: nil)
+    s3_upload_image = double('s3_upload_image', download: nil, valid?: true)
     expect( S3Upload::Image  ).to receive(:new).with(
       user_hash: user_hash,
-      filename: 'beautiful_mimic',
       file: output
     ).and_return(s3_upload_image)
-    expect( s3_upload_image ).to receive(:save!)
-    expect( s3_upload_image ).to receive(:file_hash).and_return(expected_hash)
+    expect( s3_upload_image ).to receive(:save!).and_return(true)
+    expect( s3_upload_image ).to receive(:file_hash).twice.and_return(expected_hash)
 
     environment = {
       'PATH' => '/opt/nvidia/cuda/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin',
@@ -76,7 +75,9 @@ describe MimicMaker do
     expect( Open3 ).to receive(:popen3).with(environment, command.join(' '), options).and_yield(*responses)
 
     # Make the mimic!
-    MimicMaker.new.perform(mimic.id)
+    expect do
+      MimicMaker.new.perform(mimic.id)
+    end.to change{ Upload.count }.by 1
   
     # Check the db
     mimic.reload

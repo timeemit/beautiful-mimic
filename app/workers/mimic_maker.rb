@@ -1,4 +1,5 @@
 class SystemFailure < StandardError; end
+class UploadError < StandardError; end
 
 class MimicMaker
   include Sidekiq::Worker
@@ -55,16 +56,14 @@ class MimicMaker
 
     # Upload the results
 
-    s3_output = S3Upload::Image.new(
-      user_hash: mimic.user_hash,
-      filename: 'beautiful_mimic',
-      file: output_tempfile
-    )
+    uploader = Uploader.new(mimic.user_hash, "#{content.filename}-mimic#{content_ext}", output_tempfile)
 
-    s3_output.save!
+    if not uploader.save!
+      raise UploadError, "Could not upload to S3: Upload -- #{uploader.upload.errors} S3Upload -- #{uploader.s3_upload.errors}"
+    end
 
     # Done!
-    mimic.mimic_hash = s3_output.file_hash
+    mimic.mimic_hash = uploader.s3_upload.file_hash
     mimic.computed_at = Time.now
     mimic.save
 

@@ -13,6 +13,7 @@ require_relative '../lib/s3_upload/image'
 require_relative '../lib/s3_upload/trained_model'
 require_relative '../models/mimic'
 require_relative '../models/upload'
+require_relative '../models/uploader'
 require_relative './mimic_maker'
 
 Secret.set! ENV['SIDEKIQ_ENV']
