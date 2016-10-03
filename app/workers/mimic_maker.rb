@@ -9,9 +9,10 @@ class MimicMaker
 
     # Download the images to tempfiles
     content = mimic.content_upload
-    content_tempfile = Tempfile.new([File.basename(content.filename), File.extname(content.filename)])
+    content_ext = File.extname(content.filename)
+    content_tempfile = Tempfile.new([File.basename(content.filename), content_ext])
     style_model_tempfile = Tempfile.new(["#{mimic.style_hash}", '.jpg'])
-    output_tempfile = Tempfile.new("#{mimic.user_hash}-#{mimic.content_hash}-#{mimic.style_hash}")
+    output_tempfile = Tempfile.new(["#{mimic.user_hash}-#{mimic.content_hash}-#{mimic.style_hash}", content_ext])
 
     s3_content = S3Upload::Image.new(
       user_hash: content.user_hash,
