@@ -50,8 +50,8 @@ describe MimicMaker do
     expect( s3_upload_image ).to receive(:save!)
 
     environment = {
-      'PATH' => '/usr/local/nvidia/cuda/bin:$PATH',
-      'CPATH' => '/opt/nvidia/cuda/:$CPATH',
+      'PATH' => '/opt/nvidia/cuda/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin',
+      'CPATH' => '/opt/nvidia/cuda/include:$CPATH',
       'LIBRARY_PATH' => '/opt/nvidia/cuda/lib:$LIBRARY_PATH',
       'LD_LIBRARY_PATH' => '/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH'
     }
@@ -64,8 +64,7 @@ describe MimicMaker do
       content.path
     ]
     options = {
-      chdir: '/opt/beautiful-mimic',
-      unsetenv_others: true
+      chdir: '/opt/beautiful-mimic/neural-style',
     }
     responses = [
       double('stdin'),

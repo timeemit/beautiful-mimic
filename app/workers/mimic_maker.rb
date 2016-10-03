@@ -27,7 +27,7 @@ class MimicMaker
     # Compute
 
     environment = {
-      'PATH' => '/opt/nvidia/cuda/bin:$PATH',
+      'PATH' => '/opt/nvidia/cuda/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin',
       'CPATH' => '/opt/nvidia/cuda/include:$CPATH',
       'LIBRARY_PATH' => '/opt/nvidia/cuda/lib:$LIBRARY_PATH',
       'LD_LIBRARY_PATH' => '/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH'
@@ -41,8 +41,7 @@ class MimicMaker
       content_tempfile.path
     ]
     options = {
-      chdir: '/opt/beautiful-mimic',
-      unsetenv_others: true
+      chdir: '/opt/beautiful-mimic/neural-style',
     }
 
     return_value, output = nil, nil
