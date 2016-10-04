@@ -2,6 +2,9 @@
 
 export TAG="$@"
 
+# Build bundle
+babel --presets react app/src/app --compact --out-file app/public/javascripts/bundle.js
+
 # Tag repository
 git tag -a $TAG -m $TAG ||
 git push --tags &&
