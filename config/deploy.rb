@@ -69,7 +69,7 @@ namespace :deploy do
   after :finished, :'sidekiq:start'
 end
 
-namespace :train_model do
+namespace :train do
   desc 'Tail nohup'
   task 'tail' do
     on roles :all do
