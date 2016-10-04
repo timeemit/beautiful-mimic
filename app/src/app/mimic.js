@@ -1,7 +1,33 @@
 var MimicShow = React.createClass({
+  getInitialState: function() {
+    return {
+      mimic: this.props.mimic,
+      request: null,
+      interval: null
+    };
+  },
+
+  componentDidMount: function() {
+    setInterval(this.updateMimicRequest, 1000);
+  },
+
+  componentWillUnmount: function() {
+    clearInterval(this.state.inteveral);
+    this.state.request.abort();
+  },
+
+  updateMimicRequest: function() {
+    request = $.get('/mimics/' + this.state.mimic._id.$oid + '.json', function (result) {
+      var result = JSON.parse(result);
+      this.setState({ mimic: result });
+      if (this.state.mimic.mimic_hash) clearInterval(this.state.inteveral);
+    }.bind(this));
+    this.setState({ request: request });
+  },
+
   render: function() {
     var mimic_img = null;
-    var mimic = this.props.mimic;
+    var mimic = this.state.mimic;
 
     var print_button = null;
     if ( mimic.mimic_hash ) { 

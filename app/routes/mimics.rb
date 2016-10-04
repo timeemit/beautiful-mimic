@@ -25,6 +25,19 @@ get '/mimics/new' do
   erb :new
 end
 
+get '/mimics/:mimic_id.json' do
+  'View uploaed mimic'
+
+  user_hash = session['user_hash']
+  mimic_id = params['mimic_id']
+
+  Mimic.
+    where(user_hash: user_hash).
+    only(:content_hash, :style_hash, :mimic_hash).
+    find(mimic_id).
+    to_json
+end
+
 get '/mimics/:mimic_id' do
   'View uploaed mimic'
 
