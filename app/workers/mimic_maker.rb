@@ -38,7 +38,7 @@ class MimicMaker
       '/opt/beautiful-mimic/venv_2_7/bin/python',
       '/opt/beautiful-mimic/neural-style/generate.py',
       '--model', style_model_tempfile.path,
-      '--gpu', '0',
+      '--gpu', '-1',
       '--out', output_tempfile.path,
       content_tempfile.path
     ]

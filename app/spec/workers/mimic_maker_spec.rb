@@ -59,7 +59,7 @@ describe MimicMaker do
       '/opt/beautiful-mimic/venv_2_7/bin/python',
       '/opt/beautiful-mimic/neural-style/generate.py',
       '--model', style.path,
-      '--gpu', '0',
+      '--gpu', '-1',
       '--out', output.path,
       content.path
     ]
@@ -70,7 +70,7 @@ describe MimicMaker do
       double('stdin'),
       double('stdout', gets: 'output'),
       double('stderr', gets: 'errors'),
-      double('wait_thr', value: double('value', success?: true))
+      double('wait_thr', value: double('value', success?: true, exitstatus: 0))
     ]
     expect( Open3 ).to receive(:popen3).with(environment, command.join(' '), options).and_yield(*responses)
 
