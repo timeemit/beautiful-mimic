@@ -41,7 +41,7 @@ var Mimics = React.createClass({
       <div>
         <div className='pure-g mimics-index'>
           <div className='pure-u-1 page-break-mini'>
-            <a href='/mimics/new' className='pure-button center'>
+            <a href='/mimics/new' className='pure-button center clickable'>
               <h2 className='center-text'><i className='fa fa-2x'>+</i></h2>
             </a>
           </div>

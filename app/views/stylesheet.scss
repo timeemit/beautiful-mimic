@@ -90,6 +90,7 @@ img.logo {
 .image-select .display .container img {
   max-height: inherit;
   width: auto;
+  max-width: 100%;
 }
 
 .image-select .display .container button {
@@ -239,12 +240,13 @@ img.logo {
 
 // New mimic button
 
-.mimic-submit {
-  transition: all 300ms ease;
+.clickable {
+  border-radius: 3em;
+  transition: all 450ms ease;
 }
 
-.mimic-submit:hover {
-  border-radius: 3em;
+.clickable:hover {
+  border-radius: 0;
   background-color: #0078e7;
   color: #fff;
 }
@@ -266,6 +268,6 @@ img.logo {
 }
 
 .rounded-bottom {
-  border-bottom-left-radius: 30%;
-  border-bottom-right-radius: 30%;
+  border-bottom-left-radius: 2em;
+  border-bottom-right-radius: 2em;
 }

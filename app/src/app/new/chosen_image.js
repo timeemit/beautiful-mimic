@@ -9,8 +9,8 @@ var ChosenImage = React.createClass({
         <div key={this.props.file_hash} onClick={this.props.click_handler} className='pure-g'>
           <div className='pure-u-4-5 center'>
             <div className='pure-g display'>
-              <div className='container center'>
-                <img className='center grey-border hover-yellow-border' src={'/files/' + this.props.file_hash + '?style=original'}></img>
+              <div className='container center grey-border hover-yellow-border rounded-bottom'>
+                <img className='center' src={'/files/' + this.props.file_hash + '?style=original'}></img>
                 <button className='pure-button rounded-bottom'><i className='fa fa-2x fa-hand-pointer-o'></i></button>
               </div>
               
