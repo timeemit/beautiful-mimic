@@ -31,8 +31,8 @@ class MimicMaker
     content_image = MiniMagick::Image.new(content_tempfile.path)
     width, height = content_image.dimensions
     dimension_changed = false
-    if height > 1100 or width > 1100
-      content_image.resize '1100x1100'
+    if height > 500 or width > 500
+      content_image.resize '500x500'
       dimension_changed = true
     end
 

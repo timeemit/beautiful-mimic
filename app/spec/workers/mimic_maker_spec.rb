@@ -50,7 +50,7 @@ describe MimicMaker do
     expect( s3_upload_image ).to receive(:file_hash).twice.and_return(expected_hash)
 
     content_image = double('content_image', dimensions: [2001, 2000])
-    expect(content_image).to receive(:resize).with('1100x1100')
+    expect(content_image).to receive(:resize).with('500x500')
     expect( MiniMagick::Image ).to receive(:new).with('path1').and_return content_image
 
     output_image = double('content_image')
