@@ -49,8 +49,8 @@ class MimicMaker
       '/opt/beautiful-mimic/neural-style/generate.py',
       '--model', style_model_tempfile.path,
       '--gpu', '-1',
-      '--out', output_tempfile.path,
-      content_tempfile.path
+      '--out', "'#{output_tempfile.path}'",
+      "'#{content_tempfile.path}'"
     ]
     options = {
       chdir: '/opt/beautiful-mimic/neural-style',
