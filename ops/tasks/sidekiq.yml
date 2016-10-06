@@ -34,11 +34,3 @@
     - sidekiq.conf
     - workers.conf
   become_user: root
-
-- name: 'Install git'
-  yum: name=git state=latest update_cache=yes
-  become_user: root
-
-- name: 'Create compute directory structure'
-  file: path={{app_dir}} state=directory owner=bm group=bm
-  become_user: root

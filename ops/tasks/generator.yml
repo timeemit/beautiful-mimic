@@ -1,13 +1,15 @@
-- name: 'Upgrade apt'
-  yum:  update_cache=yes
-  become_user: root
-
 - name: 'Install packages'
-  yum: 'name={{item}}'
+  yum: 'name={{item}} update_cache=yes'
   become_user: root
   with_items:
     - python27
     - atlas-devel
+    - git
+    - htop
+
+- name: 'Create compute directory structure'
+  file: path={{app_dir}} state=directory owner=bm group=bm
+  become_user: root
 
 - name: 'Updgrade pip'
   pip: 'name=pip state=latest virtualenv={{app_dir}}/venv_2_7'
