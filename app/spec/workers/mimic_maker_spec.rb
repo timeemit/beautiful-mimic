@@ -35,7 +35,7 @@ describe MimicMaker do
     expect( output ).to receive(:unlink)
     expect( Tempfile ).to receive(:new).and_return(content, style, output)
 
-    expect( S3Upload::Image  ).to receive(:new).with(
+    expect( S3Upload::Image ).to receive(:new).with(
       user_hash: user_hash,
       file_hash: mimic.content_hash,
     ).and_call_original

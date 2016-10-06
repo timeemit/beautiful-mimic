@@ -74,10 +74,7 @@ class MimicMaker
     # Upload the results
 
     uploader = Uploader.new(mimic.user_hash, "#{content.filename}-mimic#{content_ext}", output_tempfile)
-
-    if not uploader.save!
-      raise UploadError, "Could not upload to S3: Upload -- #{uploader.upload.errors} S3Upload -- #{uploader.s3_upload.errors}"
-    end
+    uploader.save!
 
     # Done!
     mimic.mimic_hash = uploader.s3_upload.file_hash
