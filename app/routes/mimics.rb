@@ -73,10 +73,8 @@ post '/mimics' do
     first
 
   if mimic
-    # Requeue in case it hasn't gone through yet
-    if not mimic.mimic_hash
-      MimicMaker.perform_async mimic.id.to_s
-    end
+    # Requeue
+    MimicMaker.perform_async mimic.id.to_s
 
     return 200, mimic.to_json(only: [:_id, :content_hash, :style_hash])
   end
