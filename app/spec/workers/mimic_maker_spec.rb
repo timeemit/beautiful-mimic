@@ -49,6 +49,14 @@ describe MimicMaker do
     expect( s3_upload_image ).to receive(:save!).and_return(true)
     expect( s3_upload_image ).to receive(:file_hash).twice.and_return(expected_hash)
 
+    content_image = double('content_image', dimensions: [2001, 2000])
+    expect(content_image).to receive(:resize).with('1100x1100')
+    expect( MiniMagick::Image ).to receive(:new).with('path1').and_return content_image
+
+    output_image = double('content_image')
+    expect(output_image).to receive(:resize).with('2001x2000')
+    expect( MiniMagick::Image ).to receive(:new).with('path3').and_return output_image
+
     environment = {
       'PATH' => '/opt/nvidia/cuda/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin',
       'CPATH' => '/opt/nvidia/cuda/include:$CPATH',

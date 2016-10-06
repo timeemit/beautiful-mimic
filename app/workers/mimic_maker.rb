@@ -26,6 +26,16 @@ class MimicMaker
     s3_content.download(content_tempfile.path, 'original')
     s3_style.download(style_model_tempfile.path)
 
+    # Resize
+
+    content_image = MiniMagick::Image.new(content_tempfile.path)
+    width, height = content_image.dimensions
+    dimension_changed = false
+    if height > 1100 or width > 1100
+      content_image.resize '1100x1100'
+      dimension_changed = true
+    end
+
     # Compute
 
     environment = {
@@ -53,6 +63,13 @@ class MimicMaker
     end
 
     raise SystemFailure, "Error (#{return_value.exitstatus}):\n#{output}" unless return_value.success?
+
+    # Resize to original
+
+    if dimension_changed
+      output_image = MiniMagick::Image.new(output_tempfile.path)
+      output_image.resize "#{width}x#{height}"
+    end
 
     # Upload the results
 
