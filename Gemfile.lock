@@ -20,6 +20,7 @@ GEM
       capistrano (~> 3.0)
       sshkit (~> 1.2)
     colorize (0.7.7)
+    execjs (2.7.0)
     i18n (0.7.0)
     json (1.8.3)
     mini_portile2 (2.1.0)
@@ -31,12 +32,15 @@ GEM
       pkg-config (~> 1.1.7)
     pkg-config (1.1.7)
     rake (10.4.2)
+    sass (3.4.22)
     sshkit (1.7.1)
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     terminal-table (1.7.3)
       unicode-display_width (~> 1.1.1)
+    uglifier (3.0.2)
+      execjs (>= 0.3.0, < 3)
     unicode-display_width (1.1.1)
 
 PLATFORMS
@@ -47,6 +51,8 @@ DEPENDENCIES
   capistrano (~> 3.4.0)
   capistrano-bundler (~> 1.1.2)
   capistrano-rvm (~> 0.1.2)
+  sass (~> 3.4.19)
+  uglifier (~> 3.0.2)
 
 BUNDLED WITH
    1.13.1
