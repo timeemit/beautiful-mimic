@@ -55,5 +55,5 @@ post '/uploads' do
   # Persit
   uploader.save!
 
-  return uploader.upload.to_json(only: [:filename, :file_hash, :created_at])
+  return uploader.upload.to_json(only: [:filename, :user_hash, :file_hash, :created_at])
 end
