@@ -15,7 +15,7 @@ var NewMimic = React.createClass({
       this.setState({
         uploads: result,
         content_choice: result[0],
-        style_choice: result[1],
+        style_choice: result[result.length - 1],
         reveal_content: false,
         reveal_style: false
       });
