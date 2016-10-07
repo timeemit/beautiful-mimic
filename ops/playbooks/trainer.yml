@@ -13,7 +13,22 @@
 
     - include: ../tasks/sidekiq.yml
 
-    - include: ../tasks/generator.yml
+    - include: ../tasks/compute.yml
+
+    - name: 'Download neural style models'
+      command: /bin/sh setup_model.sh
+      args:
+        chdir: '{{app_dir}}/neural-style'
+        creates: '{{app_dir}}/neural-style/VGG_ILSVRC_16_layers.caffemodel'
+      ignore_errors: yes
+      become_user: bm
+
+    - name: 'Create chainer model'
+      command: '{{app_dir}}/venv_2_7/bin/python create_chainer_model.py'
+      args:
+        chdir: '{{app_dir}}/neural-style'
+        creates: '{{app_dir}}/neural-style/vgg16.model'
+      become_user: bm
 
     - name: 'Download training data'
       unarchive: 'src=http://msvocds.blob.core.windows.net/coco2014/train2014.zip dest={{app_dir}}/neural-style/ remote_src=yes copy=no owner=bm group=bm'

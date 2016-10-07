@@ -13,7 +13,7 @@
 
     - include: ../tasks/sidekiq.yml
 
-    - include: ../tasks/generator.yml
+    - include: ../tasks/compute.yml
 
     - name: 'Install packages'
       yum: name=ImageMagick
