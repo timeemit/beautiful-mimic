@@ -63,6 +63,11 @@ img.logo {
   cursor: pointer;
 }
 
+.hover-yellow-border:hover .grey-border{
+  border-color: $yellow;
+  cursor: pointer;
+}
+
 .page-break {
   margin-top: 40px;
 }
@@ -87,14 +92,26 @@ img.logo {
   width: auto;
 }
 
+
+.rounded-bottom {
+  border-bottom-left-radius: 2em;
+  border-bottom-right-radius: 2em;
+}
+
 .image-select .display .container img {
   max-height: inherit;
   width: auto;
   max-width: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
 }
 
 .image-select .display .container button {
   width: 100%;
+  border-top: none;
+  border-bottom-left-radius: 2em;
+  border-bottom-right-radius: 2em;
 }
 
 // Pointer
@@ -265,9 +282,4 @@ img.logo {
 
 .margin-above {
   margin-top: 10px;
-}
-
-.rounded-bottom {
-  border-bottom-left-radius: 2em;
-  border-bottom-right-radius: 2em;
 }
