@@ -29,11 +29,14 @@ describe MimicMaker do
     # Stubs and Doubles
     content = double 'content', path: 'path1'
     style = double 'style', path: 'path2'
-    output = double 'output', path: 'path3'
     expect( content ).to receive(:unlink)
     expect( style ).to receive(:unlink)
-    expect( output ).to receive(:unlink)
-    expect( Tempfile ).to receive(:new).and_return(content, style, output)
+    expect( Tempfile ).to receive(:new).and_return(content, style)
+
+    output = double 'output'
+    expect( File ).to receive(:new).with('output.jpg').and_return(output)
+    expect( File ).to receive(:new).at_least(:once).and_call_original
+    expect( File ).to receive(:delete).with('output.jpg')
 
     expect( S3Upload::Image ).to receive(:new).with(
       user_hash: user_hash,
@@ -54,15 +57,15 @@ describe MimicMaker do
     expect( MiniMagick::Image ).to receive(:new).with('path1').and_return content_image
 
     output_image = double('content_image')
-    expect(output_image).to receive(:resize).with('2001x2000<')
-    expect( MiniMagick::Image ).to receive(:new).with('path3').and_return output_image
+    expect(output_image).to receive(:resize).with('2001x2000')
+    expect( MiniMagick::Image ).to receive(:new).with('output.jpg').and_return output_image
 
     command = [
       'python',
       'neural-style/generate.py',
       '--model', %Q('#{style.path}'),
       '--gpu', '-1',
-      '--out', %Q('#{output.path}'),
+      '--out', %q('output.jpg'),
       %Q('#{content.path}')
     ]
     responses = [
@@ -83,8 +86,5 @@ describe MimicMaker do
     expect( mimic.computed_at ).to be_a Time
     expect( mimic.mimic_hash ).to be_a String
     expect( mimic.mimic_hash ).to eql expected_hash
-
-    # Cleanup 
-    File.delete 'path2'
   end
 end

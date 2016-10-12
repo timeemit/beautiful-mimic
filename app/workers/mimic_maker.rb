@@ -13,7 +13,7 @@ class MimicMaker
     content_ext = File.extname(content.filename)
     content_tempfile = Tempfile.new([File.basename(content.filename), content_ext])
     style_model_tempfile = Tempfile.new(["#{mimic.style_hash}", '.jpg'])
-    output_tempfile = Tempfile.new(["#{mimic.user_hash}-#{mimic.content_hash}-#{mimic.style_hash}", content_ext])
+    output_path = "output#{content_ext}"
 
     s3_content = S3Upload::Image.new(
       user_hash: content.user_hash,
@@ -37,10 +37,10 @@ class MimicMaker
     command = [
       'python',
       'neural-style/generate.py',
-      '--model', "'#{style_model_tempfile.path}'",
+      '--model', %Q('#{style_model_tempfile.path}'),
       '--gpu', '-1',
-      '--out', "'#{output_tempfile.path}'",
-      "'#{content_tempfile.path}'"
+      '--out', %Q('#{output_path}'),
+      %Q('#{content_tempfile.path}')
     ]
 
     return_value, output = nil, nil
@@ -53,12 +53,16 @@ class MimicMaker
 
     # Resize to original
 
-    output_image = MiniMagick::Image.new(output_tempfile.path)
-    output_image.resize "#{width}x#{height}<"
+    output_image = MiniMagick::Image.new(output_path)
+    if height < 1000 and width < 1000
+      output_image.resize '1000x1000'
+    else
+      output_image.resize "#{width}x#{height}"
+    end
 
     # Upload the results
 
-    uploader = Uploader.new(mimic.user_hash, "#{content.filename}-mimic#{content_ext}", output_tempfile)
+    uploader = Uploader.new(mimic.user_hash, "#{content.filename}-mimic#{content_ext}", File.new(output_path))
     uploader.save!
 
     # Done!
@@ -69,6 +73,6 @@ class MimicMaker
     # Garbage Collection
     content_tempfile.unlink
     style_model_tempfile.unlink
-    output_tempfile.unlink
+    File.delete(output_path)
   end
 end
