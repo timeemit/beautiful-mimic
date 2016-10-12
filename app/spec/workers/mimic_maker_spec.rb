@@ -50,37 +50,28 @@ describe MimicMaker do
     expect( s3_upload_image ).to receive(:file_hash).twice.and_return(expected_hash)
 
     content_image = double('content_image', dimensions: [2001, 2000])
-    expect(content_image).to receive(:resize).with('500x500')
+    expect(content_image).to receive(:resize).with('500x500>')
     expect( MiniMagick::Image ).to receive(:new).with('path1').and_return content_image
 
     output_image = double('content_image')
-    expect(output_image).to receive(:resize).with('2001x2000')
+    expect(output_image).to receive(:resize).with('2001x2000<')
     expect( MiniMagick::Image ).to receive(:new).with('path3').and_return output_image
 
-    environment = {
-      'PATH' => '/opt/nvidia/cuda/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin',
-      'CPATH' => '/opt/nvidia/cuda/include:$CPATH',
-      'LIBRARY_PATH' => '/opt/nvidia/cuda/lib:$LIBRARY_PATH',
-      'LD_LIBRARY_PATH' => '/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH'
-    }
     command = [
-      '/opt/beautiful-mimic/venv_2_7/bin/python',
-      '/opt/beautiful-mimic/neural-style/generate.py',
-      '--model', style.path,
+      'python',
+      'neural-style/generate.py',
+      '--model', %Q('#{style.path}'),
       '--gpu', '-1',
-      '--out', output.path,
-      content.path
+      '--out', %Q('#{output.path}'),
+      %Q('#{content.path}')
     ]
-    options = {
-      chdir: '/opt/beautiful-mimic/neural-style',
-    }
     responses = [
       double('stdin'),
       double('stdout', gets: 'output'),
       double('stderr', gets: 'errors'),
       double('wait_thr', value: double('value', success?: true, exitstatus: 0))
     ]
-    expect( Open3 ).to receive(:popen3).with(environment, command.join(' '), options).and_yield(*responses)
+    expect( Open3 ).to receive(:popen3).with(command.join(' ')).and_yield(*responses)
 
     # Make the mimic!
     expect do

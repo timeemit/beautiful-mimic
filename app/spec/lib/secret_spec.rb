@@ -17,7 +17,7 @@ describe Secret do
 
       it 'should have a config' do
         expect( Secret.config.keys ).to eql %w(canvaspop AWS S3 redis mongo)
-        expect( Secret.config['canvaspop'].keys ).to eql %w(url access_key)
+        expect( Secret.config['canvaspop'].keys ).to eql %w(url access_key secret_key)
         expect( Secret.config['AWS'].keys ).to eql %w(access_key_id secret_access_key region)
         expect( Secret.config['S3'].keys ).to eql %w(bucket models_bucket)
         expect( Secret.config['redis'].keys ).to eql %w(ip port db password)

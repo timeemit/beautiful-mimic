@@ -30,34 +30,21 @@ class MimicMaker
 
     content_image = MiniMagick::Image.new(content_tempfile.path)
     width, height = content_image.dimensions
-    dimension_changed = false
-    if height > 500 or width > 500
-      content_image.resize '500x500'
-      dimension_changed = true
-    end
+    content_image.resize '500x500>'
 
     # Compute
 
-    environment = {
-      'PATH' => '/opt/nvidia/cuda/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin',
-      'CPATH' => '/opt/nvidia/cuda/include:$CPATH',
-      'LIBRARY_PATH' => '/opt/nvidia/cuda/lib:$LIBRARY_PATH',
-      'LD_LIBRARY_PATH' => '/opt/nvidia/cuda/lib/:/opt/nvidia/cuda/lib64:$LD_LIBRARY_PATH'
-    }
     command = [
-      '/opt/beautiful-mimic/venv_2_7/bin/python',
-      '/opt/beautiful-mimic/neural-style/generate.py',
-      '--model', style_model_tempfile.path,
+      'python',
+      'neural-style/generate.py',
+      '--model', "'#{style_model_tempfile.path}'",
       '--gpu', '-1',
       '--out', "'#{output_tempfile.path}'",
       "'#{content_tempfile.path}'"
     ]
-    options = {
-      chdir: '/opt/beautiful-mimic/neural-style',
-    }
 
     return_value, output = nil, nil
-    Open3.popen3(environment, command.join(' '), options) do |stdin, stdout, stderr, wait_thr|
+    Open3.popen3(command.join(' ')) do |stdin, stdout, stderr, wait_thr|
       return_value = wait_thr.value
       output = "STDOUT: #{stdout.gets(nil)}\n\nSTDERR: #{stderr.gets(nil)}"
     end
@@ -66,10 +53,8 @@ class MimicMaker
 
     # Resize to original
 
-    if dimension_changed
-      output_image = MiniMagick::Image.new(output_tempfile.path)
-      output_image.resize "#{width}x#{height}"
-    end
+    output_image = MiniMagick::Image.new(output_tempfile.path)
+    output_image.resize "#{width}x#{height}<"
 
     # Upload the results
 

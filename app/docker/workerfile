@@ -1,0 +1,8 @@
+FROM ruby:2.3
+EXPOSE 80
+RUN apt-get update
+RUN apt-get install -y python-dev python-pip imagemagick
+RUN pip install  NumPy==1.11 six==1.9 pillow==3.3.1 chainer
+COPY . .
+RUN bundle install
+CMD bundle exec sidekiq
